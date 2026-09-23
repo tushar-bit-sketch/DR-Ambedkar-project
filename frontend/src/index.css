@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Accessible focus rings */
+  :focus-visible {
+    outline: 2px solid #A88440;
+    outline-offset: 2px;
+  }
+}
+
+/* Custom Archival Utility Classes */
+.parchment-pattern {
+  background-color: #FAF8F5;
+  background-image: radial-gradient(#EAE2D2 0.75px, transparent 0.75px), radial-gradient(#EAE2D2 0.75px, #FAF8F5 0.75px);
+  background-size: 30px 30px;
+  background-position: 0 0, 15px 15px;
+}
+
+/* Touchscreen Kiosk Large Targets */
+.kiosk-mode button,
+.kiosk-mode a,
+.kiosk-mode input,
+.kiosk-mode select {
+  min-height: 48px;
+  min-width: 48px;
+  font-size: 1.125rem;
+}
+
+.kiosk-mode {
+  font-size: 1.15rem;
+  user-select: none;
+}

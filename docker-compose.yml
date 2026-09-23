@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ambedkar_archive_db
+    environment:
+      POSTGRES_USER: archive_user
+      POSTGRES_PASSWORD: archive_secure_password_2026
+      POSTGRES_DB: ambedkar_archive
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U archive_user -d ambedkar_archive"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ambedkar_archive_backend
+    environment:
+      - DATABASE_URL=postgresql+psycopg2://archive_user:archive_secure_password_2026@postgres:5432/ambedkar_archive
+      - SECRET_KEY=institutional-vault-production-secret-key-phase1
+      - ARCHIVE_PHASE=PHASE_1_FOUNDATION
+      - BACKEND_CORS_ORIGINS=["http://localhost:80","http://localhost:5173","http://localhost:3000"]
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ambedkar_archive_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

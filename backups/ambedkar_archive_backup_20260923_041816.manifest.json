@@ -1,0 +1,41 @@
+{
+  "institution": "Dr. Ambedkar National Memorial Archive",
+  "backup_name": "ambedkar_archive_backup_20260923_041816.zip",
+  "timestamp_utc": "2026-09-23T04:18:16.211820",
+  "total_files": 5,
+  "uncompressed_bytes": 1594544,
+  "compressed_archive_bytes": 154614,
+  "archive_sha256": "ed76d1f356b7ff7dc5dfa171700ee851e5ac2f06568e4ce63dd6dc472d0f489a",
+  "files": [
+    {
+      "path": "db/archive_phase1.db",
+      "bytes": 1466368,
+      "sha256": "76cece2041e26ffab940301b48cf1a69c39fdfe0da1244696dc159fe294694ca",
+      "type": "database"
+    },
+    {
+      "path": "storage/media/masters/AMB-MED-AUD-01F4E97D_49fe3b_speech_1952.wav",
+      "bytes": 32044,
+      "sha256": "8d9ad97efaeedb26f03c2dea465201eea7a126c74d91d31d32279c28335065b2",
+      "type": "master_vault_file"
+    },
+    {
+      "path": "storage/media/masters/AMB-MED-AUD-174E9414_91adf2_speech_1952.wav",
+      "bytes": 32044,
+      "sha256": "8d9ad97efaeedb26f03c2dea465201eea7a126c74d91d31d32279c28335065b2",
+      "type": "master_vault_file"
+    },
+    {
+      "path": "storage/media/masters/AMB-MED-AUD-4993CEDE_13861f_speech_1952.wav",
+      "bytes": 32044,
+      "sha256": "8d9ad97efaeedb26f03c2dea465201eea7a126c74d91d31d32279c28335065b2",
+      "type": "master_vault_file"
+    },
+    {
+      "path": "storage/media/masters/AMB-MED-AUD-B1810FE1_2ed61b_speech_1952.wav",
+      "bytes": 32044,
+      "sha256": "8d9ad97efaeedb26f03c2dea465201eea7a126c74d91d31d32279c28335065b2",
+      "type": "master_vault_file"
+    }
+  ]
+}

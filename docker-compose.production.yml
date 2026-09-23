@@ -1,0 +1,138 @@
+version: '3.8'
+
+# ==============================================================================
+# SIH26096 — Digital Heritage Archive for Memorials, Manuscripts & Ambedkar
+# PHASE 9 PRODUCTION DEPLOYMENT COMPOSE ARCHITECTURE
+# ==============================================================================
+# Includes PostgreSQL, Redis Cache, FastAPI Institutional Server,
+# Nginx Reverse Proxy with TLS termination, and read-only master storage mounts.
+# ==============================================================================
+
+services:
+  # ----------------------------------------------------------------------------
+  # PostgreSQL Database Engine
+  # ----------------------------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: ambedkar_archive_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-archive_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-archive_secure_password_2026}
+      POSTGRES_DB: ${POSTGRES_DB:-ambedkar_archive}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-archive_user} -d ${POSTGRES_DB:-ambedkar_archive}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - archive_internal
+
+  # ----------------------------------------------------------------------------
+  # Redis Ephemeral Cache & Task Queue
+  # ----------------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: ambedkar_archive_redis
+    restart: always
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-archive_redis_pass_2026}
+    volumes:
+      - redis_data:/data
+    ports:
+      - "127.0.0.1:6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-archive_redis_pass_2026}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - archive_internal
+
+  # ----------------------------------------------------------------------------
+  # FastAPI Institutional Backend Service
+  # ----------------------------------------------------------------------------
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ambedkar_archive_backend
+    restart: always
+    environment:
+      - ENVIRONMENT=production
+      - PROJECT_NAME=Dr. Ambedkar Institutional Digital Heritage Archive
+      - ARCHIVE_PHASE=PHASE_9_KIOSK_DEPLOYMENT_SECURITY
+      - DATABASE_URL=postgresql+psycopg2://${POSTGRES_USER:-archive_user}:${POSTGRES_PASSWORD:-archive_secure_password_2026}@postgres:5432/${POSTGRES_DB:-ambedkar_archive}
+      - SECRET_KEY=${SECRET_KEY:-institutional-vault-production-secret-key-phase9-change-in-production}
+      - BACKEND_CORS_ORIGINS=["http://localhost","https://archive.ambedkar.gov.in"]
+      - SECURITY_HEADERS_ENABLED=true
+      - RATE_LIMIT_ENABLED=true
+      - KIOSK_IDLE_TIMEOUT_SECONDS=120
+      - KIOSK_WARNING_SECONDS=15
+      - KIOSK_HEARTBEAT_INTERVAL_SECONDS=30
+    volumes:
+      - storage_vault:/app/storage/media/masters:ro # Read-only master vault mount
+      - storage_derivatives:/app/storage/media/derivatives
+      - storage_packages:/app/storage/packages
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "python -c 'import urllib.request; urllib.request.urlopen(\"http://127.0.0.1:8000/health/live\")'"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    networks:
+      - archive_internal
+
+  # ----------------------------------------------------------------------------
+  # Nginx Reverse Proxy, TLS Termination & Static File Caching
+  # ----------------------------------------------------------------------------
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: ambedkar_archive_nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./frontend/dist:/usr/share/nginx/html:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - storage_derivatives:/var/www/derivatives:ro
+      - nginx_logs:/var/log/nginx
+    depends_on:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1:80/health/live || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    networks:
+      - archive_internal
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  storage_vault:
+    driver: local
+  storage_derivatives:
+    driver: local
+  storage_packages:
+    driver: local
+  nginx_logs:
+    driver: local
+
+networks:
+  archive_internal:
+    driver: bridge

@@ -1,0 +1,25 @@
+{
+  "name": "sih26096-digital-heritage-archive",
+  "version": "1.0.0",
+  "description": "Digital Heritage Archive for Memorials, Manuscripts & Ambedkar: AI-Powered Institutional Archive and Audio-Visual Knowledge Platform",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "preview": "npm --prefix frontend run preview",
+    "test:backend": "cd backend && python -m pytest",
+    "lint:frontend": "npm --prefix frontend run lint"
+  },
+  "keywords": [
+    "digital-archive",
+    "heritage",
+    "ambedkar",
+    "oais",
+    "dublin-core",
+    "hybrid-search",
+    "rag",
+    "sih2024"
+  ],
+  "author": "SIH26096 Team",
+  "license": "UNLICENSED"
+}
