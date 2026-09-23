@@ -50,6 +50,9 @@ yarn-error.log*
 pnpm-debug.log*
 .system_generated/
 scratch/
+backend/storage/derivatives/
+.vercel
+frontend/.vercel
 
 # Operating System & IDE Artifacts
 .DS_Store

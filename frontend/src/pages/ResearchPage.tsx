@@ -5,7 +5,7 @@ import {
   AlertTriangle, ShieldCheck, FileText, Calendar, 
   MessageSquare, Plus, Trash2, ChevronRight, Layers,
   Database, Cpu, Info, CheckCircle2, AlertCircle, ShieldAlert,
-  Mic, MicOff, Globe, Upload
+  Mic, MicOff, Globe, Upload, Volume2
 } from 'lucide-react';
 import { apiService } from '../services/api';
 import { 
@@ -491,12 +491,49 @@ export const ResearchPage: React.FC = () => {
                               LLM SERVICE UNAVAILABLE
                             </span>
                           )}
+                          {msg.status === 'RESEARCH_BACKEND_UNAVAILABLE' && (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-rose-100 text-rose-900 text-[11px] font-bold border border-rose-300">
+                              <AlertTriangle className="w-3 h-3 text-rose-700" />
+                              RESEARCH BACKEND UNAVAILABLE
+                            </span>
+                          )}
+                          {msg.status === 'BACKEND_NOT_CONFIGURED' && (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-200 text-slate-900 text-[11px] font-bold border border-slate-300">
+                              <AlertCircle className="w-3 h-3 text-slate-700" />
+                              BACKEND NOT CONFIGURED
+                            </span>
+                          )}
+                          {msg.content?.includes('[OFFLINE DEMO SIMULATION') && (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-amber-100 text-amber-900 text-[11px] font-bold border border-amber-300">
+                              <Info className="w-3 h-3 text-amber-700" />
+                              OFFLINE DEMO SIMULATION (NOT LIVE RAG)
+                            </span>
+                          )}
                           {msg.status === 'CITATION_VALIDATION_FAILED' && (
                             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-orange-100 text-orange-900 text-[11px] font-bold">
                               <ShieldAlert className="w-3 h-3 text-orange-700" />
                               UNCONFIRMED CITATION DETECTED
                             </span>
                           )}
+
+                          {/* Read Aloud / Text-to-Speech Button */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if ('speechSynthesis' in window) {
+                                window.speechSynthesis.cancel();
+                                const cleanText = msg.content.replace(/\[\d+\]/g, '').replace(/\[OFFLINE DEMO SIMULATION.*?\]/g, '');
+                                const utter = new SpeechSynthesisUtterance(cleanText);
+                                utter.rate = 0.95;
+                                window.speechSynthesis.speak(utter);
+                              }
+                            }}
+                            className="ml-auto text-slate-500 hover:text-heritage-700 p-1 rounded hover:bg-stone-200/60 transition flex items-center gap-1 text-[11px] font-sans"
+                            title="Read answer aloud"
+                          >
+                            <Volume2 className="w-3.5 h-3.5" />
+                            <span>Read Aloud</span>
+                          </button>
                         </div>
                       )}
 

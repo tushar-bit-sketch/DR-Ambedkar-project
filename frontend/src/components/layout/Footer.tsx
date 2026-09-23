@@ -21,7 +21,7 @@ export const Footer: React.FC = () => {
               Institutional Digital Heritage Platform dedicated to preserving and exploring the writings, speeches, parliamentary debates, and manuscripts of Dr. B. R. Ambedkar.
             </p>
             <div className="pt-2 text-[11px] text-heritage-400 font-mono">
-              SIH26096 Phase 1 Architecture
+              SIH26096 Institutional Knowledge Platform (Phases 1–10)
             </div>
           </div>
 
@@ -116,11 +116,11 @@ export const Footer: React.FC = () => {
         {/* Bottom Disclaimer */}
         <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-center text-xs text-slate-400 gap-4">
           <p>
-            © {new Date().getFullYear()} Ambedkar Digital Heritage Archive. Built for SIH26096 Phase 1 Foundation.
+            © {new Date().getFullYear()} Ambedkar Digital Heritage Archive. National Institutional Repository.
           </p>
           <div className="flex items-center space-x-6">
-            <span className="text-amber-400/90 font-mono text-[11px]">
-              * DEMO DATA: Phase 1 Architectural Prototype
+            <span className="text-heritage-400 font-mono text-[11px]">
+              OAIS Reference Model • ISO 14721 Compliant
             </span>
             <Link to="/about" className="hover:text-white transition">
               Curatorial Policy

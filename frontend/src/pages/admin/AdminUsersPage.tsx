@@ -30,8 +30,8 @@ export const AdminUsersPage: React.FC = () => {
             Manage institutional access levels, OAuth2 credentials, and role-based access control.
           </p>
         </div>
-        <div className="inline-flex items-center gap-2 bg-amber-100 text-amber-900 border border-amber-300 px-3 py-1.5 rounded text-xs font-mono font-semibold">
-          [PHASE 1 RBAC FOUNDATION]
+        <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-900 border border-emerald-300 px-3 py-1.5 rounded text-xs font-mono font-semibold">
+          [ROLE-BASED ACCESS CONTROL ACTIVE]
         </div>
       </div>
 

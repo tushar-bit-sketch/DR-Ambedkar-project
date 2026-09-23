@@ -112,7 +112,7 @@ export const ManuscriptsPage: React.FC = () => {
               Accessioned Manuscripts Catalog
             </h3>
             <span className="text-xs text-slate-500 font-mono">
-              [PHASE 1 OCR INTEGRATION FOUNDATION]
+              [PRESERVATION CORPUS]
             </span>
           </div>
 

@@ -12,8 +12,7 @@ import {
   GraphEntityItem, GraphRelationshipItem, GraphNeighborsData,
   GraphStatsData, GraphStatusData, EntityMergeItem, ProvenanceChainData
 } from '../types';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api/v1';
+import { API_BASE_URL, apiUrl, isBackendConfigured, isDemoMode } from '../config/api';
 
 // Seed demo fallback records ensuring UI never crashes if backend server is rebooting
 export const FALLBACK_DOCUMENTS: DocumentItem[] = [
@@ -383,8 +382,51 @@ function getAuthHeaders(): Record<string, string> {
   return {};
 }
 
-// Helper fetch wrapper with graceful offline fallback
-async function fetchWithFallback<T>(url: string, fallback: T, options?: RequestInit): Promise<T> {
+export interface ApiErrorInfo {
+  code: string;
+  message: string;
+  subsystem: string;
+  retryable: boolean;
+  httpStatus?: number;
+}
+
+export class ApiError extends Error {
+  code: string;
+  subsystem: string;
+  retryable: boolean;
+  httpStatus?: number;
+
+  constructor(info: ApiErrorInfo) {
+    super(info.message);
+    this.name = 'ApiError';
+    this.code = info.code;
+    this.subsystem = info.subsystem;
+    this.retryable = info.retryable;
+    this.httpStatus = info.httpStatus;
+  }
+}
+
+/**
+ * Standardized API request runner with structured errors and timeout safeguards.
+ */
+export async function apiRequest<T>(
+  endpointOrUrl: string,
+  options?: RequestInit,
+  subsystem = 'general'
+): Promise<T> {
+  const url = endpointOrUrl.startsWith('http') || endpointOrUrl.startsWith('/')
+    ? (endpointOrUrl.startsWith('http') ? endpointOrUrl : apiUrl(endpointOrUrl))
+    : apiUrl(`/${endpointOrUrl}`);
+
+  if (!isBackendConfigured() && !endpointOrUrl.startsWith('http')) {
+    throw new ApiError({
+      code: 'BACKEND_NOT_CONFIGURED',
+      message: 'Archival backend API is not configured for this deployment environment.',
+      subsystem,
+      retryable: false
+    });
+  }
+
   try {
     const authHeaders = getAuthHeaders();
     const res = await fetch(url, {
@@ -395,16 +437,47 @@ async function fetchWithFallback<T>(url: string, fallback: T, options?: RequestI
         ...authHeaders,
         ...(options?.headers || {})
       },
-      signal: AbortSignal.timeout(6000)
+      signal: options?.signal || AbortSignal.timeout(8000)
     });
+
     if (!res.ok) {
-      console.warn(`API responded with ${res.status}, using fallback data.`);
+      const errBody = await res.json().catch(() => ({}));
+      const detail = errBody.detail || errBody.message || `HTTP ${res.status}: ${res.statusText}`;
+      throw new ApiError({
+        code: `HTTP_${res.status}`,
+        message: typeof detail === 'string' ? detail : JSON.stringify(detail),
+        subsystem,
+        retryable: res.status >= 500 || res.status === 429,
+        httpStatus: res.status
+      });
+    }
+
+    return await res.json();
+  } catch (err: any) {
+    if (err instanceof ApiError) throw err;
+    throw new ApiError({
+      code: err.name === 'TimeoutError' ? 'REQUEST_TIMEOUT' : 'NETWORK_ERROR',
+      message: err.message || 'Network request failed or connection refused.',
+      subsystem,
+      retryable: true
+    });
+  }
+}
+
+/**
+ * Fallback fetcher: uses real API request, and only returns fallback data when explicit DEMO_MODE is active.
+ * In production without DEMO_MODE, throws structured ApiError to prevent silent fake data presentation.
+ */
+async function fetchWithFallback<T>(url: string, fallback: T, options?: RequestInit, subsystem = 'catalog'): Promise<T> {
+  try {
+    return await apiRequest<T>(url, options, subsystem);
+  } catch (err) {
+    if (isDemoMode()) {
+      console.info(`[Demo Mode Active] Using fallback demo dataset for ${url}`);
       return fallback;
     }
-    return await res.json();
-  } catch (err) {
-    // Graceful fallback during development / initialization
-    return fallback;
+    // Re-throw in production so UI renders genuine state
+    throw err;
   }
 }
 
@@ -652,16 +725,17 @@ function generateClientGroundedAnswer(request: ResearchAskRequest): ResearchAskR
   return {
     conversation_id: convId,
     message_id: msgId,
-    answer,
-    status,
+    answer: grounded ? `[OFFLINE DEMO SIMULATION — Not Live RAG]\n\n${answer}` : answer,
+    status: grounded ? 'SUCCESS' : 'NO_EVIDENCE',
     grounded,
     citations,
     retrieved_evidence: retrievedEvidence,
     diagnostics: {
-      retrieval_mode: grounded ? 'client_grounded_synthesis' : 'zero_hallucination_refusal',
+      retrieval_mode: grounded ? 'offline_demo_simulation' : 'zero_hallucination_refusal',
       evidence_count: citations.length,
       latency_ms: 15,
-      provider: 'Institutional Archival Knowledge Base'
+      provider: 'OFFLINE DEMO SIMULATION (Not Live RAG)',
+      is_demo_mode: true
     }
   };
 }
@@ -998,79 +1072,99 @@ export const apiService = {
   },
 
   async askResearchAssistant(request: ResearchAskRequest): Promise<ResearchAskResponse> {
-    try {
-      const isMixedContent = typeof window !== 'undefined' && window.location.protocol === 'https:' && API_BASE_URL.startsWith('http://127.0.0.1');
-      if (!isMixedContent) {
-        const res = await fetch(`${API_BASE_URL}/research/ask`, {
+    if (isBackendConfigured()) {
+      try {
+        return await apiRequest<ResearchAskResponse>('/research/ask', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            ...getAuthHeaders()
-          },
-          body: JSON.stringify(request),
-          signal: AbortSignal.timeout(4000)
-        });
-        if (res.ok) {
-          return await res.json();
+          body: JSON.stringify(request)
+        }, 'research');
+      } catch (err: any) {
+        console.warn('[Research API] Backend request failed:', err);
+        // Do NOT silently present canned answers as live AI unless explicitly in demo mode
+        if (!isDemoMode()) {
+          return {
+            conversation_id: request.conversation_id || `conv_${Date.now()}`,
+            message_id: Date.now(),
+            answer: `The Archival Research Assistant backend service is currently unreachable (${err.message || 'Connection error'}). Real-time source-grounded RAG requires an active HTTPS FastAPI service connected to the repository vector store and primary documents. Under our radical curatorial honesty policy, the system will not fabricate answers or speculate without verified archival records.`,
+            status: 'RESEARCH_BACKEND_UNAVAILABLE',
+            grounded: false,
+            citations: [],
+            retrieved_evidence: [],
+            diagnostics: {
+              retrieval_mode: 'backend_unavailable_refusal',
+              evidence_count: 0,
+              latency_ms: 0,
+              provider: 'FastAPI Archival Backend (UNAVAILABLE)',
+              error: err.message
+            }
+          };
         }
       }
-    } catch (e) {
-      console.warn('Backend API unreachable or blocked by browser mixed-content policy; using client-side grounded archival synthesis:', e);
     }
 
-    // Client-side grounded archival synthesis fallback
-    return generateClientGroundedAnswer(request);
+    // Explicit Demo Mode Only
+    if (isDemoMode()) {
+      return generateClientGroundedAnswer(request);
+    }
+
+    // Backend unconfigured and demo mode disabled
+    return {
+      conversation_id: request.conversation_id || `conv_${Date.now()}`,
+      message_id: Date.now(),
+      answer: "The Archival Research Assistant backend is not configured for this deployment environment (VITE_API_URL is missing or unverified). Under the archive's Zero-Hallucination policy, automated speculative answers are strictly prohibited without live primary source verification.",
+      status: 'BACKEND_NOT_CONFIGURED',
+      grounded: false,
+      citations: [],
+      retrieved_evidence: [],
+      diagnostics: {
+        retrieval_mode: 'backend_not_configured_refusal',
+        evidence_count: 0,
+        latency_ms: 0,
+        provider: 'Institutional Knowledge Base (UNCONFIGURED)'
+      }
+    };
   },
 
   async listResearchConversations(): Promise<ResearchConversationSummary[]> {
-    try {
-      const isMixedContent = typeof window !== 'undefined' && window.location.protocol === 'https:' && API_BASE_URL.startsWith('http://127.0.0.1');
-      if (!isMixedContent) {
-        const res = await fetch(`${API_BASE_URL}/research/conversations`, {
-          headers: { 'Accept': 'application/json', ...getAuthHeaders() },
-          signal: AbortSignal.timeout(3000)
-        });
-        if (res.ok) {
-          return await res.json();
-        }
+    if (isBackendConfigured()) {
+      try {
+        return await apiRequest<ResearchConversationSummary[]>('/research/conversations', undefined, 'research');
+      } catch (err) {
+        if (!isDemoMode()) throw err;
       }
-    } catch {}
-    const local = getStoredLocalConversations();
-    return local.map(c => ({
-      conversation_id: c.conversation_id,
-      title: c.title,
-      message_count: c.messages.length,
-      created_at: c.created_at,
-      updated_at: c.updated_at
-    }));
+    }
+    if (isDemoMode()) {
+      const local = getStoredLocalConversations();
+      return local.map(c => ({
+        conversation_id: c.conversation_id,
+        title: c.title,
+        message_count: c.messages.length,
+        created_at: c.created_at,
+        updated_at: c.updated_at
+      }));
+    }
+    return [];
   },
 
   async getResearchConversation(conversationId: string): Promise<ResearchConversationDetail> {
-    try {
-      const isMixedContent = typeof window !== 'undefined' && window.location.protocol === 'https:' && API_BASE_URL.startsWith('http://127.0.0.1');
-      if (!isMixedContent) {
-        const res = await fetch(`${API_BASE_URL}/research/conversations/${conversationId}`, {
-          headers: {
-            'Accept': 'application/json',
-            ...getAuthHeaders()
-          },
-          signal: AbortSignal.timeout(3000)
-        });
-        if (res.ok) {
-          return await res.json();
-        }
+    if (isBackendConfigured()) {
+      try {
+        return await apiRequest<ResearchConversationDetail>(`/research/conversations/${conversationId}`, undefined, 'research');
+      } catch (err) {
+        if (!isDemoMode()) throw err;
       }
-    } catch {}
-    const local = getStoredLocalConversations();
-    const found = local.find(c => c.conversation_id === conversationId);
-    if (found) {
-      return {
-        conversation_id: found.conversation_id,
-        title: found.title,
-        created_at: found.created_at,
-        messages: found.messages
-      };
+    }
+    if (isDemoMode()) {
+      const local = getStoredLocalConversations();
+      const found = local.find(c => c.conversation_id === conversationId);
+      if (found) {
+        return {
+          conversation_id: found.conversation_id,
+          title: found.title,
+          created_at: found.created_at,
+          messages: found.messages
+        };
+      }
     }
     return {
       conversation_id: conversationId,
@@ -1081,23 +1175,17 @@ export const apiService = {
   },
 
   async deleteResearchConversation(conversationId: string): Promise<void> {
-    try {
-      const isMixedContent = typeof window !== 'undefined' && window.location.protocol === 'https:' && API_BASE_URL.startsWith('http://127.0.0.1');
-      if (!isMixedContent) {
-        await fetch(`${API_BASE_URL}/research/conversations/${conversationId}`, {
-          method: 'DELETE',
-          headers: {
-            'Accept': 'application/json',
-            ...getAuthHeaders()
-          },
-          signal: AbortSignal.timeout(3000)
-        });
+    if (isBackendConfigured()) {
+      try {
+        await apiRequest(`/research/conversations/${conversationId}`, { method: 'DELETE' }, 'research');
+      } catch (err) {
+        if (!isDemoMode()) throw err;
       }
-    } catch {}
-    try {
+    }
+    if (isDemoMode()) {
       const local = getStoredLocalConversations().filter(c => c.conversation_id !== conversationId);
       localStorage.setItem(LOCAL_CONVERSATIONS_KEY, JSON.stringify(local));
-    } catch {}
+    }
   },
 
   async getAdminMetrics(): Promise<AdminMetrics> {

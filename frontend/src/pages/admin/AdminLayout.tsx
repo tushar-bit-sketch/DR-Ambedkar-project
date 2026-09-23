@@ -48,7 +48,7 @@ export const AdminLayout: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#F4EFE6] flex flex-col">
-      <DemoBanner customMessage="ARCHIVAL ADMINISTRATION PORTAL — PHASE 1 DEMO REPOSITORY. Changes affect local mock DB session." />
+      <DemoBanner customMessage="ARCHIVAL ADMINISTRATION PORTAL — INSTITUTIONAL CURATORIAL CONSOLE" />
 
       {/* Admin Top Header */}
       <header className="bg-[#102038] text-white border-b-2 border-heritage-500 px-4 sm:px-6 py-3 flex items-center justify-between shadow-md">

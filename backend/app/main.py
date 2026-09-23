@@ -32,8 +32,8 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
-    description="Digital Heritage Archive for Memorials, Manuscripts & Ambedkar — Phase 1 Institutional Foundation API",
-    version="1.0.0",
+    description="Digital Heritage Archive for Memorials, Manuscripts & Ambedkar — Phase 10 Institutional Archive and Audio-Visual Knowledge Platform",
+    version="2.0.0",
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
     docs_url=f"{settings.API_V1_STR}/docs",
     redoc_url=f"{settings.API_V1_STR}/redoc",
@@ -49,6 +49,7 @@ app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.BACKEND_CORS_ORIGINS,
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

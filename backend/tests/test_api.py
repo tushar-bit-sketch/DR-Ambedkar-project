@@ -9,8 +9,12 @@ def test_health_check():
     assert response.status_code == 200
     data = response.json()
     assert data["status"] in ["healthy", "degraded"]
-    assert "phase" in data
-    assert data["phase"] in ["PHASE_1_FOUNDATION", "PHASE_4_INTELLIGENT_SEARCH", "PHASE_5_RESEARCH_RAG"]
+    assert data["phase"] in [
+        "PHASE_1_FOUNDATION",
+        "PHASE_4_INTELLIGENT_SEARCH",
+        "PHASE_5_RESEARCH_RAG",
+        "PHASE_10_FINAL_INTEGRATION"
+    ]
 
 def test_documents_list():
     response = client.get("/api/v1/documents")
@@ -106,3 +110,9 @@ def test_admin_audit_logs():
     data = response.json()
     assert len(data) >= 1
     assert "action" in data[0]
+
+def test_files_stream_missing_returns_404():
+    response = client.get("/api/v1/files/stream/nonexistent_master.pdf")
+    assert response.status_code == 404
+    data = response.json()
+    assert "detail" in data

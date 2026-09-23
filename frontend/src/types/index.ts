@@ -519,7 +519,7 @@ export interface ResearchAskResponse {
   answer: string;
   conversation_id: string;
   message_id?: number;
-  status: 'SUCCESS' | 'NO_EVIDENCE' | 'INSUFFICIENT_EVIDENCE' | 'LLM_UNAVAILABLE' | 'CITATION_VALIDATION_FAILED' | 'INVALID_QUERY';
+  status: 'SUCCESS' | 'NO_EVIDENCE' | 'INSUFFICIENT_EVIDENCE' | 'LLM_UNAVAILABLE' | 'CITATION_VALIDATION_FAILED' | 'INVALID_QUERY' | 'RESEARCH_BACKEND_UNAVAILABLE' | 'BACKEND_NOT_CONFIGURED';
   grounded: boolean;
   citations: CitationCard[];
   retrieved_evidence: EvidenceSnippet[];

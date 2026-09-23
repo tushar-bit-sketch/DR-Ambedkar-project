@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import { UserRole, UserProfile } from '../types';
+import { apiUrl } from '../config/api';
 
 interface AuthContextType {
   user: UserProfile | null;
@@ -72,7 +73,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     try {
-      const resp = await fetch('http://127.0.0.1:8000/api/v1/auth/login', {
+      const resp = await fetch(apiUrl('/auth/login'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: creds.email, password: creds.password })

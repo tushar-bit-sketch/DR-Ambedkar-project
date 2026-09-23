@@ -74,10 +74,10 @@ export const AboutPage: React.FC = () => {
         {/* Advisory & Standards */}
         <div className="bg-white border border-stone-200 rounded-xl p-8 space-y-4">
           <h3 className="font-serif font-bold text-xl text-ink-900 border-b border-stone-200 pb-2">
-            Curatorial Principles & Phase 1 Scope
+            Curatorial Principles & Institutional Scope
           </h3>
           <p className="text-xs text-slate-600 leading-relaxed">
-            During Phase 1, the platform establishes the architectural foundation—schema design, REST services, responsive layouts, and touchscreen kiosk capabilities. In strict accordance with institutional rigor, no unverified AI responses, hallucinated facts, or synthetic OCR outputs are presented as authentic archival materials.
+            The platform delivers a comprehensive institutional digital archive—incorporating verified Dublin Core cataloging, OCR digitization, hybrid lexical-vector retrieval, source-grounded RAG, interactive knowledge graphs, and RFC 7233 audio-visual streaming. In strict accordance with institutional rigor, no unverified AI responses, hallucinated facts, or synthetic OCR outputs are presented as authentic primary records.
           </p>
           <div className="pt-2 text-xs font-mono text-heritage-700">
             SIH26096 Digital Heritage Archive • Smart India Hackathon

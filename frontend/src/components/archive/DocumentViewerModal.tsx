@@ -8,6 +8,7 @@ import {
 import { DocumentItem, TranslationItem, AudioDerivativeItem } from '../../types';
 import { ArchivalBadge } from './ArchivalBadge';
 import { archiveApi } from '../../services/api';
+import { fileStreamUrl, fileDownloadUrl, audioStreamUrl, isBackendConfigured } from '../../config/api';
 
 interface DocumentViewerModalProps {
   document: DocumentItem | null;
@@ -100,7 +101,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
     (document.versions?.[0]?.file_path ? document.versions[0].file_path.split('/').pop() : null);
 
   const triggerPhaseNotice = (actionName: string, phase: string) => {
-    setActionNotice(`${actionName} is scheduled for ${phase}. Backend integration hook is initialized in Phase 1 foundation.`);
+    setActionNotice(`${actionName}: ${phase}`);
     setTimeout(() => setActionNotice(null), 4000);
   };
 
@@ -236,7 +237,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
               {/* Download Master Button if file exists */}
               {masterFilename && (
                 <a
-                  href={`http://127.0.0.1:8000/api/v1/files/download/${encodeURIComponent(masterFilename)}`}
+                  href={fileDownloadUrl(masterFilename)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-1 text-[11px] text-heritage-300 hover:text-white bg-white/10 hover:bg-white/20 px-2 py-1 rounded transition"
@@ -427,7 +428,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                       <audio
                         ref={audioRef}
                         controls
-                        src={`http://127.0.0.1:8000/api/v1/audio/${activeAudio.audio_id}/stream`}
+                        src={audioStreamUrl(activeAudio.audio_id)}
                         className="w-full"
                       />
 
@@ -500,13 +501,13 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                     <div className="flex-1 overflow-auto flex items-center justify-center bg-[#14171A] rounded p-2">
                       {masterFilename?.match(/\.(jpg|jpeg|png|tiff|webp)$/i) ? (
                         <img
-                          src={`http://127.0.0.1:8000/api/v1/files/stream/${encodeURIComponent(masterFilename)}`}
+                          src={fileStreamUrl(masterFilename)}
                           alt={document.title}
                           className="max-h-full object-contain rounded"
                         />
                       ) : masterFilename?.toLowerCase().endsWith('.pdf') ? (
                         <object
-                          data={`http://127.0.0.1:8000/api/v1/files/stream/${encodeURIComponent(masterFilename)}`}
+                          data={fileStreamUrl(masterFilename)}
                           type="application/pdf"
                           className="w-full h-full min-h-[300px]"
                         >
@@ -516,7 +517,9 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                         <div className="text-center text-slate-400 p-4">
                           <FileText className="w-8 h-8 mx-auto mb-2 text-slate-500" />
                           <div className="text-xs font-serif text-slate-300">{document.title}</div>
-                          <div className="text-[11px] text-slate-500 mt-1">Archival accession record</div>
+                          <div className="text-[11px] text-slate-500 mt-1">
+                            {masterFilename ? 'Archival master is not available in this deployment.' : 'Archival accession record'}
+                          </div>
                         </div>
                       )}
                     </div>
@@ -556,18 +559,38 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                   const isAudio = masterFilename?.match(/\.(mp3|wav|m4a)$/i) || document.document_type === 'AUDIO';
                   const isVideo = masterFilename?.match(/\.(mp4|webm)$/i) || document.document_type === 'VIDEO';
 
+                  if (!isBackendConfigured() && masterFilename) {
+                    return (
+                      <div className="bg-[#181B1F] p-8 rounded-xl max-w-lg w-full text-center space-y-3 border border-white/10 shadow-2xl">
+                        <AlertCircle className="w-10 h-10 text-amber-500 mx-auto" />
+                        <h3 className="font-serif font-bold text-base text-white">Archival Master Unavailable</h3>
+                        <p className="text-xs text-slate-400 leading-relaxed">
+                          Archival master facsimile ({masterFilename}) is not available in this deployment. Connect an institutional backend to stream high-resolution preservation masters.
+                        </p>
+                        <div className="pt-2">
+                          <button
+                            onClick={() => setActiveTab('ocr')}
+                            className="px-4 py-2 bg-heritage-600 hover:bg-heritage-700 text-white rounded text-xs font-bold transition shadow"
+                          >
+                            Read Archival Transcription Layer
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  }
+
                   if (isPdf && masterFilename) {
                     return (
                       <div className="w-full h-full min-h-[450px] bg-stone-900 rounded overflow-hidden flex flex-col">
                         <object
-                          data={`http://127.0.0.1:8000/api/v1/files/stream/${encodeURIComponent(masterFilename)}`}
+                          data={fileStreamUrl(masterFilename)}
                           type="application/pdf"
                           className="w-full h-full min-h-[450px]"
                         >
                           <div className="p-8 text-center text-slate-300 space-y-3">
                             <p>Direct PDF preview is not supported by your browser.</p>
                             <a
-                              href={`http://127.0.0.1:8000/api/v1/files/stream/${encodeURIComponent(masterFilename)}`}
+                              href={fileStreamUrl(masterFilename)}
                               target="_blank"
                               rel="noreferrer"
                               className="inline-block px-4 py-2 bg-heritage-600 text-white rounded font-bold text-xs"
@@ -584,7 +607,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                     return (
                       <div className="flex items-center justify-center overflow-auto max-h-full">
                         <img
-                          src={`http://127.0.0.1:8000/api/v1/files/stream/${encodeURIComponent(masterFilename)}`}
+                          src={fileStreamUrl(masterFilename)}
                           alt={document.title}
                           style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: 'center center' }}
                           className="max-h-[500px] object-contain rounded shadow-2xl transition-transform"
@@ -604,7 +627,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                           <p className="text-xs text-slate-400 mt-1">Archival Audio Recording</p>
                         </div>
                         <audio controls className="w-full mt-4">
-                          <source src={`http://127.0.0.1:8000/api/v1/files/stream/${encodeURIComponent(masterFilename)}`} type="audio/mpeg" />
+                          <source src={fileStreamUrl(masterFilename)} type="audio/mpeg" />
                           Your browser does not support the audio element.
                         </audio>
                       </div>
@@ -615,7 +638,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                     return (
                       <div className="w-full max-w-2xl bg-black rounded-xl overflow-hidden shadow-2xl">
                         <video controls className="w-full max-h-[480px]">
-                          <source src={`http://127.0.0.1:8000/api/v1/files/stream/${encodeURIComponent(masterFilename)}`} type="video/mp4" />
+                          <source src={fileStreamUrl(masterFilename)} type="video/mp4" />
                           Your browser does not support the video element.
                         </video>
                       </div>
