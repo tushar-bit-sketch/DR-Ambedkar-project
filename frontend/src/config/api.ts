@@ -40,8 +40,9 @@ export const getApiBaseUrl = (): string => {
     return 'http://127.0.0.1:8000/api/v1';
   }
 
-  // In production with reverse proxy / same-origin API
-  return '/api/v1';
+  // In production: if VITE_API_URL is NOT configured, do NOT assume a backend exists on the static host
+  // This prevents sending POST requests to static SPA hosting (which triggers HTTP 405 Method Not Allowed)
+  return '';
 };
 
 export const API_BASE_URL = getApiBaseUrl();

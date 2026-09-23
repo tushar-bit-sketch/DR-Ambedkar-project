@@ -6,6 +6,7 @@ from app.services.rag.llm.base import BaseLLMProvider
 from app.services.rag.llm.openai_compatible import OpenAICompatibleLLMProvider
 from app.services.rag.llm.ollama import OllamaLLMProvider
 from app.services.rag.llm.mock_test import MockTestLLMProvider
+from app.services.rag.llm.huggingface import HuggingFaceLLMProvider
 
 logger = logging.getLogger("archive.rag.llm.factory")
 
@@ -14,9 +15,15 @@ def get_llm_provider(provider_override: Optional[str] = None) -> BaseLLMProvider
     Factory creating the configured LLM provider.
     Never returns fake answers if the configured model is unavailable.
     """
-    provider_name = (provider_override or settings.LLM_PROVIDER or "openai_compatible").lower().strip()
+    provider_name = (provider_override or settings.LLM_PROVIDER or "huggingface").lower().strip()
 
-    if provider_name in ["openai_compatible", "openai", "vllm", "lm_studio", "groq"]:
+    if provider_name in ["huggingface", "hf"]:
+        return HuggingFaceLLMProvider(
+            base_url=settings.HF_BASE_URL,
+            token=settings.HF_TOKEN,
+            model_name=settings.HF_MODEL
+        )
+    elif provider_name in ["openai_compatible", "openai", "vllm", "lm_studio", "groq"]:
         return OpenAICompatibleLLMProvider(
             base_url=settings.LLM_BASE_URL,
             api_key=settings.LLM_API_KEY,
@@ -32,5 +39,5 @@ def get_llm_provider(provider_override: Optional[str] = None) -> BaseLLMProvider
             model_name=settings.LLM_MODEL or "mock-archival-evaluator-v1"
         )
     else:
-        logger.warning(f"Unknown LLM_PROVIDER '{provider_name}'. Defaulting to OpenAICompatibleLLMProvider.")
-        return OpenAICompatibleLLMProvider()
+        logger.warning(f"Unknown LLM_PROVIDER '{provider_name}'. Defaulting to HuggingFaceLLMProvider.")
+        return HuggingFaceLLMProvider()

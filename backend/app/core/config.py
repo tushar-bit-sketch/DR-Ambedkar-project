@@ -33,11 +33,17 @@ class Settings(BaseSettings):
     RRF_K: int = 60
 
     # Phase 5: Source-Grounded Archival RAG & LLM Configuration
-    # Supported LLM_PROVIDER: "openai_compatible", "ollama", "huggingface", "mock_test"
-    LLM_PROVIDER: str = os.getenv("LLM_PROVIDER", "openai_compatible")
-    LLM_MODEL: str = os.getenv("LLM_MODEL", "meta-llama/Llama-3-8B-Instruct")
+    # Supported LLM_PROVIDER: "huggingface", "openai_compatible", "ollama", "mock_test"
+    LLM_PROVIDER: str = os.getenv("LLM_PROVIDER", "huggingface")
+    LLM_MODEL: str = os.getenv("LLM_MODEL", "meta-llama/Llama-3.1-8B-Instruct")
     LLM_BASE_URL: Union[str, None] = os.getenv("LLM_BASE_URL", None)
     LLM_API_KEY: Union[str, None] = os.getenv("LLM_API_KEY", None)
+
+    # Hugging Face Inference API / Router Configuration
+    HF_TOKEN: Union[str, None] = os.getenv("HF_TOKEN", None)
+    HF_MODEL: str = os.getenv("HF_MODEL", "meta-llama/Llama-3.1-8B-Instruct")
+    HF_BASE_URL: str = os.getenv("HF_BASE_URL", "https://router.huggingface.co/v1")
+
     MAX_CONTEXT_TOKENS: int = 4096
     TEMPERATURE: float = 0.0 # Strict conservative temperature for factual archival RAG
     MAX_OUTPUT_TOKENS: int = 1024
