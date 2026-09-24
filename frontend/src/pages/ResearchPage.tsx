@@ -285,38 +285,38 @@ export const ResearchPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#FDFBF7] flex flex-col">
+    <div className="min-h-screen bg-newsprint-100 text-ink flex flex-col font-mono">
       {/* Header Banner */}
-      <header className="bg-[#1B2A4A] text-white py-6 px-4 sm:px-6 lg:px-8 border-b-2 border-heritage-500 shadow-md flex-shrink-0">
+      <header className="bg-[#FAF6EE] text-ink py-6 px-4 sm:px-6 lg:px-8 border-b-2 border-double border-ink shadow-sm flex-shrink-0">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="space-y-1 text-center md:text-left">
-            <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-white/10 border border-heritage-400/30 text-heritage-300 text-xs font-mono tracking-wide">
-              <Bot className="w-3.5 h-3.5 text-heritage-400" />
-              <span>PHASE 5 SOURCE-GROUNDED RAG</span>
-              <span className="text-white/40">•</span>
-              <span className="text-emerald-300 flex items-center gap-1">
-                <ShieldCheck className="w-3 h-3" /> CLOSED-WORLD REASONING
+            <div className="inline-flex items-center gap-2 text-oxblood text-xs font-bold uppercase tracking-wider">
+              <Bot className="w-3.5 h-3.5 text-oxblood" />
+              <span>SOURCE-GROUNDED RAG DISPATCH DESK</span>
+              <span className="text-ink/40">•</span>
+              <span className="text-emerald-800 flex items-center gap-1">
+                <ShieldCheck className="w-3.5 h-3.5" /> CLOSED-WORLD REASONING
               </span>
             </div>
-            <h1 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-white">
-              Dr. B. R. Ambedkar AI Research Assistant
+            <h1 className="font-serif font-black text-2xl sm:text-3xl text-ink uppercase tracking-tight">
+              Dr. B. R. Ambedkar AI Research Bureau
             </h1>
-            <p className="text-slate-300 text-xs sm:text-sm font-light max-w-2xl">
+            <p className="font-editorial italic text-xs sm:text-sm text-ink-700 max-w-2xl leading-relaxed">
               Grounded strictly in verified archival manuscripts, Constituent Assembly proceedings, and primary source records.
             </p>
           </div>
 
           {/* Mode Selector */}
-          <div className="flex items-center gap-1 bg-[#102038] p-1 rounded-lg border border-slate-700 text-xs">
-            <span className="text-slate-400 px-2 font-mono">Retrieval:</span>
+          <div className="flex items-center gap-1 bg-newsprint-200 p-1 border border-ink/40 text-xs">
+            <span className="text-ink-600 px-2 font-bold uppercase text-[10px]">Retrieval:</span>
             {(['hybrid', 'keyword', 'semantic'] as const).map(m => (
               <button
                 key={m}
                 onClick={() => setMode(m)}
-                className={`px-2.5 py-1 rounded font-medium capitalize transition ${
+                className={`px-2.5 py-1 uppercase font-bold text-[10px] transition ${
                   mode === m
-                    ? 'bg-heritage-500 text-white shadow'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800'
+                    ? 'bg-ink text-white shadow-letterpress-sm'
+                    : 'text-ink-700 hover:text-ink hover:bg-newsprint-300'
                 }`}
               >
                 {m}
@@ -330,26 +330,26 @@ export const ResearchPage: React.FC = () => {
       <div className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
         {/* LEFT COLUMN: Inquiry Threads & History (3 cols) */}
-        <aside className="lg:col-span-3 bg-white rounded-xl border border-stone-200 shadow-sm p-4 space-y-4 flex flex-col h-[750px]">
-          <div className="flex items-center justify-between pb-3 border-b border-stone-100">
-            <h2 className="font-serif font-bold text-slate-900 text-sm flex items-center gap-2">
-              <MessageSquare className="w-4 h-4 text-[#1B2A4A]" />
-              Inquiry Threads
+        <aside className="lg:col-span-3 bg-[#FAF6EE] border-2 border-ink shadow-letterpress-sm p-4 space-y-4 flex flex-col h-[750px]">
+          <div className="flex items-center justify-between pb-3 border-b-2 border-ink">
+            <h2 className="font-serif font-black text-ink text-xs uppercase tracking-wider flex items-center gap-2">
+              <MessageSquare className="w-3.5 h-3.5 text-oxblood" />
+              Inquiry Ledger
             </h2>
             <button
               onClick={startNewConversation}
-              className="p-1.5 text-xs bg-stone-100 hover:bg-stone-200 text-slate-700 font-semibold rounded-md transition flex items-center gap-1"
+              className="px-2 py-1 text-[10px] bg-ink hover:bg-oxblood text-white font-bold uppercase transition flex items-center gap-1 shadow-letterpress-sm border border-ink"
               title="New Research Inquiry"
             >
-              <Plus className="w-3.5 h-3.5" />
-              <span>New</span>
+              <Plus className="w-3 h-3" />
+              <span>[ + New ]</span>
             </button>
           </div>
 
           <div className="flex-1 overflow-y-auto space-y-1.5 pr-1">
             {conversations.length === 0 ? (
-              <div className="text-center py-8 text-xs text-slate-400 font-light">
-                No past inquiry threads.<br />Ask a question to begin.
+              <div className="text-center py-8 text-xs text-ink-500 font-editorial italic">
+                No past inquiry threads.<br />Transmit a dispatch to begin.
               </div>
             ) : (
               conversations.map(c => {
@@ -358,24 +358,24 @@ export const ResearchPage: React.FC = () => {
                   <div
                     key={c.conversation_id}
                     onClick={() => selectConversation(c.conversation_id)}
-                    className={`group p-2.5 rounded-lg border text-left cursor-pointer transition flex items-center justify-between ${
+                    className={`group p-2 border text-left cursor-pointer transition flex items-center justify-between ${
                       isSelected
-                        ? 'bg-[#1B2A4A] text-white border-[#1B2A4A]'
-                        : 'bg-stone-50 hover:bg-stone-100 text-slate-800 border-stone-200'
+                        ? 'bg-ink text-white border-ink shadow-letterpress-sm'
+                        : 'bg-white hover:bg-newsprint-200 text-ink border-ink/30'
                     }`}
                   >
                     <div className="min-w-0 flex-1 pr-2">
-                      <p className="text-xs font-medium truncate">
+                      <p className="text-xs font-serif font-bold truncate">
                         {c.title}
                       </p>
-                      <span className={`text-[10px] font-mono ${isSelected ? 'text-slate-300' : 'text-slate-500'}`}>
-                        {c.message_count} messages
+                      <span className={`text-[10px] font-mono ${isSelected ? 'text-newsprint-300' : 'text-ink-600'}`}>
+                        {c.message_count} dispatches
                       </span>
                     </div>
                     <button
                       onClick={(e) => handleDeleteConversation(c.conversation_id, e)}
-                      className={`p-1 rounded opacity-0 group-hover:opacity-100 transition ${
-                        isSelected ? 'hover:bg-white/20 text-white' : 'hover:bg-stone-200 text-slate-500'
+                      className={`p-1 opacity-0 group-hover:opacity-100 transition ${
+                        isSelected ? 'hover:bg-oxblood text-white' : 'hover:bg-newsprint-300 text-ink-600'
                       }`}
                       title="Delete thread"
                     >
@@ -388,29 +388,29 @@ export const ResearchPage: React.FC = () => {
           </div>
 
           {/* Grounding Protocol Notice */}
-          <div className="pt-3 border-t border-stone-100 text-[11px] text-slate-500 space-y-1 bg-stone-50 p-2.5 rounded-lg">
-            <div className="font-semibold text-slate-700 flex items-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-              Zero Hallucination Guarantee
+          <div className="pt-3 border-t-2 border-ink text-[11px] text-ink-700 space-y-1 bg-newsprint-100 p-2.5 border border-ink/20">
+            <div className="font-bold text-oxblood uppercase text-[10px] flex items-center gap-1">
+              <ShieldCheck className="w-3.5 h-3.5 text-oxblood" />
+              Zero Hallucination Protocol
             </div>
-            <p className="text-[10px] text-slate-600 leading-relaxed">
+            <p className="text-[10px] font-editorial text-ink-700 leading-tight italic">
               If an archival passage cannot be verified in repository records, the assistant explicitly states insufficient evidence.
             </p>
           </div>
         </aside>
 
         {/* CENTER COLUMN: Interactive RAG Synthesis Chat (6 cols) */}
-        <main className="lg:col-span-6 bg-white rounded-xl border border-stone-200 shadow-sm flex flex-col h-[750px] overflow-hidden">
+        <main className="lg:col-span-6 bg-[#FAF6EE] border-2 border-ink shadow-letterpress flex flex-col h-[750px] overflow-hidden">
           
           {/* Thread Header */}
-          <div className="bg-stone-50 px-4 py-3 border-b border-stone-200 flex items-center justify-between">
+          <div className="bg-newsprint-100 px-4 py-2.5 border-b border-ink/20 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-xs font-semibold text-slate-700 font-mono">
-                {currentConversationId ? `Session: ${currentConversationId.slice(0, 16)}...` : 'New Archival Inquiry'}
+              <span className="w-2 h-2 bg-emerald-800" />
+              <span className="text-xs font-bold text-ink uppercase font-mono">
+                {currentConversationId ? `Session: ${currentConversationId.slice(0, 16)}...` : 'Official Archival Inquiry'}
               </span>
             </div>
-            <span className="text-[11px] font-mono text-slate-500 uppercase">
+            <span className="text-[10px] font-mono text-oxblood uppercase font-bold">
               Mode: {mode}
             </span>
           </div>
@@ -418,23 +418,23 @@ export const ResearchPage: React.FC = () => {
           {/* Messages Stream */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
             {messages.length === 0 ? (
-              <div className="py-12 px-4 text-center space-y-4">
-                <div className="w-12 h-12 rounded-full bg-heritage-50 text-heritage-600 mx-auto flex items-center justify-center border border-heritage-200">
-                  <Sparkles className="w-6 h-6" />
+              <div className="py-10 px-4 text-center space-y-4">
+                <div className="w-10 h-10 border-2 border-ink bg-[#FAF6EE] text-oxblood mx-auto flex items-center justify-center shadow-letterpress-sm">
+                  <Sparkles className="w-5 h-5" />
                 </div>
                 <div className="space-y-1">
-                  <h3 className="font-serif font-bold text-slate-800 text-base">
-                    Explore Primary Historical Writings
+                  <h3 className="font-serif font-black text-ink text-base uppercase">
+                    Interrogate Primary Historical Writings
                   </h3>
-                  <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
-                    Ask a scholarly question. The assistant searches archival records, builds evidence context, and cites verbatim passages with full provenance.
+                  <p className="text-xs font-editorial text-ink-700 max-w-md mx-auto leading-relaxed italic">
+                    Transmit a scholarly question. The assistant retrieves primary archival folios, constructs evidence context, and cites verbatim passages with unbroken provenance.
                   </p>
                 </div>
 
                 {/* Sample Prompt Chips */}
-                <div className="pt-2 flex flex-col gap-2 max-w-md mx-auto text-left">
-                  <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider font-mono">
-                    Suggested Research Questions:
+                <div className="pt-2 flex flex-col gap-1.5 max-w-md mx-auto text-left">
+                  <span className="text-[10px] font-bold text-oxblood uppercase tracking-wider font-mono">
+                    Official Historical Inquiries:
                   </span>
                   {sampleQuestions.map((sq, i) => (
                     <button
@@ -443,10 +443,10 @@ export const ResearchPage: React.FC = () => {
                         setQuery(sq);
                         handleAsk(sq);
                       }}
-                      className="p-2.5 rounded-lg border border-stone-200 hover:border-heritage-400 bg-stone-50 hover:bg-heritage-50/50 text-slate-800 text-xs text-left transition flex items-start justify-between group"
+                      className="p-2 border border-ink/30 hover:border-ink bg-white hover:bg-newsprint-200 text-ink text-xs text-left transition flex items-start justify-between group shadow-sm"
                     >
-                      <span className="leading-snug">{sq}</span>
-                      <ChevronRight className="w-3.5 h-3.5 text-stone-400 group-hover:text-heritage-600 mt-0.5 flex-shrink-0" />
+                      <span className="font-editorial leading-snug">{sq}</span>
+                      <ChevronRight className="w-3.5 h-3.5 text-ink-400 group-hover:text-oxblood mt-0.5 flex-shrink-0" />
                     </button>
                   ))}
                 </div>
@@ -459,60 +459,38 @@ export const ResearchPage: React.FC = () => {
                     key={idx}
                     className={`flex flex-col ${isUser ? 'items-end' : 'items-start'}`}
                   >
-                    <div className="text-[10px] font-mono text-slate-400 mb-1 px-1">
-                      {isUser ? 'SCHOLAR INQUIRY' : 'ARCHIVAL ASSISTANT'}
+                    <div className="text-[9px] font-mono text-ink-500 uppercase font-bold mb-1 px-1">
+                      {isUser ? '[ SCHOLAR DISPATCH ]' : '[ ARCHIVAL ASSISTANT ]'}
                     </div>
 
                     <div
-                      className={`max-w-[92%] rounded-2xl p-4 text-sm leading-relaxed ${
+                      className={`max-w-[94%] p-3.5 text-xs sm:text-sm leading-relaxed ${
                         isUser
-                          ? 'bg-[#1B2A4A] text-white rounded-br-none shadow-sm'
-                          : 'bg-stone-50 text-slate-900 border border-stone-200 rounded-bl-none shadow-sm space-y-3'
+                          ? 'bg-newsprint-200 border-2 border-ink text-ink shadow-letterpress-sm'
+                          : 'bg-white text-ink border-2 border-ink shadow-letterpress space-y-2'
                       }`}
                     >
                       {/* Assistant status badge */}
                       {!isUser && (
-                        <div className="flex flex-wrap items-center gap-2 pb-2 border-b border-stone-200/60 text-xs">
+                        <div className="flex flex-wrap items-center gap-2 pb-2 border-b border-ink/20 text-xs font-mono">
                           {msg.status === 'SUCCESS' && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[11px] font-bold">
-                              <ShieldCheck className="w-3 h-3 text-emerald-600" />
+                            <span className="stamp-oxblood text-[9px] py-0 px-1.5">
                               VERIFIED CITATIONS ({msg.evidence_count})
                             </span>
                           )}
                           {(msg.status === 'NO_EVIDENCE' || msg.status === 'INSUFFICIENT_EVIDENCE') && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-amber-100 text-amber-900 text-[11px] font-bold">
-                              <AlertCircle className="w-3 h-3 text-amber-700" />
+                            <span className="stamp-oxblood text-[9px] py-0 px-1.5">
                               INSUFFICIENT ARCHIVAL EVIDENCE
                             </span>
                           )}
                           {msg.status === 'LLM_UNAVAILABLE' && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-rose-100 text-rose-900 text-[11px] font-bold">
-                              <AlertTriangle className="w-3 h-3 text-rose-700" />
+                            <span className="stamp-oxblood text-[9px] py-0 px-1.5">
                               LLM SERVICE UNAVAILABLE
                             </span>
                           )}
                           {msg.status === 'RESEARCH_BACKEND_UNAVAILABLE' && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-rose-100 text-rose-900 text-[11px] font-bold border border-rose-300">
-                              <AlertTriangle className="w-3 h-3 text-rose-700" />
+                            <span className="stamp-oxblood text-[9px] py-0 px-1.5">
                               RESEARCH BACKEND UNAVAILABLE
-                            </span>
-                          )}
-                          {msg.status === 'BACKEND_NOT_CONFIGURED' && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-200 text-slate-900 text-[11px] font-bold border border-slate-300">
-                              <AlertCircle className="w-3 h-3 text-slate-700" />
-                              BACKEND NOT CONFIGURED
-                            </span>
-                          )}
-                          {msg.content?.includes('[OFFLINE DEMO SIMULATION') && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-amber-100 text-amber-900 text-[11px] font-bold border border-amber-300">
-                              <Info className="w-3 h-3 text-amber-700" />
-                              OFFLINE DEMO SIMULATION (NOT LIVE RAG)
-                            </span>
-                          )}
-                          {msg.status === 'CITATION_VALIDATION_FAILED' && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-orange-100 text-orange-900 text-[11px] font-bold">
-                              <ShieldAlert className="w-3 h-3 text-orange-700" />
-                              UNCONFIRMED CITATION DETECTED
                             </span>
                           )}
 
@@ -528,39 +506,39 @@ export const ResearchPage: React.FC = () => {
                                 window.speechSynthesis.speak(utter);
                               }
                             }}
-                            className="ml-auto text-slate-500 hover:text-heritage-700 p-1 rounded hover:bg-stone-200/60 transition flex items-center gap-1 text-[11px] font-sans"
+                            className="ml-auto text-ink hover:text-oxblood px-1.5 py-0.5 border border-ink/30 bg-[#FAF6EE] transition flex items-center gap-1 text-[10px] font-mono uppercase font-bold"
                             title="Read answer aloud"
                           >
-                            <Volume2 className="w-3.5 h-3.5" />
+                            <Volume2 className="w-3 h-3 text-oxblood" />
                             <span>Read Aloud</span>
                           </button>
                         </div>
                       )}
 
                       {/* Content */}
-                      <div className="whitespace-pre-wrap font-serif">
+                      <div className="whitespace-pre-wrap font-editorial text-sm leading-relaxed">
                         {isUser ? msg.content : renderGroundedText(msg.content, msg.citations)}
                       </div>
 
                       {/* Citations Preview Strip for Assistant */}
                       {!isUser && msg.citations && msg.citations.length > 0 && (
-                        <div className="pt-2 border-t border-stone-200 text-xs space-y-1">
-                          <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider font-semibold">
-                            Retrieved Sources:
+                        <div className="pt-2 border-t border-ink/20 text-xs space-y-1 font-mono">
+                          <span className="text-[10px] text-oxblood uppercase font-bold">
+                            Retrieved Primary Evidence:
                           </span>
                           <div className="flex flex-wrap gap-1.5">
                             {msg.citations.map((cit) => (
                               <button
                                 key={cit.source_index}
                                 onClick={() => setSelectedCitation(cit)}
-                                className={`px-2 py-1 rounded text-xs border font-mono transition flex items-center gap-1 ${
+                                className={`px-2 py-0.5 text-xs border font-mono transition flex items-center gap-1 ${
                                   selectedCitation?.source_index === cit.source_index
-                                    ? 'bg-[#1B2A4A] text-white border-[#1B2A4A]'
-                                    : 'bg-white hover:bg-stone-100 text-slate-700 border-stone-300'
+                                    ? 'bg-ink text-white border-ink font-bold shadow-letterpress-sm'
+                                    : 'bg-[#FAF6EE] hover:bg-newsprint-300 text-ink border-ink/30'
                                 }`}
                               >
                                 <span>[{cit.source_index}]</span>
-                                <span className="truncate max-w-[150px] font-sans">
+                                <span className="truncate max-w-[140px]">
                                   {cit.document_title || cit.archive_id}
                                 </span>
                               </button>
@@ -575,9 +553,9 @@ export const ResearchPage: React.FC = () => {
             )}
 
             {loading && (
-              <div className="flex items-center gap-3 p-4 bg-stone-50 border border-stone-200 rounded-xl text-slate-600 text-xs animate-pulse">
-                <div className="w-4 h-4 rounded-full border-2 border-[#1B2A4A] border-t-transparent animate-spin" />
-                <span>Searching archival vectors, packing evidence context & synthesizing grounded answer...</span>
+              <div className="flex items-center gap-3 p-3 bg-[#FAF6EE] border-2 border-ink text-ink text-xs font-mono">
+                <div className="w-3.5 h-3.5 border-2 border-ink border-t-transparent animate-spin" />
+                <span>Interrogating primary vectors, retrieving folios & synthesizing response...</span>
               </div>
             )}
 
@@ -585,25 +563,25 @@ export const ResearchPage: React.FC = () => {
           </div>
 
           {/* Question Input Form with Multilingual & Voice Features */}
-          <div className="p-3 bg-stone-50 border-t border-stone-200 space-y-2">
+          <div className="p-3 bg-newsprint-100 border-t-2 border-ink space-y-2 font-mono">
             {errorMessage && (
-              <div className="p-2 bg-rose-50 border border-rose-200 text-rose-800 text-xs rounded flex items-center gap-1.5">
-                <AlertCircle className="w-3.5 h-3.5 text-rose-600 flex-shrink-0" />
+              <div className="p-2 bg-[#FAF6EE] border border-oxblood text-oxblood text-xs flex items-center gap-1.5">
+                <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
                 <span>{errorMessage}</span>
               </div>
             )}
 
             {/* Language & Voice Query Toolbar */}
-            <div className="flex flex-wrap items-center justify-between text-xs text-slate-600 gap-2">
+            <div className="flex flex-wrap items-center justify-between text-xs text-ink-700 gap-2">
               <div className="flex items-center gap-2">
-                <span className="flex items-center gap-1 font-medium text-slate-700">
-                  <Globe className="w-3.5 h-3.5 text-heritage-600" />
-                  Answer Language:
+                <span className="flex items-center gap-1 font-bold text-ink text-[11px] uppercase">
+                  <Globe className="w-3.5 h-3.5 text-oxblood" />
+                  Language:
                 </span>
                 <select
                   value={targetLanguage}
                   onChange={(e) => setTargetLanguage(e.target.value)}
-                  className="bg-white border border-stone-300 rounded px-2 py-0.5 text-xs text-slate-800 font-medium focus:outline-none focus:border-heritage-500"
+                  className="bg-white border border-ink/40 px-2 py-0.5 text-xs text-ink font-mono focus:outline-none focus:border-ink"
                 >
                   <option value="English">English</option>
                   <option value="Hindi">हिन्दी (Hindi)</option>
@@ -625,10 +603,10 @@ export const ResearchPage: React.FC = () => {
                   type="button"
                   onClick={() => voiceFileInputRef.current?.click()}
                   disabled={loading || audioQueryLoading}
-                  className="px-2 py-1 bg-white hover:bg-stone-100 border border-stone-300 rounded text-slate-700 flex items-center gap-1 text-[11px] transition"
+                  className="px-2 py-0.5 bg-[#FAF6EE] hover:bg-newsprint-300 border border-ink/40 text-ink flex items-center gap-1 text-[10px] uppercase font-bold transition shadow-letterpress-sm"
                   title="Upload voice recording file"
                 >
-                  <Upload className="w-3 h-3 text-slate-500" />
+                  <Upload className="w-3 h-3 text-oxblood" />
                   <span>Upload Audio</span>
                 </button>
 
@@ -636,23 +614,23 @@ export const ResearchPage: React.FC = () => {
                   type="button"
                   onClick={isRecording ? stopRecording : startRecording}
                   disabled={loading || audioQueryLoading}
-                  className={`px-2.5 py-1 rounded text-[11px] font-medium flex items-center gap-1.5 transition ${
+                  className={`px-2.5 py-0.5 text-[10px] uppercase font-bold flex items-center gap-1.5 transition border ${
                     isRecording
-                      ? 'bg-red-600 hover:bg-red-700 text-white animate-pulse'
-                      : 'bg-white hover:bg-stone-100 border border-stone-300 text-slate-700'
+                      ? 'bg-oxblood text-white border-oxblood animate-pulse'
+                      : 'bg-[#FAF6EE] hover:bg-newsprint-300 border-ink/40 text-ink shadow-letterpress-sm'
                   }`}
                   title={isRecording ? 'Click to stop recording' : 'Voice Query using microphone'}
                 >
-                  {isRecording ? <MicOff className="w-3.5 h-3.5 text-white" /> : <Mic className="w-3.5 h-3.5 text-heritage-600" />}
+                  {isRecording ? <MicOff className="w-3.5 h-3.5 text-white" /> : <Mic className="w-3.5 h-3.5 text-oxblood" />}
                   <span>{isRecording ? 'Stop Recording' : 'Voice Query'}</span>
                 </button>
               </div>
             </div>
 
             {audioQueryLoading && (
-              <div className="p-2 bg-blue-50 border border-blue-200 text-blue-800 text-xs rounded flex items-center gap-2 animate-pulse">
-                <div className="w-3.5 h-3.5 rounded-full border-2 border-blue-600 border-t-transparent animate-spin" />
-                <span>Transcribing speech and running security validation...</span>
+              <div className="p-2 bg-[#FAF6EE] border border-ink/30 text-ink text-xs flex items-center gap-2">
+                <div className="w-3.5 h-3.5 border-2 border-ink border-t-transparent animate-spin" />
+                <span>Transcribing audio dispatch and validating query...</span>
               </div>
             )}
 
@@ -661,57 +639,57 @@ export const ResearchPage: React.FC = () => {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Ask a question grounded in archival records..."
+                placeholder="Inquire across writings, speeches, or constitutional records..."
                 disabled={loading || audioQueryLoading}
-                className="flex-1 px-3.5 py-2.5 text-sm bg-white border border-stone-300 focus:border-heritage-500 focus:ring-1 focus:ring-heritage-500 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none transition shadow-inner"
+                className="flex-1 px-3 py-2 text-xs bg-white border-2 border-ink text-ink font-mono focus:outline-none"
               />
               <button
                 type="submit"
                 disabled={loading || !query.trim() || audioQueryLoading}
-                className="px-4 py-2.5 bg-[#1B2A4A] hover:bg-[#102038] disabled:opacity-50 text-white font-bold rounded-lg transition flex items-center gap-1.5 text-xs shadow flex-shrink-0"
+                className="px-4 py-2 bg-ink hover:bg-oxblood disabled:opacity-50 text-white font-mono uppercase font-bold text-xs transition flex items-center gap-1.5 shadow-letterpress-sm border border-ink flex-shrink-0"
               >
-                <Send className="w-3.5 h-3.5 text-heritage-300" />
-                <span>Ask</span>
+                <Send className="w-3.5 h-3.5" />
+                <span>[ Inquire ]</span>
               </button>
             </form>
           </div>
         </main>
 
         {/* RIGHT COLUMN: Evidence & Provenance Inspector (3 cols) */}
-        <aside className="lg:col-span-3 bg-white rounded-xl border border-stone-200 shadow-sm p-4 space-y-4 flex flex-col h-[750px] overflow-y-auto">
-          <div className="pb-3 border-b border-stone-100 flex items-center justify-between">
-            <h2 className="font-serif font-bold text-slate-900 text-sm flex items-center gap-2">
-              <BookOpen className="w-4 h-4 text-[#1B2A4A]" />
+        <aside className="lg:col-span-3 bg-[#FAF6EE] border-2 border-ink shadow-letterpress-sm p-4 space-y-4 flex flex-col h-[750px] overflow-y-auto font-mono text-xs">
+          <div className="pb-3 border-b-2 border-ink flex items-center justify-between">
+            <h2 className="font-serif font-black text-ink text-xs uppercase tracking-wider flex items-center gap-2">
+              <BookOpen className="w-3.5 h-3.5 text-oxblood" />
               Evidence Inspector
             </h2>
             {selectedCitation && (
-              <span className="px-2 py-0.5 rounded bg-heritage-100 text-heritage-800 font-mono text-[10px] font-bold">
+              <span className="stamp-oxblood text-[9px] py-0 px-1">
                 Source [{selectedCitation.source_index}]
               </span>
             )}
           </div>
 
           {selectedCitation ? (
-            <div className="space-y-4 text-xs">
+            <div className="space-y-4">
               {/* Document Header */}
               <div className="space-y-1">
-                <span className="text-[10px] font-mono text-slate-400 uppercase">
+                <span className="text-[10px] font-mono text-ink-500 uppercase">
                   Primary Archival Source
                 </span>
-                <h3 className="font-serif font-bold text-slate-900 text-sm leading-snug">
+                <h3 className="font-serif font-bold text-ink text-sm leading-snug">
                   {selectedCitation.document_title || 'Untitled Archival Record'}
                 </h3>
-                <div className="flex flex-wrap items-center gap-2 pt-1">
-                  <span className="px-2 py-0.5 bg-stone-100 text-slate-700 rounded font-mono text-[10px]">
+                <div className="flex flex-wrap items-center gap-2 pt-1 font-mono text-[10px]">
+                  <span className="px-1.5 py-0.5 bg-newsprint-200 text-ink border border-ink/30 font-bold">
                     {selectedCitation.archive_id}
                   </span>
                   {selectedCitation.page_number && (
-                    <span className="px-2 py-0.5 bg-stone-100 text-slate-700 rounded text-[10px]">
+                    <span className="px-1.5 py-0.5 bg-newsprint-200 text-ink border border-ink/30">
                       Page {selectedCitation.page_number}
                     </span>
                   )}
                   {selectedCitation.year && (
-                    <span className="px-2 py-0.5 bg-stone-100 text-slate-700 rounded text-[10px]">
+                    <span className="px-1.5 py-0.5 bg-newsprint-200 text-ink border border-ink/30">
                       Year {selectedCitation.year}
                     </span>
                   )}
@@ -719,44 +697,31 @@ export const ResearchPage: React.FC = () => {
               </div>
 
               {/* Archival Layer Status */}
-              <div className="p-2.5 rounded-lg border bg-stone-50 border-stone-200 space-y-1">
-                <span className="text-[10px] font-mono text-slate-400 uppercase">
+              <div className="p-2.5 border bg-white border-ink/30 space-y-1">
+                <span className="text-[10px] text-ink-500 uppercase block">
                   Transcription Layer
                 </span>
-                <div className="font-semibold text-slate-800 flex items-center gap-1.5">
+                <div className="font-bold text-ink flex items-center gap-1.5 text-xs">
                   {selectedCitation.is_verified ? (
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-800" />
                   ) : (
-                    <AlertTriangle className="w-3.5 h-3.5 text-amber-600" />
+                    <AlertTriangle className="w-3.5 h-3.5 text-oxblood" />
                   )}
                   <span>{selectedCitation.transcription_layer || 'ARCHIVAL TEXT'}</span>
                 </div>
-                <p className="text-[11px] text-slate-500">
+                <p className="text-[10px] text-ink-600 font-editorial italic">
                   {selectedCitation.is_verified 
                     ? 'Curator-approved textual transcription.'
                     : 'Machine OCR transcription. Human review pending.'}
                 </p>
               </div>
 
-              {/* Provenance Chain */}
-              {selectedCitation.provenance_chain && (
-                <div className="p-2.5 rounded-lg border bg-stone-50 border-stone-200 space-y-1.5">
-                  <span className="text-[10px] font-mono text-slate-400 uppercase flex items-center gap-1">
-                    <Layers className="w-3 h-3" />
-                    Provenance Chain
-                  </span>
-                  <p className="font-mono text-[10px] text-slate-700 bg-white p-2 rounded border border-stone-200 break-all leading-tight">
-                    {selectedCitation.provenance_chain.chain_description}
-                  </p>
-                </div>
-              )}
-
               {/* Verbatim Excerpt */}
               <div className="space-y-1">
-                <span className="text-[10px] font-mono text-slate-400 uppercase">
+                <span className="text-[10px] text-oxblood font-bold uppercase">
                   Verbatim Passage Excerpt
                 </span>
-                <div className="p-3 bg-heritage-50/40 border border-heritage-200/60 rounded-lg text-slate-800 italic font-serif leading-relaxed text-xs">
+                <div className="p-3 bg-newsprint-50 border border-ink/30 text-ink font-editorial text-xs leading-relaxed italic">
                   "{selectedCitation.snippet}"
                 </div>
               </div>
@@ -765,17 +730,17 @@ export const ResearchPage: React.FC = () => {
               {selectedCitation.document_id && (
                 <Link
                   to={`/documents/${selectedCitation.document_id}`}
-                  className="w-full py-2 px-3 bg-[#1B2A4A] hover:bg-[#102038] text-white rounded-lg transition font-medium flex items-center justify-center gap-1.5 text-xs shadow-sm"
+                  className="w-full py-2 px-3 bg-ink hover:bg-oxblood text-white transition font-mono uppercase font-bold flex items-center justify-center gap-1.5 text-xs shadow-letterpress-sm border border-ink"
                 >
                   <ExternalLink className="w-3.5 h-3.5" />
-                  <span>View Archival Master</span>
+                  <span>[ View Archival Slip ]</span>
                 </Link>
               )}
             </div>
           ) : (
-            <div className="text-center py-16 text-slate-400 space-y-2">
-              <Info className="w-8 h-8 mx-auto text-slate-300" />
-              <p className="text-xs">
+            <div className="text-center py-16 text-ink-500 space-y-2">
+              <Info className="w-8 h-8 mx-auto text-ink-400" />
+              <p className="text-xs font-editorial italic">
                 Select any in-text citation <span className="font-mono font-bold">[n]</span> to inspect its document provenance.
               </p>
             </div>
@@ -783,13 +748,13 @@ export const ResearchPage: React.FC = () => {
 
           {/* Diagnostics Section */}
           {lastDiagnostics && (
-            <div className="mt-auto pt-3 border-t border-stone-200 text-[10px] font-mono text-slate-500 space-y-1">
-              <span className="font-semibold text-slate-600 uppercase flex items-center gap-1">
+            <div className="mt-auto pt-3 border-t-2 border-ink text-[10px] text-ink-600 space-y-1">
+              <span className="font-bold text-oxblood uppercase flex items-center gap-1">
                 <Cpu className="w-3 h-3" /> RAG Diagnostics:
               </span>
-              <div className="bg-stone-50 p-2 rounded border border-stone-200 space-y-0.5 text-[10px]">
+              <div className="bg-white p-2 border border-ink/30 space-y-0.5 text-[10px]">
                 <div>Backend: {lastDiagnostics.vector_backend || 'SQLite Dev'}</div>
-                <div>LLM: {lastDiagnostics.llm_provider || 'Local Provider'}</div>
+                <div>LLM: {lastDiagnostics.llm_provider || 'Hugging Face Inference'}</div>
                 <div>Status: {lastDiagnostics.validation_status || 'OK'}</div>
               </div>
             </div>

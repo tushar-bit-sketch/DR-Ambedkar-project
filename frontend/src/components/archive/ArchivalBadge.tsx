@@ -16,46 +16,34 @@ export const ArchivalBadge: React.FC<ArchivalBadgeProps> = ({
 }) => {
   if (variant === 'demo') {
     return (
-      <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-300 font-semibold ${className}`}>
-        DEMO DATA
+      <span className={`inline-flex items-center px-1.5 py-0.5 rounded-none text-[9px] font-mono uppercase tracking-widest bg-newsprint-200 text-oxblood border border-oxblood font-bold ${className}`}>
+        ARCHIVAL SPECIMEN
       </span>
     );
   }
 
   if (variant === 'status' && status) {
-    let colorClass = 'bg-slate-100 text-slate-700 border-slate-300';
+    let colorClass = 'bg-newsprint-100 text-ink border-ink/40';
     if (status === 'VERIFIED') {
-      colorClass = 'bg-emerald-50 text-emerald-800 border-emerald-300';
+      colorClass = 'bg-[#FAF6EE] text-emerald-900 border-emerald-800 font-bold';
     } else if (status === 'PENDING_OCR') {
-      colorClass = 'bg-blue-50 text-blue-800 border-blue-300';
+      colorClass = 'bg-newsprint-200 text-ink-700 border-ink/40';
     } else if (status === 'IN_REVIEW') {
-      colorClass = 'bg-amber-50 text-amber-800 border-amber-300';
+      colorClass = 'bg-newsprint-200 text-oxblood border-oxblood';
     } else if (status === 'DRAFT') {
-      colorClass = 'bg-slate-100 text-slate-800 border-slate-300';
+      colorClass = 'bg-newsprint-100 text-ink-600 border-ink/30';
     }
 
     return (
-      <span className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono uppercase tracking-wider border font-medium ${colorClass} ${className}`}>
-        {status.replace('_', ' ')}
+      <span className={`inline-flex items-center px-1.5 py-0.5 rounded-none text-[10px] font-mono uppercase tracking-wider border ${colorClass} ${className}`}>
+        [{status.replace('_', ' ')}]
       </span>
     );
   }
 
-  // Type badge
-  const typeColors: Record<string, string> = {
-    MANUSCRIPT: 'bg-amber-50 text-amber-900 border-amber-200',
-    BOOK: 'bg-emerald-50 text-emerald-900 border-emerald-200',
-    SPEECH: 'bg-indigo-50 text-indigo-900 border-indigo-200',
-    DEBATE: 'bg-blue-50 text-blue-900 border-blue-200',
-    ESSAY: 'bg-purple-50 text-purple-900 border-purple-200',
-    LETTER: 'bg-rose-50 text-rose-900 border-rose-200',
-    GAZETTE: 'bg-stone-100 text-stone-900 border-stone-300'
-  };
-
-  const style = (type && typeColors[type]) || 'bg-slate-100 text-slate-800 border-slate-300';
-
+  // Type badge in rubber-stamp broadsheet format
   return (
-    <span className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-serif uppercase tracking-wider border font-medium ${style} ${className}`}>
+    <span className={`inline-flex items-center px-1.5 py-0.5 rounded-none text-[10px] font-mono uppercase tracking-wider border border-ink/40 bg-newsprint-100 text-ink font-semibold ${className}`}>
       {type || 'DOCUMENT'}
     </span>
   );

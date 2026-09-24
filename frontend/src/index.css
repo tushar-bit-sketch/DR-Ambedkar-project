@@ -9,17 +9,109 @@
   
   /* Accessible focus rings */
   :focus-visible {
-    outline: 2px solid #A88440;
+    outline: 2px solid #1A1714;
     outline-offset: 2px;
   }
 }
 
-/* Custom Archival Utility Classes */
+/* Custom Archival Newspaper Broadsheet Utilities */
+.broadsheet-double-border {
+  border: 3px double #1A1714;
+}
+
+.broadsheet-double-border-b {
+  border-bottom: 3px double #1A1714;
+}
+
+.broadsheet-double-border-t {
+  border-top: 3px double #1A1714;
+}
+
+.broadsheet-double-border-y {
+  border-top: 3px double #1A1714;
+  border-bottom: 3px double #1A1714;
+}
+
+.broadsheet-single-border {
+  border: 1px solid rgba(26, 23, 20, 0.28);
+}
+
+.broadsheet-column-rule {
+  position: relative;
+}
+
+.broadsheet-column-rule:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: rgba(26, 23, 20, 0.22);
+}
+
+.broadsheet-hairline-b {
+  border-bottom: 1px solid rgba(26, 23, 20, 0.22);
+}
+
+.broadsheet-hairline-t {
+  border-top: 1px solid rgba(26, 23, 20, 0.22);
+}
+
+.broadsheet-hairline-r {
+  border-right: 1px solid rgba(26, 23, 20, 0.22);
+}
+
+/* Historic Newspaper Accession & Official Stamps */
+.stamp-oxblood {
+  border: 2px solid #6B1D1D;
+  color: #6B1D1D;
+  font-family: 'Courier Prime', monospace;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  padding: 2px 8px;
+  display: inline-block;
+  line-height: 1.2;
+}
+
+.stamp-ink {
+  border: 2px solid #1A1714;
+  color: #1A1714;
+  font-family: 'Courier Prime', monospace;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 2px 8px;
+  display: inline-block;
+  line-height: 1.2;
+}
+
+/* Classical Broadsheet Drop-Cap */
+.broadsheet-drop-cap::first-letter {
+  float: left;
+  font-size: 3.4rem;
+  line-height: 0.82;
+  padding-top: 4px;
+  padding-right: 8px;
+  padding-bottom: 2px;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  color: #1A1714;
+}
+
+/* Unbleached Newsprint Canvas Texture */
+.newsprint-canvas {
+  background-color: #F4EFE6;
+  background-image: radial-gradient(rgba(26, 23, 20, 0.035) 1px, transparent 0);
+  background-size: 20px 20px;
+}
+
+/* Parchment / Ledger Pattern */
 .parchment-pattern {
-  background-color: #FAF8F5;
-  background-image: radial-gradient(#EAE2D2 0.75px, transparent 0.75px), radial-gradient(#EAE2D2 0.75px, #FAF8F5 0.75px);
-  background-size: 30px 30px;
-  background-position: 0 0, 15px 15px;
+  background-color: #FAF6EE;
+  background-image: radial-gradient(#E2D7C3 0.75px, transparent 0.75px);
+  background-size: 24px 24px;
 }
 
 /* Touchscreen Kiosk Large Targets */

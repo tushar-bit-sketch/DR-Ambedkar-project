@@ -74,91 +74,91 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   );
 
   return (
-    <aside aria-label="Archive Filters" className="bg-white border border-stone-200 rounded-lg p-5 space-y-6 shadow-sm">
-      <div className="flex items-center justify-between border-b border-stone-200 pb-3">
-        <div className="flex items-center gap-2">
-          <Filter className="w-4 h-4 text-heritage-600" />
-          <h3 className="font-serif font-bold text-sm text-ink-900 uppercase tracking-wider">
-            Archive Filters
+    <aside aria-label="Archive Filters" className="bg-[#FAF6EE] border-2 border-ink p-4 space-y-5 shadow-letterpress-sm font-mono text-xs">
+      <div className="flex items-center justify-between border-b-2 border-ink pb-2">
+        <div className="flex items-center gap-1.5">
+          <Filter className="w-3.5 h-3.5 text-oxblood" />
+          <h3 className="font-serif font-black text-xs uppercase tracking-wider text-ink">
+            Ledger Filters
           </h3>
         </div>
         {hasActiveFilters && (
           <button
             onClick={onReset}
-            className="text-xs text-heritage-700 hover:text-heritage-900 font-medium flex items-center gap-1 transition"
+            className="text-[10px] text-oxblood hover:underline font-bold uppercase flex items-center gap-1 transition"
           >
             <RotateCcw className="w-3 h-3" />
-            Reset
+            [ Reset ]
           </button>
         )}
       </div>
 
       {/* Collection Filter */}
-      <div className="space-y-2">
-        <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
+      <div className="space-y-1.5">
+        <label className="text-[10px] font-bold text-ink uppercase tracking-wider block border-b border-ink/10 pb-0.5">
           Archival Collection
         </label>
         <div className="space-y-1 max-h-48 overflow-y-auto pr-1">
           <button
             onClick={() => onSelectCollection(null)}
-            className={`w-full text-left px-2.5 py-1.5 rounded text-xs transition flex items-center justify-between ${
+            className={`w-full text-left px-2 py-1 text-xs transition flex items-center justify-between border ${
               selectedCollection === null
-                ? 'bg-heritage-100 text-heritage-900 font-semibold'
-                : 'text-slate-600 hover:bg-stone-50'
+                ? 'bg-ink text-white border-ink font-bold shadow-letterpress-sm'
+                : 'text-ink border-ink/20 hover:border-ink hover:bg-newsprint-200'
             }`}
           >
-            <span>All Collections</span>
-            {selectedCollection === null && <Check className="w-3.5 h-3.5 text-heritage-700" />}
+            <span>[ All Collections ]</span>
+            {selectedCollection === null && <Check className="w-3 h-3 text-white" />}
           </button>
           {collections.map((c) => (
             <button
               key={c.id}
               onClick={() => onSelectCollection(c.id)}
-              className={`w-full text-left px-2.5 py-1.5 rounded text-xs transition flex items-center justify-between ${
+              className={`w-full text-left px-2 py-1 text-xs transition flex items-center justify-between border ${
                 selectedCollection === c.id
-                  ? 'bg-heritage-100 text-heritage-900 font-semibold'
-                  : 'text-slate-600 hover:bg-stone-50'
+                  ? 'bg-ink text-white border-ink font-bold shadow-letterpress-sm'
+                  : 'text-ink border-ink/20 hover:border-ink hover:bg-newsprint-200'
               }`}
             >
               <span className="truncate pr-2">{c.title}</span>
-              {selectedCollection === c.id && <Check className="w-3.5 h-3.5 text-heritage-700 flex-shrink-0" />}
+              {selectedCollection === c.id && <Check className="w-3 h-3 text-white flex-shrink-0" />}
             </button>
           ))}
         </div>
       </div>
 
       {/* Document Type */}
-      <div className="space-y-2">
-        <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
-          Document Type
+      <div className="space-y-1.5">
+        <label className="text-[10px] font-bold text-ink uppercase tracking-wider block border-b border-ink/10 pb-0.5">
+          Document Classification
         </label>
         <div className="space-y-1">
           {documentTypes.map((dt) => (
             <button
               key={dt.label}
               onClick={() => onSelectType(dt.value)}
-              className={`w-full text-left px-2.5 py-1.5 rounded text-xs transition flex items-center justify-between ${
+              className={`w-full text-left px-2 py-1 text-xs transition flex items-center justify-between border ${
                 selectedType === dt.value
-                  ? 'bg-heritage-100 text-heritage-900 font-semibold'
-                  : 'text-slate-600 hover:bg-stone-50'
+                  ? 'bg-ink text-white border-ink font-bold shadow-letterpress-sm'
+                  : 'text-ink border-ink/20 hover:border-ink hover:bg-newsprint-200'
               }`}
             >
               <span>{dt.label}</span>
-              {selectedType === dt.value && <Check className="w-3.5 h-3.5 text-heritage-700" />}
+              {selectedType === dt.value && <Check className="w-3 h-3 text-white" />}
             </button>
           ))}
         </div>
       </div>
 
       {/* Year */}
-      <div className="space-y-2">
-        <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
+      <div className="space-y-1.5">
+        <label className="text-[10px] font-bold text-ink uppercase tracking-wider block border-b border-ink/10 pb-0.5">
           Historical Year / Epoch
         </label>
         <select
           value={selectedYear || ''}
           onChange={(e) => onSelectYear(e.target.value ? Number(e.target.value) : null)}
-          className="w-full text-xs p-2 rounded border border-stone-300 bg-stone-50 text-slate-800 focus:outline-none focus:border-heritage-500"
+          className="w-full text-xs p-1.5 border border-ink/40 bg-white text-ink font-mono focus:outline-none focus:border-ink"
         >
           {years.map((y) => (
             <option key={y.label} value={y.value || ''}>
@@ -169,14 +169,14 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       </div>
 
       {/* Language */}
-      <div className="space-y-2">
-        <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
+      <div className="space-y-1.5">
+        <label className="text-[10px] font-bold text-ink uppercase tracking-wider block border-b border-ink/10 pb-0.5">
           Language
         </label>
         <select
           value={selectedLanguage || ''}
           onChange={(e) => onSelectLanguage(e.target.value || null)}
-          className="w-full text-xs p-2 rounded border border-stone-300 bg-stone-50 text-slate-800 focus:outline-none focus:border-heritage-500"
+          className="w-full text-xs p-1.5 border border-ink/40 bg-white text-ink font-mono focus:outline-none focus:border-ink"
         >
           {languages.map((l) => (
             <option key={l.label} value={l.value || ''}>
@@ -187,14 +187,14 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       </div>
 
       {/* Topics */}
-      <div className="space-y-2">
-        <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
-          Jurisprudential & Historical Topic
+      <div className="space-y-1.5">
+        <label className="text-[10px] font-bold text-ink uppercase tracking-wider block border-b border-ink/10 pb-0.5">
+          Subject / Topic
         </label>
         <select
           value={selectedTopic || ''}
           onChange={(e) => onSelectTopic(e.target.value || null)}
-          className="w-full text-xs p-2 rounded border border-stone-300 bg-stone-50 text-slate-800 focus:outline-none focus:border-heritage-500"
+          className="w-full text-xs p-1.5 border border-ink/40 bg-white text-ink font-mono focus:outline-none focus:border-ink"
         >
           {topics.map((t) => (
             <option key={t.label} value={t.value || ''}>

@@ -16,37 +16,36 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
 }) => {
   if (viewMode === 'list') {
     return (
-      <div className="bg-white border border-stone-200 hover:border-heritage-400 p-4 rounded-lg shadow-sm hover:shadow-archival transition flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-[#FAF6EE] border border-ink/30 hover:border-ink p-4 transition flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm hover:shadow-letterpress-sm">
         <div className="space-y-1.5 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="font-mono text-xs text-heritage-600 bg-heritage-50 px-2 py-0.5 rounded border border-heritage-200">
-              {document.archive_id}
+            <span className="font-mono text-xs font-bold text-oxblood border border-oxblood/40 px-2 py-0.5 bg-newsprint-100">
+              ACCESSION: {document.archive_id}
             </span>
             <ArchivalBadge type={document.document_type} />
             <ArchivalBadge status={document.verification_status} variant="status" />
-            <ArchivalBadge variant="demo" />
           </div>
           <h3 
             onClick={() => onSelect(document)}
-            className="text-base font-serif font-bold text-ink-900 hover:text-heritage-700 cursor-pointer transition line-clamp-1"
+            className="text-base font-serif font-bold text-ink hover:text-oxblood cursor-pointer transition line-clamp-1"
           >
             {document.title}
           </h3>
-          <p className="text-xs text-slate-600 line-clamp-2">
+          <p className="text-xs font-editorial text-ink-700 line-clamp-2">
             {document.description}
           </p>
-          <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 pt-1">
+          <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-ink-600 pt-1">
             <span className="flex items-center gap-1">
-              <Calendar className="w-3.5 h-3.5 text-heritage-500" />
+              <Calendar className="w-3.5 h-3.5 text-oxblood" />
               {document.date_created || document.year || 'Undated'}
             </span>
             <span className="flex items-center gap-1">
-              <Globe className="w-3.5 h-3.5 text-heritage-500" />
+              <Globe className="w-3.5 h-3.5 text-ink-500" />
               {document.language_name || 'English'}
             </span>
             {document.collection_title && (
-              <span className="flex items-center gap-1 text-slate-600 truncate max-w-xs">
-                <BookOpen className="w-3.5 h-3.5 text-heritage-500" />
+              <span className="flex items-center gap-1 text-ink-600 truncate max-w-xs uppercase">
+                <BookOpen className="w-3.5 h-3.5 text-oxblood" />
                 {document.collection_title}
               </span>
             )}
@@ -55,9 +54,9 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
         <div>
           <button
             onClick={() => onSelect(document)}
-            className="w-full sm:w-auto px-4 py-2 bg-national-700 hover:bg-national-800 text-white text-xs font-semibold rounded shadow-sm hover:shadow transition flex items-center justify-center gap-1.5"
+            className="w-full sm:w-auto px-3.5 py-1.5 bg-ink hover:bg-oxblood text-white text-xs font-mono uppercase font-bold tracking-wider transition flex items-center justify-center gap-1.5 shadow-letterpress-sm"
           >
-            <span>View Document</span>
+            <span>[ Examine Slip ]</span>
             <ExternalLink className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -66,58 +65,57 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
   }
 
   return (
-    <div className="bg-white border border-stone-200 hover:border-heritage-400 rounded-lg shadow-sm hover:shadow-archival transition-all flex flex-col h-full overflow-hidden group">
+    <div className="bg-[#FAF6EE] border border-ink/40 hover:border-ink transition-all flex flex-col h-full group shadow-sm hover:shadow-letterpress">
       {/* Top Header & Archive Provenance Bar */}
-      <div className="p-4 pb-2 border-b border-stone-100 flex items-center justify-between gap-2">
-        <span className="font-mono text-[11px] text-heritage-600 bg-heritage-50 px-2 py-0.5 rounded border border-heritage-200">
+      <div className="p-3 border-b border-ink/20 flex items-center justify-between gap-2 bg-newsprint-100 font-mono">
+        <span className="text-[10px] font-bold text-oxblood border border-oxblood/40 px-1.5 py-0.5 bg-[#FAF6EE]">
           {document.archive_id}
         </span>
         <div className="flex items-center gap-1.5">
           <ArchivalBadge type={document.document_type} />
-          <ArchivalBadge variant="demo" />
         </div>
       </div>
 
       {/* Card Body */}
-      <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
+      <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
         <div className="space-y-2">
           {document.collection_title && (
-            <p className="text-[11px] text-slate-500 font-medium tracking-wide line-clamp-1 uppercase">
+            <p className="text-[10px] text-ink-500 font-mono uppercase tracking-wider line-clamp-1 border-b border-ink/10 pb-1">
               {document.collection_title}
             </p>
           )}
           <h3 
             onClick={() => onSelect(document)}
-            className="font-serif text-lg font-bold text-ink-900 group-hover:text-heritage-700 cursor-pointer transition leading-snug line-clamp-2"
+            className="font-serif text-lg font-bold text-ink group-hover:text-oxblood cursor-pointer transition leading-snug line-clamp-2"
           >
             {document.title}
           </h3>
-          <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed">
+          <p className="text-xs font-editorial text-ink-700 line-clamp-3 leading-relaxed">
             {document.description}
           </p>
         </div>
 
         {/* Metadata Footer */}
-        <div className="pt-4 border-t border-stone-100 space-y-3">
-          <div className="flex items-center justify-between text-xs text-slate-500">
+        <div className="pt-3 border-t border-ink/20 space-y-2 font-mono">
+          <div className="flex items-center justify-between text-[11px] text-ink-600">
             <span className="flex items-center gap-1">
-              <Calendar className="w-3.5 h-3.5 text-heritage-500" />
+              <Calendar className="w-3 h-3 text-oxblood" />
               {document.date_created || document.year || 'Undated'}
             </span>
             <span className="flex items-center gap-1">
-              <Globe className="w-3.5 h-3.5 text-heritage-500" />
+              <Globe className="w-3 h-3 text-ink-500" />
               {document.language_name || 'English'}
             </span>
           </div>
 
-          <div className="flex items-center justify-between pt-1">
+          <div className="flex items-center justify-between pt-1 border-t border-ink/10">
             <ArchivalBadge status={document.verification_status} variant="status" />
             <button
               onClick={() => onSelect(document)}
-              className="px-3.5 py-1.5 bg-[#1B2A4A] hover:bg-[#102038] text-white text-xs font-semibold rounded shadow-sm hover:shadow transition flex items-center gap-1.5"
+              className="px-2.5 py-1 bg-ink hover:bg-oxblood text-white text-[11px] font-mono uppercase font-bold tracking-wider transition flex items-center gap-1 shadow-letterpress-sm"
             >
-              <span>View Document</span>
-              <ExternalLink className="w-3 h-3 text-heritage-300" />
+              <span>[ Open Slip ]</span>
+              <ExternalLink className="w-3 h-3 text-newsprint-300" />
             </button>
           </div>
         </div>

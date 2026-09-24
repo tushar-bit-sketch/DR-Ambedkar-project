@@ -62,41 +62,39 @@ export const ExplorePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5]">
+    <div className="min-h-screen bg-newsprint-100 text-ink">
       <DemoBanner isDemoData={documents.some(d => d.is_demo_data)} />
 
       {/* Explore Header Bar */}
-      <section className="bg-[#1B2A4A] text-white py-10 px-4 sm:px-6 lg:px-8 border-b-2 border-heritage-500">
-        <div className="max-w-7xl mx-auto space-y-4">
-          <div className="flex items-center space-x-2 text-xs font-mono text-heritage-300 uppercase tracking-wider">
-            <span>CATALOG EXPLORATION</span>
-            <span>•</span>
-            <span>DUBLIN CORE REPOSITORY</span>
+      <section className="bg-[#FAF6EE] text-ink py-10 px-4 sm:px-6 lg:px-8 border-b-2 border-double border-ink">
+        <div className="max-w-7xl mx-auto space-y-3">
+          <div className="flex items-center space-x-2 text-xs font-mono text-oxblood uppercase tracking-wider font-bold border-b border-ink/10 pb-1">
+            <span>[ OFFICIAL HOLDINGS EXPLORATION • DUBLIN CORE REPOSITORY ]</span>
           </div>
 
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold">
+          <h1 className="font-serif font-black text-3xl sm:text-4xl text-ink uppercase tracking-tight">
             Explore Archival Records
           </h1>
 
-          <p className="text-slate-300 text-sm max-w-3xl font-light">
+          <p className="font-editorial text-sm sm:text-base text-ink-700 max-w-3xl leading-relaxed italic">
             Search across speeches, constituent assembly debates, published monographs, gazette orders, and manuscript facsimiles.
           </p>
 
           {/* Main Search Input */}
           <div className="pt-2 max-w-3xl">
-            <div className="relative flex items-center shadow-lg">
+            <div className="relative flex items-center shadow-letterpress-sm">
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => updateFilter('q', e.target.value)}
-                placeholder="Search writings, speeches, debates, manuscripts..."
-                className="w-full pl-12 pr-10 py-3.5 rounded-lg text-slate-900 bg-white border border-stone-300 focus:outline-none focus:border-heritage-500 text-sm sm:text-base font-sans"
+                placeholder="Search writings, speeches, debates, manuscripts by keyword or volume..."
+                className="w-full pl-10 pr-10 py-2.5 bg-white text-ink border-2 border-ink focus:outline-none font-mono text-xs sm:text-sm"
               />
-              <Search className="w-5 h-5 text-slate-400 absolute left-4" />
+              <Search className="w-4 h-4 text-ink-500 absolute left-3" />
               {searchQuery && (
                 <button
                   onClick={() => updateFilter('q', null)}
-                  className="absolute right-3 text-slate-400 hover:text-slate-600"
+                  className="absolute right-3 text-ink-500 hover:text-oxblood"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -108,45 +106,42 @@ export const ExplorePage: React.FC = () => {
 
       {/* Main Content Area: Sidebar + Results */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex items-center justify-between pb-4 mb-6 border-b border-stone-200">
+        <div className="flex items-center justify-between pb-3 mb-6 border-b border-ink/20 font-mono text-xs">
           <div className="flex items-center space-x-2">
             <button
               onClick={() => setMobileFilterOpen(!mobileFilterOpen)}
-              className="lg:hidden px-3 py-2 bg-white border border-stone-300 rounded text-xs font-semibold text-slate-700 flex items-center gap-1.5 shadow-sm"
+              className="lg:hidden px-2.5 py-1 bg-[#FAF6EE] border border-ink text-xs font-bold text-ink uppercase flex items-center gap-1.5 shadow-letterpress-sm"
             >
-              <SlidersHorizontal className="w-4 h-4 text-heritage-600" />
+              <SlidersHorizontal className="w-3.5 h-3.5 text-oxblood" />
               <span>Filters</span>
             </button>
-            <span className="text-xs sm:text-sm font-semibold text-slate-700">
-              Showing {documents.length} Archival Items
-            </span>
-            <span className="hidden sm:inline text-xs text-amber-700 font-mono bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
-              [DEMO DATA CATALOG]
+            <span className="font-bold text-ink">
+              [ SHOWING {documents.length} ARCHIVAL HOLDINGS ]
             </span>
           </div>
 
           <div className="flex items-center space-x-2">
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-2 rounded border transition ${
+              className={`px-2.5 py-1 border transition uppercase font-bold text-xs ${
                 viewMode === 'grid'
-                  ? 'bg-national-700 text-white border-national-700'
-                  : 'bg-white text-slate-600 border-stone-300 hover:bg-stone-50'
+                  ? 'bg-ink text-white border-ink shadow-letterpress-sm'
+                  : 'bg-[#FAF6EE] text-ink border-ink/40 hover:border-ink'
               }`}
               title="Grid View"
             >
-              <LayoutGrid className="w-4 h-4" />
+              [ Grid ]
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`p-2 rounded border transition ${
+              className={`px-2.5 py-1 border transition uppercase font-bold text-xs ${
                 viewMode === 'list'
-                  ? 'bg-national-700 text-white border-national-700'
-                  : 'bg-white text-slate-600 border-stone-300 hover:bg-stone-50'
+                  ? 'bg-ink text-white border-ink shadow-letterpress-sm'
+                  : 'bg-[#FAF6EE] text-ink border-ink/40 hover:border-ink'
               }`}
               title="List View"
             >
-              <List className="w-4 h-4" />
+              [ Ledger ]
             </button>
           </div>
         </div>
@@ -174,11 +169,11 @@ export const ExplorePage: React.FC = () => {
 
           {/* Mobile Filter Drawer */}
           {mobileFilterOpen && (
-            <div className="lg:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs p-4 flex justify-end">
-              <div className="bg-white w-full max-w-xs h-full rounded-lg p-4 overflow-y-auto space-y-4">
-                <div className="flex justify-between items-center border-b pb-2">
-                  <h3 className="font-serif font-bold text-base text-ink-900">Filters</h3>
-                  <button onClick={() => setMobileFilterOpen(false)} className="p-1 text-slate-500">
+            <div className="lg:hidden fixed inset-0 z-50 bg-black/60 p-4 flex justify-end">
+              <div className="bg-[#FAF6EE] border-2 border-ink w-full max-w-xs h-full p-4 overflow-y-auto space-y-4">
+                <div className="flex justify-between items-center border-b-2 border-ink pb-2">
+                  <h3 className="font-serif font-black text-base text-ink uppercase">Classified Filters</h3>
+                  <button onClick={() => setMobileFilterOpen(false)} className="p-1 text-ink hover:text-oxblood">
                     <X className="w-5 h-5" />
                   </button>
                 </div>
@@ -203,23 +198,23 @@ export const ExplorePage: React.FC = () => {
           {/* Results Area (9 cols) */}
           <div className="lg:col-span-9 space-y-6">
             {loading ? (
-              <div className="bg-white rounded-lg p-12 text-center border border-stone-200 shadow-sm flex flex-col items-center justify-center space-y-3">
-                <RefreshCw className="w-8 h-8 text-heritage-600 animate-spin" />
-                <span className="text-sm font-medium text-slate-600">Loading archival records...</span>
+              <div className="bg-[#FAF6EE] border-2 border-ink p-12 text-center shadow-letterpress-sm font-mono flex flex-col items-center justify-center space-y-3">
+                <RefreshCw className="w-8 h-8 text-oxblood animate-spin" />
+                <span className="text-xs uppercase font-bold text-ink">Retrieving archival ledger records...</span>
               </div>
             ) : documents.length === 0 ? (
-              <div className="bg-white rounded-lg p-12 text-center border border-stone-200 shadow-sm space-y-3">
-                <p className="font-serif text-lg font-bold text-ink-900">
+              <div className="bg-[#FAF6EE] border-2 border-ink p-12 text-center shadow-letterpress-sm font-mono space-y-3">
+                <p className="font-serif font-black text-lg text-ink uppercase">
                   No Archival Records Found Matching Your Criteria
                 </p>
-                <p className="text-xs text-slate-500 max-w-md mx-auto">
+                <p className="font-editorial text-xs text-ink-700 max-w-md mx-auto italic">
                   Try clearing some filters or searching for terms like "Constitution", "Caste", "Rupee", or "Mahad".
                 </p>
                 <button
                   onClick={handleResetFilters}
-                  className="px-4 py-2 bg-heritage-500 hover:bg-heritage-600 text-slate-950 text-xs font-bold rounded transition shadow-sm"
+                  className="px-4 py-2 bg-ink hover:bg-oxblood text-white text-xs font-mono font-bold uppercase tracking-wider transition border border-ink shadow-letterpress-sm"
                 >
-                  Reset All Filters
+                  [ Reset All Filters ]
                 </button>
               </div>
             ) : (

@@ -22,28 +22,29 @@ export const SpeechesPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5]">
+    <div className="min-h-screen bg-[#F4EFE6] text-ink">
       <DemoBanner />
 
-      <section className="bg-[#1B2A4A] text-white py-12 px-4 sm:px-6 lg:px-8 border-b-2 border-heritage-500">
-        <div className="max-w-7xl mx-auto space-y-3">
-          <span className="font-mono text-xs text-heritage-300 uppercase tracking-wider">
-            HISTORICAL ORATORY & ADDRESSES
+      {/* Broadsheet Masthead */}
+      <section className="bg-[#FAF6EE] text-ink py-8 px-4 sm:px-6 lg:px-8 border-b-2 border-double border-ink shadow-sm">
+        <div className="max-w-7xl mx-auto space-y-2">
+          <span className="font-mono text-[11px] text-oxblood uppercase tracking-widest font-bold">
+            HISTORICAL ORATORY & ADDRESSES • OFFICIAL DISPATCHES (1927–1956)
           </span>
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold">
+          <h1 className="font-serif text-3xl sm:text-4xl font-black tracking-tight text-ink">
             Speeches & Public Addresses (1927–1956)
           </h1>
-          <p className="text-slate-300 text-sm max-w-3xl font-light">
+          <p className="text-stone-700 text-xs sm:text-sm max-w-3xl font-editorial italic leading-relaxed">
             Landmark orations delivered at mass conferences, Round Table Sessions, parliamentary chambers, and international assemblies.
           </p>
         </div>
       </section>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-        <div className="flex justify-between items-center text-xs text-slate-500 pb-2 border-b border-stone-200">
-          <span>Cataloged Addresses: {speeches.length}</span>
-          <span className="font-mono text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
-            [DEMO DATA ARCHIVE]
+        <div className="flex justify-between items-center text-xs font-mono text-stone-600 pb-2 border-b-2 border-ink">
+          <span>CATALOGED ADDRESSES: {speeches.length} HISTORICAL DISPATCHES</span>
+          <span className="font-mono text-oxblood bg-red-50 px-2 py-0.5 border border-oxblood font-bold text-[10px]">
+            [ DEMO DATA ARCHIVE ]
           </span>
         </div>
 
@@ -53,11 +54,11 @@ export const SpeechesPage: React.FC = () => {
             return (
               <div 
                 key={speech.id}
-                className="bg-white border border-stone-200 rounded-xl p-6 shadow-sm hover:border-heritage-400 transition flex flex-col md:flex-row md:items-center justify-between gap-6"
+                className="bg-[#FAF6EE] border-2 border-ink p-6 shadow-letterpress-sm hover:shadow-letterpress transition flex flex-col md:flex-row md:items-center justify-between gap-6"
               >
                 <div className="space-y-3 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="font-mono text-xs text-heritage-600 bg-heritage-50 px-2.5 py-0.5 rounded border border-heritage-200">
+                    <span className="font-mono text-xs text-oxblood bg-white px-2.5 py-0.5 border border-ink font-bold">
                       {speech.archive_id}
                     </span>
                     <ArchivalBadge type="SPEECH" />
@@ -67,26 +68,26 @@ export const SpeechesPage: React.FC = () => {
 
                   <h3 
                     onClick={() => setSelectedDoc(speech)}
-                    className="font-serif text-xl font-bold text-ink-900 hover:text-heritage-700 cursor-pointer transition"
+                    className="font-serif text-xl sm:text-2xl font-bold text-ink hover:text-oxblood cursor-pointer transition leading-snug"
                   >
                     {speech.title}
                   </h3>
 
-                  <p className="text-xs text-slate-600 leading-relaxed line-clamp-2">
+                  <p className="text-xs sm:text-sm text-stone-700 font-editorial leading-relaxed line-clamp-2">
                     {speech.description}
                   </p>
 
-                  <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500">
+                  <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-stone-600 pt-1">
                     <span className="flex items-center gap-1">
-                      <Calendar className="w-3.5 h-3.5 text-heritage-500" />
+                      <Calendar className="w-3.5 h-3.5 text-oxblood" />
                       {speech.date_created || speech.year}
                     </span>
                     <span className="flex items-center gap-1">
-                      <Globe className="w-3.5 h-3.5 text-heritage-500" />
+                      <Globe className="w-3.5 h-3.5 text-oxblood" />
                       {speech.language_name || 'English'}
                     </span>
                     <span className="flex items-center gap-1">
-                      <MapPin className="w-3.5 h-3.5 text-heritage-500" />
+                      <MapPin className="w-3.5 h-3.5 text-oxblood" />
                       {speech.physical_location || 'India'}
                     </span>
                   </div>
@@ -96,22 +97,22 @@ export const SpeechesPage: React.FC = () => {
                 <div className="flex flex-col sm:flex-row items-center gap-3 flex-shrink-0">
                   <button
                     onClick={() => toggleAudio(speech.id)}
-                    className={`px-4 py-2.5 rounded-lg text-xs font-bold transition flex items-center gap-2 border ${
+                    className={`px-4 py-2.5 text-xs font-mono font-bold uppercase transition flex items-center gap-2 border border-ink shadow-letterpress-sm ${
                       isPlaying
-                        ? 'bg-heritage-500 text-slate-950 border-heritage-600 shadow'
-                        : 'bg-stone-50 hover:bg-stone-100 text-slate-800 border-stone-300'
+                        ? 'bg-oxblood text-white'
+                        : 'bg-white hover:bg-[#EFE8DA] text-ink'
                     }`}
                   >
-                    {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                    <span>{isPlaying ? 'Playing Audio Shell' : 'Play Archival Audio'}</span>
+                    {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 text-oxblood" />}
+                    <span>{isPlaying ? '[ Playing Audio Shell ]' : '[ Play Archival Audio ]'}</span>
                   </button>
 
                   <button
                     onClick={() => setSelectedDoc(speech)}
-                    className="px-4 py-2.5 bg-[#1B2A4A] hover:bg-[#102038] text-white rounded-lg text-xs font-semibold transition flex items-center gap-1.5 shadow"
+                    className="px-4 py-2.5 bg-ink hover:bg-oxblood text-white font-mono font-bold uppercase text-xs transition flex items-center gap-1.5 border border-ink shadow-letterpress-sm"
                   >
-                    <FileText className="w-4 h-4 text-heritage-300" />
-                    <span>Read Verbatim Transcript</span>
+                    <FileText className="w-4 h-4 text-white" />
+                    <span>[ Read Verbatim Record ]</span>
                   </button>
                 </div>
               </div>

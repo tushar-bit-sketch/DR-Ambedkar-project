@@ -351,64 +351,64 @@ export const KnowledgeGraphPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] flex flex-col">
+    <div className="min-h-screen bg-[#F4EFE6] text-ink flex flex-col">
       <DemoBanner />
 
-      {/* Hero Header */}
-      <section className="bg-[#1B2A4A] text-white py-8 px-4 sm:px-6 lg:px-8 border-b-2 border-heritage-500 shadow-md">
+      {/* Broadsheet Masthead */}
+      <section className="bg-[#FAF6EE] text-ink py-6 px-4 sm:px-6 lg:px-8 border-b-2 border-double border-ink shadow-sm">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="space-y-1.5">
-            <div className="flex items-center space-x-2 text-xs font-mono text-heritage-300 uppercase tracking-wider">
-              <Network className="w-4 h-4 text-heritage-400" />
-              <span>PROVENANCE-FIRST HISTORICAL KNOWLEDGE GRAPH</span>
+            <div className="flex items-center space-x-2 text-[11px] font-mono text-oxblood uppercase tracking-widest font-bold">
+              <Network className="w-3.5 h-3.5 text-oxblood" />
+              <span>RECORD REPOSITORY • HISTORICAL ONTOLOGY & KNOWLEDGE GRAPH</span>
               {graphStatus && (
-                <span className="ml-2 px-2 py-0.5 rounded text-[10px] font-bold bg-white/10 text-heritage-200 border border-white/15">
-                  BACKEND: {graphStatus.backend.toUpperCase()}
+                <span className="ml-2 px-2 py-0.5 text-[10px] font-mono font-bold bg-[#EFE8DA] text-ink border border-ink">
+                  ENGINE: {graphStatus.backend.toUpperCase()}
                 </span>
               )}
             </div>
-            <h1 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight">
-              Interactive Archival Knowledge Graph
+            <h1 className="font-serif text-2xl sm:text-3xl font-black tracking-tight text-ink">
+              Archival Knowledge Graph & Entity Index
             </h1>
-            <p className="text-slate-300 text-xs sm:text-sm font-light max-w-2xl">
-              Explore evidence-anchored relationships connecting Dr. B.R. Ambedkar, speeches, constitutional debates, historical events, and verified custodial repositories.
+            <p className="text-stone-700 text-xs sm:text-sm font-editorial italic max-w-2xl">
+              Evidence-anchored relational network mapping Dr. B.R. Ambedkar, constitutional proceedings, scholarly treatises, civic institutions, and verified custodial documents.
             </p>
           </div>
 
           {/* View Mode Toggle */}
-          <div className="flex items-center gap-2 bg-white/10 p-1 rounded-lg border border-white/15 self-start md:self-auto">
+          <div className="flex items-center gap-1 bg-[#EFE8DA] p-1 border-2 border-ink self-start md:self-auto shadow-letterpress-sm">
             <button
               onClick={() => setViewMode('visual')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-bold transition ${
-                viewMode === 'visual' ? 'bg-heritage-500 text-slate-950 shadow' : 'text-slate-200 hover:text-white'
+              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-bold uppercase transition ${
+                viewMode === 'visual' ? 'bg-ink text-white shadow-sm' : 'text-ink hover:bg-stone-200'
               }`}
             >
-              <Network className="w-3.5 h-3.5" /> Visual Graph
+              <Network className="w-3.5 h-3.5" /> [ Visual Web ]
             </button>
             <button
               onClick={() => setViewMode('accessible_list')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-bold transition ${
-                viewMode === 'accessible_list' ? 'bg-heritage-500 text-slate-950 shadow' : 'text-slate-200 hover:text-white'
+              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-bold uppercase transition ${
+                viewMode === 'accessible_list' ? 'bg-ink text-white shadow-sm' : 'text-ink hover:bg-stone-200'
               }`}
             >
-              <List className="w-3.5 h-3.5" /> Structured List
+              <List className="w-3.5 h-3.5" /> [ Structured Index ]
             </button>
           </div>
         </div>
       </section>
 
       {/* Filter and Search Ribbon */}
-      <div className="bg-white border-b border-stone-200 px-4 sm:px-6 lg:px-8 py-3 sticky top-14 z-30 shadow-xs">
+      <div className="bg-[#FAF6EE] border-b-2 border-ink px-4 sm:px-6 lg:px-8 py-3 sticky top-14 z-30 shadow-letterpress-sm">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs">
           {/* Search */}
           <div className="relative flex-1 min-w-[240px] max-w-md">
-            <Search className="absolute left-3 top-2.5 w-4 h-4 text-stone-400" />
+            <Search className="absolute left-3 top-2.5 w-4 h-4 text-stone-500" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search people, debates, topics, events..."
-              className="w-full pl-9 pr-3 py-2 bg-stone-50 border border-stone-300 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-heritage-600 focus:bg-white"
+              placeholder="Search entities, treaties, movements, institutions..."
+              className="w-full pl-9 pr-3 py-2 bg-white border-2 border-ink text-xs font-mono text-ink placeholder:text-stone-400 focus:outline-none focus:ring-1 focus:ring-oxblood shadow-letterpress-sm"
             />
           </div>
 
@@ -417,9 +417,9 @@ export const KnowledgeGraphPage: React.FC = () => {
             <select
               value={selectedEntityType}
               onChange={(e) => setSelectedEntityType(e.target.value)}
-              className="bg-stone-50 border border-stone-300 rounded px-2.5 py-1.5 text-xs text-stone-700 focus:outline-none"
+              className="bg-white border-2 border-ink px-2.5 py-1.5 text-xs font-mono font-bold text-ink focus:outline-none shadow-letterpress-sm"
             >
-              <option value="ALL">All Entity Types</option>
+              <option value="ALL">All Entity Classifications</option>
               <option value="Person">Person</option>
               <option value="Document">Document</option>
               <option value="Speech">Speech</option>
@@ -432,9 +432,9 @@ export const KnowledgeGraphPage: React.FC = () => {
             <select
               value={selectedRelType}
               onChange={(e) => setSelectedRelType(e.target.value)}
-              className="bg-stone-50 border border-stone-300 rounded px-2.5 py-1.5 text-xs text-stone-700 focus:outline-none"
+              className="bg-white border-2 border-ink px-2.5 py-1.5 text-xs font-mono font-bold text-ink focus:outline-none shadow-letterpress-sm"
             >
-              <option value="ALL">All Relationships</option>
+              <option value="ALL">All Relational Ties</option>
               <option value="AUTHORED">AUTHORED</option>
               <option value="SPOKE_AT">SPOKE_AT</option>
               <option value="PARTICIPATED_IN">PARTICIPATED_IN</option>
@@ -447,10 +447,10 @@ export const KnowledgeGraphPage: React.FC = () => {
             <select
               value={verificationFilter}
               onChange={(e) => setVerificationFilter(e.target.value as any)}
-              className="bg-stone-50 border border-stone-300 rounded px-2.5 py-1.5 text-xs text-stone-700 focus:outline-none font-semibold"
+              className="bg-white border-2 border-ink px-2.5 py-1.5 text-xs font-mono font-bold text-oxblood focus:outline-none shadow-letterpress-sm"
             >
-              <option value="VERIFIED">Verified Only</option>
-              <option value="ALL">All (Including Pending)</option>
+              <option value="VERIFIED">[ SEAL: Verified Only ]</option>
+              <option value="ALL">[ Include Unverified ]</option>
             </select>
           </div>
         </div>
@@ -459,26 +459,26 @@ export const KnowledgeGraphPage: React.FC = () => {
       {/* Main Graph Content Canvas + Inspector Sidebar */}
       <div className="flex-1 flex flex-col md:flex-row relative max-w-7xl mx-auto w-full p-4 gap-4">
         {viewMode === 'visual' ? (
-          <div className="flex-1 bg-white border border-stone-200 rounded-xl relative shadow-sm overflow-hidden min-h-[550px]">
+          <div className="flex-1 bg-[#FAF6EE] border-2 border-ink relative shadow-letterpress overflow-hidden min-h-[550px]">
             {/* Zoom / Pan Controls Overlay */}
-            <div className="absolute top-4 right-4 z-20 flex flex-col gap-1 bg-white/90 backdrop-blur-xs border border-stone-200 rounded-lg p-1 shadow-xs">
+            <div className="absolute top-4 right-4 z-20 flex flex-col gap-1 bg-[#FAF6EE] border-2 border-ink p-1 shadow-letterpress-sm">
               <button 
                 onClick={() => setZoom(z => Math.min(2.5, z + 0.2))} 
-                className="p-2 text-stone-600 hover:text-stone-950 rounded hover:bg-stone-100" 
+                className="p-2 text-ink hover:bg-ink hover:text-white transition" 
                 title="Zoom In"
               >
                 <ZoomIn className="w-4 h-4" />
               </button>
               <button 
                 onClick={() => setZoom(z => Math.max(0.4, z - 0.2))} 
-                className="p-2 text-stone-600 hover:text-stone-950 rounded hover:bg-stone-100" 
+                className="p-2 text-ink hover:bg-ink hover:text-white transition" 
                 title="Zoom Out"
               >
                 <ZoomOut className="w-4 h-4" />
               </button>
               <button 
                 onClick={resetView} 
-                className="p-2 text-stone-600 hover:text-stone-950 rounded hover:bg-stone-100" 
+                className="p-2 text-ink hover:bg-ink hover:text-white transition" 
                 title="Reset View"
               >
                 <RotateCcw className="w-4 h-4" />
@@ -496,30 +496,30 @@ export const KnowledgeGraphPage: React.FC = () => {
             />
 
             {/* Bottom Status / Stats Legend */}
-            <div className="absolute bottom-3 left-4 z-20 flex items-center gap-3 text-[11px] font-mono bg-white/95 px-3 py-1.5 rounded-lg border border-stone-200 text-stone-600 shadow-xs">
+            <div className="absolute bottom-3 left-4 z-20 flex items-center gap-3 text-[11px] font-mono bg-[#FAF6EE] px-3 py-1.5 border-2 border-ink text-ink shadow-letterpress-sm">
               <span>{filteredEntities.length} Entities</span>
               <span>•</span>
-              <span>{filteredRelationships.length} Relations</span>
+              <span>{filteredRelationships.length} Links</span>
               <span>•</span>
-              <span className="flex items-center gap-1 text-emerald-700">
-                <ShieldCheck className="w-3.5 h-3.5" /> Provenance Verified
+              <span className="flex items-center gap-1 text-oxblood font-bold">
+                <ShieldCheck className="w-3.5 h-3.5" /> SEAL: VERIFIED PROVENANCE
               </span>
             </div>
           </div>
         ) : (
           /* Accessible Structured List View (WCAG 2.1 AA) */
-          <div className="flex-1 bg-white border border-stone-200 rounded-xl p-6 shadow-sm space-y-4">
-            <div className="flex items-center justify-between border-b border-stone-200 pb-3">
+          <div className="flex-1 bg-[#FAF6EE] border-2 border-ink p-6 shadow-letterpress space-y-4">
+            <div className="flex items-center justify-between border-b-2 border-ink pb-3">
               <div>
-                <h2 className="font-serif font-bold text-lg text-stone-900">
-                  Accessible Knowledge Graph Directory
+                <h2 className="font-serif font-black text-xl text-ink">
+                  Accessible Knowledge Graph Ledger
                 </h2>
-                <p className="text-stone-500 text-xs">
+                <p className="text-stone-700 text-xs font-editorial">
                   Full text-based hierarchy with keyboard navigable entity relationships.
                 </p>
               </div>
-              <span className="font-mono text-xs text-stone-500">
-                Showing {filteredEntities.length} entities
+              <span className="font-mono text-xs text-stone-600 font-bold">
+                ENTRIES: {filteredEntities.length}
               </span>
             </div>
 
@@ -528,30 +528,30 @@ export const KnowledgeGraphPage: React.FC = () => {
                 <div 
                   key={ent.id} 
                   onClick={() => setSelectedNode(ent)}
-                  className={`p-3.5 rounded-lg border cursor-pointer transition ${
+                  className={`p-3.5 border-2 cursor-pointer transition ${
                     selectedNode?.id === ent.id
-                      ? 'border-heritage-600 bg-heritage-50/50 shadow-xs'
-                      : 'border-stone-200 hover:border-stone-300 bg-white'
+                      ? 'border-oxblood bg-[#FFFDF9] shadow-letterpress-sm'
+                      : 'border-ink/30 hover:border-ink bg-white'
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-stone-100 text-stone-700">
+                      <span className="px-2 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider bg-[#EFE8DA] text-ink border border-ink/30">
                         {ent.entity_type}
                       </span>
-                      <h3 className="font-serif font-bold text-stone-900 text-sm">
+                      <h3 className="font-serif font-bold text-ink text-sm">
                         {ent.canonical_name}
                       </h3>
                     </div>
-                    <span className="text-xs text-stone-400 font-mono">#{ent.id}</span>
+                    <span className="text-xs text-stone-500 font-mono">#{ent.id}</span>
                   </div>
                   {ent.description && (
-                    <p className="text-xs text-stone-600 mt-1 line-clamp-2">
+                    <p className="text-xs text-stone-700 mt-1 font-editorial line-clamp-2">
                       {ent.description}
                     </p>
                   )}
                   {ent.alternate_names && ent.alternate_names.length > 0 && (
-                    <p className="text-[11px] text-stone-400 mt-1">
+                    <p className="text-[11px] text-stone-500 font-mono mt-1">
                       Aliases: {ent.alternate_names.join(', ')}
                     </p>
                   )}
@@ -565,51 +565,51 @@ export const KnowledgeGraphPage: React.FC = () => {
         <div className="w-full md:w-80 lg:w-96 flex flex-col gap-4">
           {/* Node Inspector */}
           {selectedNode && !selectedEdge && (
-            <div className="bg-white border border-stone-200 rounded-xl p-5 shadow-sm space-y-4">
-              <div className="flex items-start justify-between border-b border-stone-200 pb-3">
+            <div className="bg-[#FAF6EE] border-2 border-ink p-5 shadow-letterpress-sm space-y-4">
+              <div className="flex items-start justify-between border-b-2 border-ink pb-3">
                 <div>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-heritage-100 text-heritage-800">
+                  <span className="px-2 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider bg-oxblood text-white border border-ink">
                     {selectedNode.entity_type}
                   </span>
-                  <h3 className="font-serif font-bold text-lg text-stone-900 mt-1">
+                  <h3 className="font-serif font-bold text-lg text-ink mt-1.5">
                     {selectedNode.canonical_name}
                   </h3>
                 </div>
                 <button
                   onClick={() => handleExpandNeighbors(selectedNode.id)}
-                  className="px-2.5 py-1 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded text-xs font-semibold flex items-center gap-1 transition"
+                  className="px-2.5 py-1 bg-white hover:bg-ink hover:text-white text-ink border border-ink text-xs font-mono font-bold uppercase flex items-center gap-1 transition shadow-letterpress-sm"
                   title="Load neighboring nodes"
                 >
-                  <Sparkles className="w-3 h-3 text-heritage-600" /> Expand
+                  <Sparkles className="w-3 h-3 text-oxblood" /> [ Expand ]
                 </button>
               </div>
 
               {selectedNode.description && (
-                <p className="text-xs text-stone-600 leading-relaxed font-serif">
+                <p className="text-xs text-stone-800 leading-relaxed font-editorial">
                   {selectedNode.description}
                 </p>
               )}
 
               {/* Entity Attributes */}
-              <div className="space-y-1.5 text-xs text-stone-600 border-t border-stone-100 pt-3">
+              <div className="space-y-1.5 text-xs text-stone-700 border-t border-ink/20 pt-3 font-mono">
                 {selectedNode.birth_date && (
                   <div className="flex justify-between">
-                    <span className="text-stone-400">Lifespan:</span>
-                    <span className="font-mono text-stone-800">{selectedNode.birth_date} – {selectedNode.death_date || 'Present'}</span>
+                    <span className="text-stone-500">Lifespan:</span>
+                    <span className="font-mono font-bold text-ink">{selectedNode.birth_date} – {selectedNode.death_date || 'Present'}</span>
                   </div>
                 )}
                 {selectedNode.location && (
                   <div className="flex justify-between">
-                    <span className="text-stone-400">Location:</span>
-                    <span className="text-stone-800">{selectedNode.location}</span>
+                    <span className="text-stone-500">Location:</span>
+                    <span className="font-bold text-ink">{selectedNode.location}</span>
                   </div>
                 )}
                 {selectedNode.alternate_names && selectedNode.alternate_names.length > 0 && (
                   <div>
-                    <span className="text-stone-400 block mb-0.5">Known Aliases:</span>
+                    <span className="text-stone-500 block mb-0.5">Known Aliases:</span>
                     <div className="flex flex-wrap gap-1">
                       {selectedNode.alternate_names.map(a => (
-                        <span key={a} className="bg-stone-100 text-stone-700 px-1.5 py-0.5 rounded text-[10px] font-mono">
+                        <span key={a} className="bg-white text-ink border border-ink/30 px-1.5 py-0.5 text-[10px] font-mono font-bold">
                           {a}
                         </span>
                       ))}
@@ -619,18 +619,18 @@ export const KnowledgeGraphPage: React.FC = () => {
               </div>
 
               {/* Navigation CTAs */}
-              <div className="space-y-2 pt-2 border-t border-stone-200">
+              <div className="space-y-2 pt-2 border-t-2 border-ink">
                 <button
                   onClick={() => navigate(`/entities/${selectedNode.id}`)}
-                  className="w-full py-2 bg-heritage-600 hover:bg-heritage-700 text-white rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition shadow-xs"
+                  className="w-full py-2 bg-ink hover:bg-oxblood text-white text-xs font-mono font-bold uppercase flex items-center justify-center gap-1.5 transition border border-ink shadow-letterpress-sm"
                 >
-                  <BookOpen className="w-3.5 h-3.5" /> View Full Entity Profile
+                  <BookOpen className="w-3.5 h-3.5" /> [ View Entity Dossier ]
                 </button>
                 <button
                   onClick={() => navigate(`/timeline?entity_id=${selectedNode.id}`)}
-                  className="w-full py-2 bg-stone-100 hover:bg-stone-200 text-stone-800 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition"
+                  className="w-full py-2 bg-white hover:bg-stone-200 text-ink border border-ink text-xs font-mono font-bold uppercase flex items-center justify-center gap-1.5 transition shadow-letterpress-sm"
                 >
-                  <Clock className="w-3.5 h-3.5 text-heritage-600" /> Explore on Timeline
+                  <Clock className="w-3.5 h-3.5 text-oxblood" /> [ Timeline Milestones ]
                 </button>
               </div>
             </div>
@@ -638,49 +638,49 @@ export const KnowledgeGraphPage: React.FC = () => {
 
           {/* Edge Inspector */}
           {selectedEdge && (
-            <div className="bg-white border border-stone-200 rounded-xl p-5 shadow-sm space-y-4">
-              <div className="flex items-center justify-between border-b border-stone-200 pb-3">
-                <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-blue-50 text-blue-800 border border-blue-200">
+            <div className="bg-[#FAF6EE] border-2 border-ink p-5 shadow-letterpress-sm space-y-4">
+              <div className="flex items-center justify-between border-b-2 border-ink pb-3">
+                <span className="px-2 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider bg-white text-ink border border-ink">
                   {selectedEdge.relationship_type}
                 </span>
-                <span className="text-[10px] font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                <span className="text-[10px] font-mono font-bold text-oxblood bg-red-50 px-2 py-0.5 border border-oxblood">
                   {selectedEdge.verification_status}
                 </span>
               </div>
 
               <div className="space-y-1">
-                <p className="text-xs text-stone-500 font-mono">RELATIONSHIP</p>
-                <p className="font-serif font-bold text-stone-900 text-sm">
-                  {selectedEdge.source_entity_name} → <span className="text-heritage-600">{selectedEdge.relationship_type}</span> → {selectedEdge.target_entity_name}
+                <p className="text-xs text-stone-500 font-mono uppercase">DISPATCH RELATION</p>
+                <p className="font-serif font-bold text-ink text-sm">
+                  {selectedEdge.source_entity_name} → <span className="text-oxblood font-mono underline">{selectedEdge.relationship_type}</span> → {selectedEdge.target_entity_name}
                 </p>
               </div>
 
               {selectedEdge.evidence_text && (
                 <div className="space-y-1">
-                  <p className="text-xs text-stone-500 font-mono">SOURCE PASSAGE EVIDENCE</p>
-                  <p className="text-xs text-stone-700 italic bg-stone-50 p-2.5 rounded-lg border border-stone-200 leading-relaxed">
+                  <p className="text-xs text-stone-500 font-mono uppercase">ARCHIVAL EVIDENCE EXCERPT</p>
+                  <p className="text-xs text-stone-800 italic bg-white p-2.5 border border-ink font-editorial leading-relaxed">
                     "{selectedEdge.evidence_text}"
                   </p>
                 </div>
               )}
 
-              <div className="text-[11px] text-stone-500 space-y-1 border-t border-stone-100 pt-2">
-                <div>Provenance: <strong className="text-stone-800">{selectedEdge.provenance_type}</strong></div>
-                <div>Confidence: <strong className="text-stone-800">{selectedEdge.confidence_label || `${Math.round(selectedEdge.confidence * 100)}%`}</strong></div>
+              <div className="text-[11px] text-stone-600 space-y-1 border-t border-ink/20 pt-2 font-mono">
+                <div>Provenance: <strong className="text-ink">{selectedEdge.provenance_type}</strong></div>
+                <div>Confidence: <strong className="text-ink">{selectedEdge.confidence_label || `${Math.round(selectedEdge.confidence * 100)}%`}</strong></div>
               </div>
 
               <button
                 onClick={() => setInspectingProvenanceRelId(selectedEdge.id)}
-                className="w-full py-2 bg-stone-900 hover:bg-black text-white rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition"
+                className="w-full py-2 bg-ink hover:bg-oxblood text-white text-xs font-mono font-bold uppercase flex items-center justify-center gap-1.5 transition border border-ink shadow-letterpress-sm"
               >
-                <ShieldCheck className="w-3.5 h-3.5 text-heritage-400" /> Verify Full Archival Chain
+                <ShieldCheck className="w-3.5 h-3.5 text-oxblood" /> [ Verify Archival Chain ]
               </button>
             </div>
           )}
 
           {/* Provenance Chain Modal Drawer */}
           {inspectingProvenanceRelId && (
-            <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
+            <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
               <div className="max-w-xl w-full max-h-[90vh] overflow-y-auto">
                 <ProvenanceChainViewer
                   relationshipId={inspectingProvenanceRelId}

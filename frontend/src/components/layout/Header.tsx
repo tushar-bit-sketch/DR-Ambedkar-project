@@ -60,36 +60,40 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <header className="bg-[#1B2A4A] text-white border-b-2 border-heritage-500 sticky top-0 z-40 shadow-md">
-      {/* Top Institutional Bar */}
-      <div className="bg-[#102038] text-slate-300 px-4 py-1.5 text-xs border-b border-white/10 hidden md:block">
+    <header className="bg-newsprint-100 text-ink border-b-2 border-ink sticky top-0 z-40 shadow-sm">
+      {/* Top Institutional Ear-Pieces & Gazette Dateline Bar */}
+      <div className="bg-[#FAF6EE] text-ink-700 px-4 py-1.5 text-xs border-b border-ink/20 hidden md:block font-mono">
         <div className="max-w-7xl mx-auto flex justify-between items-center gap-4">
-          {/* Left Institutional Credentials */}
+          {/* Left Ear-Piece */}
           <div className="flex items-center space-x-2.5 min-w-0 flex-shrink truncate">
-            <span className="flex items-center gap-1.5 whitespace-nowrap text-slate-300 font-medium">
-              <Landmark className="w-3.5 h-3.5 text-heritage-400 flex-shrink-0" />
-              <span className="hidden xl:inline">Institutional Digital Heritage Repository • </span>
-              <span>National Memorial Platform</span>
+            <span className="flex items-center gap-1.5 whitespace-nowrap text-ink-900 font-bold uppercase tracking-wider text-[11px]">
+              <Landmark className="w-3.5 h-3.5 text-oxblood flex-shrink-0" />
+              <span>National Institutional Repository</span>
             </span>
-            <span className="text-white/20 hidden lg:inline">|</span>
-            <span className="text-heritage-300 font-mono hidden lg:inline whitespace-nowrap text-[11px]">
-              Dublin Core & OAIS Compliant
+            <span className="text-ink/30 hidden lg:inline">|</span>
+            <span className="text-ink-600 hidden lg:inline whitespace-nowrap text-[11px] tracking-wide">
+              Dublin Core & OAIS Reference Model Compliant
             </span>
           </div>
 
-          {/* Right Controls */}
+          {/* Center Dateline */}
+          <div className="hidden xl:flex items-center gap-2 text-[10px] text-ink-500 uppercase tracking-widest font-mono">
+            <span>VOL. LXXVI • SPECIAL GAZETTE RECORD</span>
+          </div>
+
+          {/* Right Controls / Ear-Piece */}
           <div className="flex items-center space-x-2 xl:space-x-3 flex-shrink-0">
-            {/* Interface Language Selector */}
-            <div className="flex items-center gap-1 bg-white/5 border border-heritage-500/30 rounded px-2 py-0.5 text-[11px] whitespace-nowrap flex-shrink-0">
-              <Globe className="w-3 h-3 text-heritage-400 flex-shrink-0" />
+            {/* Language Selector */}
+            <div className="flex items-center gap-1 bg-newsprint-200 border border-ink/40 px-2 py-0.5 text-[11px] whitespace-nowrap">
+              <Globe className="w-3 h-3 text-ink-700 flex-shrink-0" />
               <select
                 value={language}
                 onChange={(e) => setLanguage(e.target.value as LanguageCode)}
-                className="bg-transparent text-slate-200 text-[11px] focus:outline-none cursor-pointer"
+                className="bg-transparent text-ink text-[11px] font-mono focus:outline-none cursor-pointer uppercase font-semibold"
                 aria-label="Select Interface Language"
               >
                 {supportedLanguages.map((lang) => (
-                  <option key={lang.code} value={lang.code} className="bg-[#102038] text-white">
+                  <option key={lang.code} value={lang.code} className="bg-newsprint-100 text-ink">
                     {lang.native} ({lang.label})
                   </option>
                 ))}
@@ -99,251 +103,285 @@ export const Header: React.FC = () => {
             {/* SIH Demo Mode Link */}
             <Link
               to="/demo"
-              className="flex items-center gap-1 text-heritage-300 hover:text-white transition px-2 py-0.5 rounded bg-heritage-500/20 hover:bg-heritage-500/30 border border-heritage-500/50 text-[11px] font-bold whitespace-nowrap flex-shrink-0"
-              title="Interactive 10-Stage SIH Demonstration Tour"
+              className="flex items-center gap-1 text-oxblood hover:text-white hover:bg-oxblood transition px-2 py-0.5 border border-oxblood text-[10px] font-bold uppercase tracking-wider whitespace-nowrap flex-shrink-0"
+              title="Interactive 10-Stage Demonstration Tour"
             >
-              <Sparkles className="w-3 h-3 text-heritage-400 flex-shrink-0" />
-              <span>Demo Mode</span>
+              <Sparkles className="w-3 h-3 flex-shrink-0" />
+              <span>Gazette Tour</span>
             </Link>
 
             {/* System Status Link */}
             <Link
               to="/system-status"
-              className="flex items-center gap-1 text-slate-300 hover:text-white transition px-2 py-0.5 rounded bg-white/5 hover:bg-white/10 border border-white/10 text-[11px] whitespace-nowrap flex-shrink-0"
-              title="Live Subsystem Diagnostics & Status Matrix"
+              className="flex items-center gap-1 text-ink-700 hover:text-ink hover:bg-newsprint-300 transition px-2 py-0.5 border border-ink/30 text-[10px] font-mono uppercase tracking-wider whitespace-nowrap flex-shrink-0"
+              title="Live Subsystem Diagnostics"
             >
-              <Shield className="w-3 h-3 text-emerald-400 flex-shrink-0" />
-              <span>System Status</span>
+              <Shield className="w-3 h-3 text-emerald-700 flex-shrink-0" />
+              <span>Registry Status</span>
             </Link>
 
             {!isKiosk && (
               <button
                 onClick={enterKiosk}
-                className="flex items-center gap-1.5 text-heritage-300 hover:text-white transition px-2 py-0.5 rounded bg-white/5 hover:bg-white/10 border border-heritage-500/30 text-[11px] font-medium whitespace-nowrap flex-shrink-0"
+                className="flex items-center gap-1.5 text-ink-700 hover:text-ink hover:bg-newsprint-300 transition px-2 py-0.5 border border-ink/30 text-[10px] font-mono uppercase tracking-wider whitespace-nowrap flex-shrink-0"
                 title="Switch to Touchscreen Kiosk Display Mode"
               >
                 <Monitor className="w-3 h-3 flex-shrink-0" />
-                <span className="hidden sm:inline">Launch Kiosk Mode</span>
+                <span className="hidden sm:inline">Kiosk Desk</span>
               </button>
             )}
 
             <Link
               to="/admin"
-              className="flex items-center gap-1 text-slate-300 hover:text-white transition text-[11px] whitespace-nowrap flex-shrink-0"
+              className="flex items-center gap-1 text-ink-700 hover:text-oxblood transition text-[10px] font-mono uppercase tracking-wider whitespace-nowrap flex-shrink-0"
             >
-              <Shield className="w-3 h-3 text-heritage-400 flex-shrink-0" />
-              <span>{isStaff ? `Admin Portal (${role})` : 'Archivist Sign-In'}</span>
+              <Shield className="w-3 h-3 text-oxblood flex-shrink-0" />
+              <span>{isStaff ? `Curator (${role})` : 'Archivist Sign-In'}</span>
             </Link>
           </div>
         </div>
       </div>
 
-      {/* Main Archival Navigation */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20 gap-4">
-          {/* Emblem & Title (Guaranteed Unshrinkable & Non-wrapping) */}
-          <Link to="/" className="flex items-center space-x-3 group flex-shrink-0">
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-heritage-500 text-slate-950 flex items-center justify-center font-serif font-bold text-lg sm:text-xl shadow-inner border-2 border-heritage-300 group-hover:scale-105 transition-transform flex-shrink-0">
-              अ
+      {/* Grand Archival Masthead */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5 border-b border-ink/20">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          {/* Left Decorative Date / Folio Notice */}
+          <div className="hidden md:flex flex-col text-left font-mono text-[10px] text-ink-600 space-y-0.5 flex-1">
+            <span className="font-bold tracking-widest text-oxblood">OFFICIAL REPOSITORY RECORD</span>
+            <span>ESTD. 1950 • REPUBLIC OF INDIA</span>
+            <span className="text-ink-500">ACCESSION PROTOCOL: DUBLIN CORE</span>
+          </div>
+
+          {/* Centered Grand Masthead */}
+          <Link to="/" className="text-center group flex flex-col items-center">
+            <div className="flex items-center justify-center gap-3">
+              <div className="w-9 h-9 border-2 border-ink flex items-center justify-center font-serif font-black text-xl text-oxblood bg-newsprint-50 shadow-letterpress-sm group-hover:scale-105 transition-transform">
+                अ
+              </div>
+              <h1 className="font-serif font-black text-2xl sm:text-3xl lg:text-4xl text-ink tracking-tight uppercase leading-none">
+                The Ambedkar Archive
+              </h1>
+              <div className="w-9 h-9 border-2 border-ink flex items-center justify-center font-serif font-black text-xl text-oxblood bg-newsprint-50 shadow-letterpress-sm group-hover:scale-105 transition-transform">
+                अ
+              </div>
             </div>
-            <div className="flex-shrink-0">
-              <span className="font-serif tracking-wider font-bold text-base sm:text-lg lg:text-xl text-white block leading-tight whitespace-nowrap">
-                AMBEDKAR ARCHIVE
-              </span>
-              <span className="text-[10px] sm:text-[11px] text-heritage-300 uppercase tracking-widest block font-medium whitespace-nowrap">
-                Digital Heritage Knowledge Platform
-              </span>
-            </div>
+            <p className="mt-1 text-xs sm:text-sm font-serif italic text-sepia tracking-wide">
+              Digital Heritage Knowledge Platform & Historical Broadsheet Repository
+            </p>
           </Link>
 
-          {/* Desktop Nav Links (Streamlined, Non-wrapping, Professional Hierarchy) */}
-          <nav className="hidden lg:flex items-center space-x-0.5 xl:space-x-1.5 text-xs xl:text-sm font-medium flex-shrink-0">
-            {/* Home */}
-            <Link
-              to="/"
-              className={`px-2.5 py-1.5 xl:px-3 xl:py-2 rounded-md transition-colors whitespace-nowrap flex-shrink-0 ${
-                isActive('/')
-                  ? 'bg-heritage-600/30 text-heritage-300 border-b-2 border-heritage-400 font-semibold'
-                  : 'text-slate-200 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              {t('nav.home', 'Home')}
-            </Link>
+          {/* Right Archival Seal / Issue Stamp */}
+          <div className="hidden md:flex flex-col items-end text-right font-mono text-[10px] text-ink-600 space-y-0.5 flex-1">
+            <span className="stamp-oxblood text-[9px] py-0.5 px-2">OFFICIAL EDITION</span>
+            <span className="text-ink-500 mt-1">OPEN ACCESS SCHOLARSHIP</span>
+            <span>VERIFIED CITATION ENGINE</span>
+          </div>
 
-            {/* Search */}
-            <Link
-              to="/search"
-              className={`px-2.5 py-1.5 xl:px-3 xl:py-2 rounded-md transition-colors whitespace-nowrap flex-shrink-0 ${
-                isActive('/search')
-                  ? 'bg-heritage-600/30 text-heritage-300 border-b-2 border-heritage-400 font-semibold'
-                  : 'text-slate-200 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              {t('nav.search', 'Search')}
-            </Link>
-
-            {/* Collections Dropdown */}
-            <div 
-              ref={dropdownRef} 
-              className="relative"
-              onMouseEnter={() => setCollectionsOpen(true)}
-              onMouseLeave={() => setCollectionsOpen(false)}
-            >
-              <button
-                type="button"
-                onClick={() => setCollectionsOpen(!collectionsOpen)}
-                className={`flex items-center gap-1 px-2.5 py-1.5 xl:px-3 xl:py-2 rounded-md transition-colors whitespace-nowrap flex-shrink-0 ${
-                  isCollectionsActive
-                    ? 'bg-heritage-600/30 text-heritage-300 border-b-2 border-heritage-400 font-semibold'
-                    : 'text-slate-200 hover:text-white hover:bg-white/5'
-                }`}
-                aria-expanded={collectionsOpen}
-                aria-haspopup="true"
-              >
-                <span>Collections</span>
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${collectionsOpen ? 'rotate-180 text-heritage-300' : 'text-slate-400'}`} />
-              </button>
-
-              {/* Collections Popover Menu */}
-              {collectionsOpen && (
-                <div className="absolute left-0 mt-1 w-72 bg-[#122038] border border-heritage-500/40 rounded-lg shadow-2xl py-2 z-50 backdrop-blur-md animate-fadeIn">
-                  <div className="px-3 py-1.5 border-b border-white/10 text-[10px] uppercase font-mono tracking-wider text-heritage-300">
-                    Archival Holdings
-                  </div>
-                  {collectionLinks.map((col) => {
-                    const Icon = col.icon;
-                    const active = location.pathname.startsWith(col.path);
-                    return (
-                      <Link
-                        key={col.path}
-                        to={col.path}
-                        onClick={() => setCollectionsOpen(false)}
-                        className={`flex items-start gap-3 px-3 py-2.5 hover:bg-white/10 transition-colors ${
-                          active ? 'bg-heritage-600/20 text-heritage-200' : 'text-slate-200'
-                        }`}
-                      >
-                        <Icon className="w-4 h-4 text-heritage-400 mt-0.5 flex-shrink-0" />
-                        <div className="min-w-0">
-                          <div className="text-xs font-semibold leading-tight">{col.name}</div>
-                          <div className="text-[11px] text-slate-400 leading-tight mt-0.5">{col.desc}</div>
-                        </div>
-                      </Link>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-
-            {/* Audio/Video */}
-            <Link
-              to="/media"
-              className={`px-2.5 py-1.5 xl:px-3 xl:py-2 rounded-md transition-colors whitespace-nowrap flex-shrink-0 ${
-                isActive('/media')
-                  ? 'bg-heritage-600/30 text-heritage-300 border-b-2 border-heritage-400 font-semibold'
-                  : 'text-slate-200 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              Audio/Video
-            </Link>
-
-            {/* Timeline */}
-            <Link
-              to="/timeline"
-              className={`px-2.5 py-1.5 xl:px-3 xl:py-2 rounded-md transition-colors whitespace-nowrap flex-shrink-0 ${
-                isActive('/timeline')
-                  ? 'bg-heritage-600/30 text-heritage-300 border-b-2 border-heritage-400 font-semibold'
-                  : 'text-slate-200 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              {t('nav.timeline', 'Timeline')}
-            </Link>
-
-            {/* Knowledge Graph */}
-            <Link
-              to="/knowledge-graph"
-              className={`px-2.5 py-1.5 xl:px-3 xl:py-2 rounded-md transition-colors whitespace-nowrap flex-shrink-0 ${
-                isActive('/knowledge-graph')
-                  ? 'bg-heritage-600/30 text-heritage-300 border-b-2 border-heritage-400 font-semibold'
-                  : 'text-slate-200 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              {t('nav.graph', 'Knowledge Graph')}
-            </Link>
-
-            {/* Research Assistant */}
-            <Link
-              to="/research"
-              className={`px-2.5 py-1.5 xl:px-3 xl:py-2 rounded-md transition-colors whitespace-nowrap flex-shrink-0 ${
-                isActive('/research')
-                  ? 'bg-heritage-600/30 text-heritage-300 border-b-2 border-heritage-400 font-semibold'
-                  : 'text-slate-200 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              {t('nav.research', 'AI Assistant')}
-            </Link>
-
-            {/* About */}
-            <Link
-              to="/about"
-              className={`px-2.5 py-1.5 xl:px-3 xl:py-2 rounded-md transition-colors whitespace-nowrap flex-shrink-0 ${
-                isActive('/about')
-                  ? 'bg-heritage-600/30 text-heritage-300 border-b-2 border-heritage-400 font-semibold'
-                  : 'text-slate-200 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              About
-            </Link>
-          </nav>
-
-          {/* Mobile / Kiosk Hamburger Button */}
-          <div className="flex items-center space-x-2 lg:hidden flex-shrink-0">
+          {/* Mobile Hamburger Button */}
+          <div className="flex items-center space-x-2 md:hidden">
             {!isKiosk && (
               <button
                 onClick={enterKiosk}
-                className="p-2 text-heritage-300 hover:text-white rounded-md bg-white/5 border border-heritage-500/40 text-xs flex items-center gap-1 whitespace-nowrap"
+                className="px-2 py-1 text-ink border border-ink text-xs font-mono uppercase"
                 aria-label="Enter Kiosk Mode"
               >
-                <Monitor className="w-4 h-4 flex-shrink-0" />
-                <span className="hidden sm:inline">Kiosk</span>
+                Kiosk
               </button>
             )}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2.5 rounded-md text-slate-300 hover:text-white hover:bg-white/10"
+              className="p-1.5 border border-ink text-ink hover:bg-ink hover:text-white"
               aria-label="Toggle Navigation Menu"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
       </div>
 
+      {/* Broadsheet Section Navigation Bar with Double Printer's Rules */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-y-2 border-double border-ink bg-[#FAF6EE]">
+        <nav className="hidden lg:flex items-center justify-center space-x-1 xl:space-x-2 py-1.5 text-xs font-mono uppercase tracking-wider">
+          {/* Home / Front Page */}
+          <Link
+            to="/"
+            className={`px-3 py-1 border transition-colors whitespace-nowrap ${
+              isActive('/')
+                ? 'bg-ink text-white border-ink font-bold shadow-letterpress-sm'
+                : 'text-ink border-transparent hover:border-ink hover:bg-newsprint-200'
+            }`}
+          >
+            [ Front Page ]
+          </Link>
+
+          {/* Search */}
+          <Link
+            to="/search"
+            className={`px-3 py-1 border transition-colors whitespace-nowrap ${
+              isActive('/search')
+                ? 'bg-ink text-white border-ink font-bold shadow-letterpress-sm'
+                : 'text-ink border-transparent hover:border-ink hover:bg-newsprint-200'
+            }`}
+          >
+            [ Dispatch Search ]
+          </Link>
+
+          {/* Collections Dropdown */}
+          <div 
+            ref={dropdownRef} 
+            className="relative"
+            onMouseEnter={() => setCollectionsOpen(true)}
+            onMouseLeave={() => setCollectionsOpen(false)}
+          >
+            <button
+              type="button"
+              onClick={() => setCollectionsOpen(!collectionsOpen)}
+              className={`flex items-center gap-1 px-3 py-1 border transition-colors whitespace-nowrap ${
+                isCollectionsActive
+                  ? 'bg-ink text-white border-ink font-bold shadow-letterpress-sm'
+                  : 'text-ink border-transparent hover:border-ink hover:bg-newsprint-200'
+              }`}
+              aria-expanded={collectionsOpen}
+              aria-haspopup="true"
+            >
+              <span>[ Holdings & Ledger ▾ ]</span>
+            </button>
+
+            {/* Collections Popover Menu in Newspaper Style */}
+            {collectionsOpen && (
+              <div className="absolute left-0 mt-1 w-72 bg-[#FAF6EE] border-2 border-ink shadow-letterpress py-2 z-50 animate-fadeIn">
+                <div className="px-3 py-1.5 border-b border-ink/20 text-[10px] uppercase font-mono tracking-widest text-oxblood font-bold">
+                  Classified Archival Holdings
+                </div>
+                {collectionLinks.map((col) => {
+                  const Icon = col.icon;
+                  const active = location.pathname.startsWith(col.path);
+                  return (
+                    <Link
+                      key={col.path}
+                      to={col.path}
+                      onClick={() => setCollectionsOpen(false)}
+                      className={`flex items-start gap-3 px-3 py-2 border-b border-ink/10 last:border-0 hover:bg-newsprint-300 transition-colors ${
+                        active ? 'bg-newsprint-300 font-bold' : ''
+                      }`}
+                    >
+                      <Icon className="w-4 h-4 text-oxblood mt-0.5 flex-shrink-0" />
+                      <div className="min-w-0">
+                        <div className="text-xs font-serif font-bold text-ink leading-tight">{col.name}</div>
+                        <div className="text-[10px] font-mono text-ink-600 leading-tight mt-0.5">{col.desc}</div>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* Audio/Video */}
+          <Link
+            to="/media"
+            className={`px-3 py-1 border transition-colors whitespace-nowrap ${
+              isActive('/media')
+                ? 'bg-ink text-white border-ink font-bold shadow-letterpress-sm'
+                : 'text-ink border-transparent hover:border-ink hover:bg-newsprint-200'
+            }`}
+          >
+            [ Audio-Visual ]
+          </Link>
+
+          {/* Timeline */}
+          <Link
+            to="/timeline"
+            className={`px-3 py-1 border transition-colors whitespace-nowrap ${
+              isActive('/timeline')
+                ? 'bg-ink text-white border-ink font-bold shadow-letterpress-sm'
+                : 'text-ink border-transparent hover:border-ink hover:bg-newsprint-200'
+            }`}
+          >
+            [ Chronology ]
+          </Link>
+
+          {/* Knowledge Graph */}
+          <Link
+            to="/knowledge-graph"
+            className={`px-3 py-1 border transition-colors whitespace-nowrap ${
+              isActive('/knowledge-graph')
+                ? 'bg-ink text-white border-ink font-bold shadow-letterpress-sm'
+                : 'text-ink border-transparent hover:border-ink hover:bg-newsprint-200'
+            }`}
+          >
+            [ Knowledge Matrix ]
+          </Link>
+
+          {/* Research Assistant */}
+          <Link
+            to="/research"
+            className={`px-3 py-1 border transition-colors whitespace-nowrap ${
+              isActive('/research')
+                ? 'bg-oxblood text-white border-oxblood font-bold shadow-letterpress-red'
+                : 'text-oxblood font-bold border-oxblood/40 hover:bg-oxblood hover:text-white'
+            }`}
+          >
+            [ ★ AI Research Assistant ]
+          </Link>
+
+          {/* About */}
+          <Link
+            to="/about"
+            className={`px-3 py-1 border transition-colors whitespace-nowrap ${
+              isActive('/about')
+                ? 'bg-ink text-white border-ink font-bold shadow-letterpress-sm'
+                : 'text-ink border-transparent hover:border-ink hover:bg-newsprint-200'
+            }`}
+          >
+            [ Registry Info ]
+          </Link>
+        </nav>
+      </div>
+
+      {/* Gazette Wire Bulletin Ticker */}
+      <div className="bg-folio border-b border-ink/20 py-1 px-4 text-[11px] font-mono text-ink-700 hidden sm:block overflow-hidden">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="bg-ink text-white px-1.5 py-0.2 text-[9px] font-bold uppercase tracking-widest">
+              DISPATCH
+            </span>
+            <span className="truncate">
+              ★ GAZETTE BULLETIN: High-resolution facsimiles of Constituent Assembly Drafts available • Dublin Core metadata active • Hugging Face RAG online ★
+            </span>
+          </div>
+          <span className="text-[10px] text-ink-500 whitespace-nowrap hidden md:inline">
+            REVISED ARCHIVAL EDITION 2026
+          </span>
+        </div>
+      </div>
+
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-[#102038] border-b border-white/10 px-4 pt-2 pb-6 space-y-1 animate-fadeIn max-h-[85vh] overflow-y-auto">
+        <div className="lg:hidden bg-[#FAF6EE] border-b-2 border-ink px-4 pt-3 pb-6 space-y-2 animate-fadeIn max-h-[85vh] overflow-y-auto font-mono">
           <Link
             to="/"
             onClick={() => setMobileMenuOpen(false)}
-            className={`block px-3 py-2 rounded-md text-sm font-medium ${
-              isActive('/') ? 'bg-heritage-600/30 text-heritage-300 font-semibold' : 'text-slate-200 hover:bg-white/5'
+            className={`block px-3 py-2 border text-sm ${
+              isActive('/') ? 'bg-ink text-white border-ink font-bold' : 'border-ink/20 text-ink'
             }`}
           >
-            {t('nav.home', 'Home')}
+            [ Front Page ]
           </Link>
           <Link
             to="/search"
             onClick={() => setMobileMenuOpen(false)}
-            className={`block px-3 py-2 rounded-md text-sm font-medium ${
-              isActive('/search') ? 'bg-heritage-600/30 text-heritage-300 font-semibold' : 'text-slate-200 hover:bg-white/5'
+            className={`block px-3 py-2 border text-sm ${
+              isActive('/search') ? 'bg-ink text-white border-ink font-bold' : 'border-ink/20 text-ink'
             }`}
           >
-            {t('nav.search', 'Search')}
+            [ Dispatch Search ]
           </Link>
 
           {/* Collections Section in Mobile */}
-          <div className="py-1">
-            <div className="px-3 py-1 text-[11px] uppercase font-mono tracking-wider text-heritage-300/80">
-              Archival Collections
+          <div className="py-2 border-y border-ink/20 space-y-1">
+            <div className="px-3 text-[11px] uppercase font-bold text-oxblood">
+              Classified Holdings
             </div>
             {collectionLinks.map((col) => {
               const Icon = col.icon;
@@ -352,11 +390,11 @@ export const Header: React.FC = () => {
                   key={col.path}
                   to={col.path}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center gap-2.5 px-3 py-2 rounded-md text-sm font-medium pl-5 ${
-                    location.pathname.startsWith(col.path) ? 'bg-heritage-600/30 text-heritage-300 font-semibold' : 'text-slate-200 hover:bg-white/5'
+                  className={`flex items-center gap-2 px-3 py-1.5 text-xs ${
+                    location.pathname.startsWith(col.path) ? 'bg-newsprint-300 font-bold' : 'text-ink'
                   }`}
                 >
-                  <Icon className="w-3.5 h-3.5 text-heritage-400 flex-shrink-0" />
+                  <Icon className="w-3.5 h-3.5 text-oxblood flex-shrink-0" />
                   <span>{col.name}</span>
                 </Link>
               );
@@ -364,20 +402,20 @@ export const Header: React.FC = () => {
           </div>
 
           {[
-            { name: 'Audio/Video', path: '/media' },
-            { name: t('nav.timeline', 'Timeline'), path: '/timeline' },
-            { name: t('nav.graph', 'Knowledge Graph'), path: '/knowledge-graph' },
-            { name: t('nav.research', 'AI Assistant'), path: '/research' },
-            { name: 'About', path: '/about' },
+            { name: '[ Audio-Visual ]', path: '/media' },
+            { name: '[ Chronology ]', path: '/timeline' },
+            { name: '[ Knowledge Matrix ]', path: '/knowledge-graph' },
+            { name: '[ ★ AI Research Assistant ]', path: '/research' },
+            { name: '[ Registry Info ]', path: '/about' },
           ].map((link) => (
             <Link
               key={link.path}
               to={link.path}
               onClick={() => setMobileMenuOpen(false)}
-              className={`block px-3 py-2 rounded-md text-sm font-medium ${
+              className={`block px-3 py-2 border text-sm ${
                 isActive(link.path)
-                  ? 'bg-heritage-600/30 text-heritage-300 font-semibold'
-                  : 'text-slate-200 hover:bg-white/5'
+                  ? 'bg-ink text-white border-ink font-bold'
+                  : 'border-ink/20 text-ink'
               }`}
             >
               {link.name}
@@ -385,16 +423,16 @@ export const Header: React.FC = () => {
           ))}
 
           {/* Mobile Utilities */}
-          <div className="pt-3 border-t border-white/10 flex flex-col space-y-2">
-            <div className="flex items-center justify-between px-3 py-2 bg-white/5 rounded-md text-sm text-slate-300">
-              <span className="flex items-center gap-2">
-                <Globe className="w-4 h-4 text-heritage-400 flex-shrink-0" />
+          <div className="pt-3 border-t border-ink/20 flex flex-col space-y-2">
+            <div className="flex items-center justify-between px-3 py-2 border border-ink/20 bg-newsprint-200 text-xs">
+              <span className="flex items-center gap-2 font-bold text-ink">
+                <Globe className="w-4 h-4 text-oxblood flex-shrink-0" />
                 Language / भाषा:
               </span>
               <select
                 value={language}
                 onChange={(e) => setLanguage(e.target.value as LanguageCode)}
-                className="bg-[#102038] border border-white/20 text-white rounded px-2 py-1 text-xs"
+                className="bg-[#FAF6EE] border border-ink/40 text-ink px-2 py-1 text-xs font-mono"
               >
                 {supportedLanguages.map((lang) => (
                   <option key={lang.code} value={lang.code}>
@@ -406,36 +444,32 @@ export const Header: React.FC = () => {
             <Link
               to="/demo"
               onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2.5 rounded-md text-sm text-heritage-300 hover:bg-white/5 flex items-center gap-2 font-bold"
+              className="px-3 py-2 border border-oxblood text-oxblood text-xs font-bold uppercase tracking-wider text-center"
             >
-              <Sparkles className="w-4 h-4 text-heritage-400 flex-shrink-0" />
-              SIH Demo Mode Tour
+              ★ Tour Gazette Demonstration
             </Link>
             <Link
               to="/system-status"
               onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2.5 rounded-md text-sm text-slate-300 hover:bg-white/5 flex items-center gap-2"
+              className="px-3 py-2 border border-ink/40 text-ink text-xs text-center"
             >
-              <Shield className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-              Subsystem Diagnostics
+              Registry Subsystem Status
             </Link>
             <Link
               to="/admin"
               onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2.5 rounded-md text-sm text-heritage-300 hover:bg-white/5 flex items-center gap-2"
+              className="px-3 py-2 border border-ink/40 text-ink text-xs text-center"
             >
-              <Shield className="w-4 h-4 flex-shrink-0" />
-              Administrative Portal
+              Archivist Portal
             </Link>
             <button
               onClick={() => {
                 enterKiosk();
                 setMobileMenuOpen(false);
               }}
-              className="w-full text-left px-3 py-2.5 rounded-md text-sm text-white bg-heritage-600 hover:bg-heritage-700 flex items-center gap-2 font-semibold"
+              className="w-full text-center px-3 py-2 text-white bg-ink border border-ink text-xs font-bold uppercase tracking-wider"
             >
-              <Monitor className="w-4 h-4 flex-shrink-0" />
-              Switch to Touchscreen Kiosk Display
+              Launch Touchscreen Kiosk Desk
             </button>
           </div>
         </div>

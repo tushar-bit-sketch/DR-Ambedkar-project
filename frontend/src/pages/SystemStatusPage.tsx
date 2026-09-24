@@ -101,45 +101,45 @@ export const SystemStatusPage: React.FC = () => {
   });
 
   return (
-    <div className="min-h-screen bg-[#F8F5EE] text-slate-900 pb-20">
-      {/* Top Header */}
-      <div className="bg-[#102038] text-white border-b-2 border-heritage-500 shadow-md">
+    <div className="min-h-screen bg-[#F4EFE6] text-ink pb-20">
+      {/* Top Header Masthead */}
+      <div className="bg-[#FAF6EE] text-ink border-b-2 border-double border-ink shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center space-x-3">
-            <Link to="/" className="text-slate-400 hover:text-white flex items-center gap-1 text-xs">
+            <Link to="/" className="text-ink hover:text-oxblood flex items-center gap-1 text-xs font-mono font-bold uppercase">
               <ArrowLeft className="w-4 h-4" />
-              <span>Back to Archive</span>
+              <span>[ Back to Archive ]</span>
             </Link>
-            <span className="text-white/20">|</span>
+            <span className="text-ink/30 font-mono">|</span>
             <div>
-              <div className="flex items-center gap-2 text-heritage-400 text-xs font-bold uppercase tracking-wider">
-                <ShieldCheck className="w-4 h-4" />
-                <span>SIH26096 System Health & Subsystem Diagnostics</span>
+              <div className="flex items-center gap-2 text-oxblood text-xs font-mono font-bold uppercase tracking-wider">
+                <ShieldCheck className="w-4 h-4 text-oxblood" />
+                <span>CENTRAL TELEMETRY • LIVE SUBSYSTEM VERIFICATION MATRIX</span>
               </div>
-              <h1 className="text-2xl font-serif font-bold tracking-wide">
-                Live Subsystem Verification Matrix
+              <h1 className="text-2xl sm:text-3xl font-serif font-black tracking-tight text-ink">
+                Official Diagnostics & Subsystem Gazette
               </h1>
             </div>
           </div>
 
-          <div className="flex items-center space-x-3">
-            <div className="flex items-center space-x-2 bg-white/5 border border-white/10 px-3 py-1.5 rounded text-xs">
-              <span className="text-slate-400">Auto-refresh (10s):</span>
+          <div className="flex items-center space-x-3 font-mono">
+            <div className="flex items-center space-x-2 bg-white border border-ink px-3 py-1.5 text-xs shadow-letterpress-sm">
+              <span className="text-stone-600 font-bold uppercase">Auto-Probe (10s):</span>
               <button
                 onClick={() => setAutoRefresh(!autoRefresh)}
-                className={`w-8 h-4 rounded-full transition-colors relative ${autoRefresh ? 'bg-heritage-500' : 'bg-slate-700'}`}
+                className={`w-8 h-4 transition-colors relative border border-ink ${autoRefresh ? 'bg-oxblood' : 'bg-stone-300'}`}
               >
-                <div className={`w-3 h-3 rounded-full bg-white transition-transform ${autoRefresh ? 'translate-x-4' : 'translate-x-0.5'} mt-0.5`} />
+                <div className={`w-3 h-3 bg-white transition-transform ${autoRefresh ? 'translate-x-4' : 'translate-x-0.5'} mt-0.2`} />
               </button>
             </div>
 
             <button
               onClick={fetchStatus}
               disabled={loading}
-              className="flex items-center space-x-1.5 px-3 py-1.5 rounded bg-heritage-500 hover:bg-heritage-600 text-slate-950 text-xs font-bold transition shadow"
+              className="flex items-center space-x-1.5 px-3 py-1.5 bg-ink hover:bg-oxblood text-white text-xs font-bold uppercase transition border border-ink shadow-letterpress-sm"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
-              <span>Refresh Probes</span>
+              <span>[ Inquire Probes ]</span>
             </button>
           </div>
         </div>
@@ -147,78 +147,78 @@ export const SystemStatusPage: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 mt-8 space-y-6">
         {/* Environmental Audit Card */}
-        <div className="bg-white rounded-xl border border-stone-300 p-5 shadow-sm">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-stone-200">
+        <div className="bg-[#FAF6EE] border-2 border-ink p-6 shadow-letterpress">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b-2 border-ink">
             <div>
-              <div className="text-xs font-mono text-stone-500 uppercase">Platform Environment Assessment</div>
-              <h2 className="text-lg font-serif font-bold text-slate-900 mt-0.5">
+              <div className="text-xs font-mono text-oxblood uppercase font-bold tracking-wider">PLATFORM ENVIRONMENT TELEMETRY</div>
+              <h2 className="text-xl font-serif font-black text-ink mt-0.5">
                 {data?.application || 'SIH26096 Digital Heritage Archive'}
               </h2>
-              <div className="text-xs text-stone-600 mt-1 flex flex-wrap gap-x-4 gap-y-1">
+              <div className="text-xs text-stone-700 font-mono mt-1 flex flex-wrap gap-x-4 gap-y-1">
                 <span><strong>Phase:</strong> {data?.phase || 'PHASE 10 (FINAL)'}</span>
                 <span><strong>Host OS:</strong> {data?.environment || 'Windows 11'}</span>
                 <span><strong>Last Probe:</strong> {lastRefreshed.toLocaleTimeString()}</span>
               </div>
             </div>
 
-            <div className="flex items-center space-x-2">
-              <span className="text-xs text-stone-600 font-semibold">Overall Platform Status:</span>
-              <span className={`px-3 py-1 rounded-full text-xs font-mono font-bold border ${
+            <div className="flex items-center space-x-2 font-mono">
+              <span className="text-xs text-stone-700 font-bold uppercase">System Verdict:</span>
+              <span className={`px-3 py-1 text-xs font-bold border ${
                 data?.overall_status === 'OPERATIONAL'
-                  ? 'bg-emerald-100 text-emerald-800 border-emerald-400'
-                  : 'bg-amber-100 text-amber-800 border-amber-400'
+                  ? 'bg-red-50 text-oxblood border-oxblood'
+                  : 'bg-amber-50 text-amber-900 border-amber-500'
               }`}>
-                {data?.overall_status || 'OPERATIONAL'}
+                [ SEAL: {data?.overall_status || 'OPERATIONAL'} ]
               </span>
             </div>
           </div>
 
           {/* Metric Badges */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
-            <div className="p-3 bg-stone-50 border border-stone-200 rounded-lg text-center">
-              <div className="text-2xl font-bold font-mono text-slate-900">{counts.total}</div>
-              <div className="text-[11px] text-stone-500 font-medium uppercase mt-0.5">Total Subsystems</div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 font-mono">
+            <div className="p-3 bg-white border-2 border-ink text-center shadow-letterpress-sm">
+              <div className="text-2xl font-black text-ink">{counts.total}</div>
+              <div className="text-[10px] text-stone-600 font-bold uppercase mt-0.5">Total Subsystems</div>
             </div>
-            <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-center">
-              <div className="text-2xl font-bold font-mono text-emerald-700">{counts.operational}</div>
-              <div className="text-[11px] text-emerald-700 font-medium uppercase mt-0.5">Operational</div>
+            <div className="p-3 bg-white border-2 border-ink text-center shadow-letterpress-sm">
+              <div className="text-2xl font-black text-emerald-800">{counts.operational}</div>
+              <div className="text-[10px] text-emerald-800 font-bold uppercase mt-0.5">Operational</div>
             </div>
-            <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-center">
-              <div className="text-2xl font-bold font-mono text-amber-700">{counts.fallback}</div>
-              <div className="text-[11px] text-amber-700 font-medium uppercase mt-0.5">Operational (Fallback)</div>
+            <div className="p-3 bg-white border-2 border-ink text-center shadow-letterpress-sm">
+              <div className="text-2xl font-black text-amber-800">{counts.fallback}</div>
+              <div className="text-[10px] text-amber-800 font-bold uppercase mt-0.5">Fallback Subsystems</div>
             </div>
-            <div className="p-3 bg-rose-50 border border-rose-200 rounded-lg text-center">
-              <div className="text-2xl font-bold font-mono text-rose-700">{counts.unavailable}</div>
-              <div className="text-[11px] text-rose-700 font-medium uppercase mt-0.5">Unavailable</div>
+            <div className="p-3 bg-white border-2 border-ink text-center shadow-letterpress-sm">
+              <div className="text-2xl font-black text-rose-800">{counts.unavailable}</div>
+              <div className="text-[10px] text-rose-800 font-bold uppercase mt-0.5">Unavailable</div>
             </div>
           </div>
         </div>
 
         {/* Filter Tabs & Subsystems Grid */}
         <div className="space-y-4">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center space-x-1.5 bg-white border border-stone-300 p-1 rounded-lg text-xs">
+          <div className="flex flex-wrap items-center justify-between gap-3 font-mono">
+            <div className="flex items-center space-x-1 bg-[#EFE8DA] border-2 border-ink p-1 text-xs shadow-letterpress-sm">
               <button
                 onClick={() => setFilter('ALL')}
-                className={`px-3 py-1 rounded font-medium transition ${filter === 'ALL' ? 'bg-[#102038] text-white shadow-sm' : 'text-stone-600 hover:text-stone-900'}`}
+                className={`px-3 py-1 font-bold uppercase transition ${filter === 'ALL' ? 'bg-ink text-white shadow-sm' : 'text-ink hover:bg-stone-200'}`}
               >
                 All Subsystems ({counts.total})
               </button>
               <button
                 onClick={() => setFilter('OPERATIONAL')}
-                className={`px-3 py-1 rounded font-medium transition ${filter === 'OPERATIONAL' ? 'bg-emerald-600 text-white shadow-sm' : 'text-emerald-700 hover:bg-emerald-50'}`}
+                className={`px-3 py-1 font-bold uppercase transition ${filter === 'OPERATIONAL' ? 'bg-ink text-white shadow-sm' : 'text-ink hover:bg-stone-200'}`}
               >
                 Operational ({counts.operational})
               </button>
               <button
                 onClick={() => setFilter('DEGRADED_FALLBACK')}
-                className={`px-3 py-1 rounded font-medium transition ${filter === 'DEGRADED_FALLBACK' ? 'bg-amber-600 text-white shadow-sm' : 'text-amber-700 hover:bg-amber-50'}`}
+                className={`px-3 py-1 font-bold uppercase transition ${filter === 'DEGRADED_FALLBACK' ? 'bg-ink text-white shadow-sm' : 'text-ink hover:bg-stone-200'}`}
               >
                 Fallback ({counts.fallback})
               </button>
               <button
                 onClick={() => setFilter('UNAVAILABLE')}
-                className={`px-3 py-1 rounded font-medium transition ${filter === 'UNAVAILABLE' ? 'bg-rose-600 text-white shadow-sm' : 'text-rose-700 hover:bg-rose-50'}`}
+                className={`px-3 py-1 font-bold uppercase transition ${filter === 'UNAVAILABLE' ? 'bg-ink text-white shadow-sm' : 'text-ink hover:bg-stone-200'}`}
               >
                 Unavailable ({counts.unavailable})
               </button>
@@ -227,17 +227,17 @@ export const SystemStatusPage: React.FC = () => {
             <div className="flex items-center space-x-2">
               <Link
                 to="/demo"
-                className="px-3 py-1.5 rounded bg-heritage-500 hover:bg-heritage-600 text-slate-950 text-xs font-bold transition flex items-center gap-1 shadow-sm"
+                className="px-4 py-2 bg-ink hover:bg-oxblood text-white text-xs font-bold uppercase transition flex items-center gap-1.5 border border-ink shadow-letterpress-sm"
               >
-                <span>Launch SIH Demo Tour</span>
+                <span>[ Launch SIH Demo Tour ]</span>
                 <ExternalLink className="w-3.5 h-3.5" />
               </Link>
             </div>
           </div>
 
           {error && (
-            <div className="p-4 bg-red-900/10 border border-red-400 rounded-lg text-red-800 text-sm flex items-center gap-2">
-              <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0" />
+            <div className="p-4 bg-red-50 border-2 border-oxblood text-oxblood text-xs font-mono font-bold flex items-center gap-2 shadow-letterpress-sm">
+              <AlertTriangle className="w-5 h-5 text-oxblood flex-shrink-0" />
               <span>{error}</span>
             </div>
           )}
@@ -249,57 +249,57 @@ export const SystemStatusPage: React.FC = () => {
               return (
                 <div
                   key={key}
-                  className="bg-white rounded-xl border border-stone-300 p-5 shadow-sm hover:shadow transition flex flex-col justify-between"
+                  className="bg-[#FAF6EE] border-2 border-ink p-5 shadow-letterpress-sm hover:shadow-letterpress transition flex flex-col justify-between"
                 >
                   <div>
                     {/* Header */}
                     <div className="flex items-start justify-between gap-2 mb-3">
                       <div className="flex items-center space-x-2.5">
-                        <div className="w-8 h-8 rounded-lg bg-stone-100 text-stone-700 flex items-center justify-center flex-shrink-0">
-                          <Icon className="w-4 h-4" />
+                        <div className="w-8 h-8 bg-white border border-ink text-ink flex items-center justify-center flex-shrink-0">
+                          <Icon className="w-4 h-4 text-oxblood" />
                         </div>
                         <div>
-                          <h3 className="font-serif font-bold text-slate-900 text-sm leading-tight">
+                          <h3 className="font-serif font-bold text-ink text-sm leading-tight">
                             {sub.name}
                           </h3>
-                          <span className="text-[10px] font-mono text-stone-400 uppercase">{key}</span>
+                          <span className="text-[10px] font-mono text-stone-500 uppercase">{key}</span>
                         </div>
                       </div>
-                      <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold border uppercase flex-shrink-0 ${getStatusBadgeClass(sub.status)}`}>
+                      <span className={`px-2 py-0.5 text-[10px] font-mono font-bold border uppercase flex-shrink-0 ${getStatusBadgeClass(sub.status)}`}>
                         {sub.status}
                       </span>
                     </div>
 
                     {/* Provider & Version */}
-                    <div className="bg-stone-50 border border-stone-200 rounded p-2.5 text-xs mb-3 space-y-1">
+                    <div className="bg-white border border-ink p-2.5 text-xs mb-3 space-y-1 font-mono shadow-letterpress-sm">
                       <div className="flex justify-between">
-                        <span className="text-stone-500">Provider:</span>
-                        <span className="font-semibold text-slate-800 text-right truncate ml-2">{sub.provider}</span>
+                        <span className="text-stone-500 uppercase">Provider:</span>
+                        <span className="font-bold text-ink text-right truncate ml-2">{sub.provider}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-stone-500">Version:</span>
-                        <span className="font-mono text-stone-700">{sub.version}</span>
+                        <span className="text-stone-500 uppercase">Version:</span>
+                        <span className="font-bold text-oxblood">{sub.version}</span>
                       </div>
                     </div>
 
                     {/* Diagnostic Details */}
-                    <div className="text-xs text-slate-600 leading-relaxed">
+                    <div className="text-xs text-stone-700 font-editorial leading-relaxed">
                       {sub.details}
                     </div>
                   </div>
 
-                  <div className="mt-4 pt-3 border-t border-stone-100 flex items-center justify-between text-[11px] text-stone-500">
+                  <div className="mt-4 pt-3 border-t border-ink/20 flex items-center justify-between text-[11px] font-mono text-stone-600">
                     <span className="flex items-center gap-1">
                       {sub.status === 'OPERATIONAL' ? (
-                        <Check className="w-3.5 h-3.5 text-emerald-600" />
+                        <Check className="w-3.5 h-3.5 text-oxblood" />
                       ) : sub.status.includes('FALLBACK') ? (
-                        <AlertTriangle className="w-3.5 h-3.5 text-amber-600" />
+                        <AlertTriangle className="w-3.5 h-3.5 text-amber-700" />
                       ) : (
-                        <XCircle className="w-3.5 h-3.5 text-rose-500" />
+                        <XCircle className="w-3.5 h-3.5 text-rose-700" />
                       )}
-                      <span>Probe Verified</span>
+                      <span>SEAL: Probe Verified</span>
                     </span>
-                    <span className="font-mono text-[10px]">Dublin Core OAIS</span>
+                    <span className="font-mono text-[10px]">ISO 14721 OAIS</span>
                   </div>
                 </div>
               );
@@ -308,32 +308,32 @@ export const SystemStatusPage: React.FC = () => {
         </div>
 
         {/* Host Machine Telemetry Summary */}
-        <div className="bg-white rounded-xl border border-stone-300 p-5 shadow-sm">
-          <h2 className="font-serif font-bold text-slate-900 text-base mb-3 flex items-center gap-2">
-            <Cpu className="w-4 h-4 text-heritage-600" />
+        <div className="bg-[#FAF6EE] border-2 border-ink p-6 shadow-letterpress space-y-4">
+          <h2 className="font-serif font-black text-ink text-lg flex items-center gap-2 border-b-2 border-ink pb-2">
+            <Cpu className="w-4 h-4 text-oxblood" />
             <span>Host Environment Telemetry & Hardware State</span>
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs">
-            <div className="p-3 bg-stone-50 rounded border border-stone-200">
-              <span className="text-stone-500 block mb-1">Processor / CPU</span>
-              <span className="font-semibold text-slate-900 block">AMD Ryzen 5 7535HS</span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs font-mono">
+            <div className="p-3 bg-white border-2 border-ink shadow-letterpress-sm">
+              <span className="text-stone-500 block uppercase mb-1">Processor / CPU</span>
+              <span className="font-bold text-ink block">AMD Ryzen 5 7535HS</span>
               <span className="text-[11px] text-stone-500">6 Cores / 12 Threads</span>
             </div>
-            <div className="p-3 bg-stone-50 rounded border border-stone-200">
-              <span className="text-stone-500 block mb-1">System Memory</span>
-              <span className="font-semibold text-slate-900 block">8.00 GB Physical RAM</span>
-              <span className="text-[11px] text-emerald-600">Available & Monitored</span>
+            <div className="p-3 bg-white border-2 border-ink shadow-letterpress-sm">
+              <span className="text-stone-500 block uppercase mb-1">System Memory</span>
+              <span className="font-bold text-ink block">8.00 GB Physical RAM</span>
+              <span className="text-[11px] text-oxblood font-bold">Monitored Host Reserve</span>
             </div>
-            <div className="p-3 bg-stone-50 rounded border border-stone-200">
-              <span className="text-stone-500 block mb-1">Display & Touch State</span>
-              <span className="font-semibold text-slate-900 block">Pointer/Keyboard Active</span>
-              <span className="text-[11px] text-amber-700">Touchscreen NOT_DETECTED</span>
+            <div className="p-3 bg-white border-2 border-ink shadow-letterpress-sm">
+              <span className="text-stone-500 block uppercase mb-1">Display & Touch State</span>
+              <span className="font-bold text-ink block">Pointer/Keyboard Active</span>
+              <span className="text-[11px] text-stone-600">Standard Broadsheet Render</span>
             </div>
-            <div className="p-3 bg-stone-50 rounded border border-stone-200">
-              <span className="text-stone-500 block mb-1">Primary Database</span>
-              <span className="font-semibold text-slate-900 block">SQLite 3 (Dev Schema)</span>
-              <span className="text-[11px] text-emerald-600 font-mono">Mig c8f2910d5403</span>
+            <div className="p-3 bg-white border-2 border-ink shadow-letterpress-sm">
+              <span className="text-stone-500 block uppercase mb-1">Primary Database</span>
+              <span className="font-bold text-ink block">SQLite 3 (Dev Schema)</span>
+              <span className="text-[11px] text-oxblood font-bold">Mig c8f2910d5403</span>
             </div>
           </div>
         </div>

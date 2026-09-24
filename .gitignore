@@ -51,6 +51,10 @@ pnpm-debug.log*
 .system_generated/
 scratch/
 backend/storage/derivatives/
+backend/storage/uploads/
+backend/storage/media/
+.agents/
+skills-lock.json
 .vercel
 frontend/.vercel
 

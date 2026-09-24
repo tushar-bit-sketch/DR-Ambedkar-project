@@ -106,22 +106,22 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 md:p-6 overflow-y-auto animate-fadeIn">
+    <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4 md:p-6 overflow-y-auto animate-fadeIn font-mono">
       <div 
-        className="bg-[#FAF8F5] w-full max-w-6xl max-h-[92vh] rounded-xl shadow-2xl border border-stone-300 flex flex-col overflow-hidden"
+        className="bg-[#FAF6EE] w-full max-w-6xl max-h-[92vh] border-2 border-ink shadow-letterpress-lg flex flex-col overflow-hidden text-ink"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header Bar */}
-        <div className="bg-[#1B2A4A] text-white px-6 py-4 flex items-center justify-between border-b border-heritage-500/40 flex-shrink-0">
+        <div className="bg-[#FAF6EE] text-ink px-6 py-3.5 flex items-center justify-between border-b-2 border-double border-ink flex-shrink-0">
           <div className="flex items-center space-x-3 overflow-hidden">
-            <span className="font-mono text-xs text-heritage-300 bg-white/10 px-2.5 py-1 rounded border border-heritage-400/30">
-              {document.archive_id}
+            <span className="font-mono text-xs font-bold text-oxblood border border-oxblood/40 px-2 py-0.5 bg-newsprint-100">
+              ACCESSION: {document.archive_id}
             </span>
             <div className="truncate">
-              <h2 className="font-serif font-bold text-base sm:text-lg text-white truncate">
+              <h2 className="font-serif font-black text-base sm:text-lg text-ink truncate uppercase">
                 {document.title}
               </h2>
-              <span className="text-xs text-slate-300 font-sans block truncate">
+              <span className="text-[11px] text-ink-600 font-mono block truncate">
                 {document.collection_title || 'Institutional Digital Repository'}
               </span>
             </div>
@@ -129,21 +129,21 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
 
           <button
             onClick={onClose}
-            className="p-2 text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition"
+            className="p-1.5 border border-ink text-ink hover:bg-ink hover:text-white transition"
             aria-label="Close Document Viewer"
           >
-            <X className="w-6 h-6" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Phase 1 Temporary Notice Banner */}
+        {/* Phase 1 Notice Banner */}
         {actionNotice && (
-          <div className="bg-amber-100 border-b border-amber-300 px-4 py-2 text-xs text-amber-900 font-medium flex items-center justify-between">
+          <div className="bg-newsprint-200 border-b border-ink/20 px-4 py-1.5 text-xs text-oxblood font-bold flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Info className="w-4 h-4 text-amber-700" />
+              <Info className="w-4 h-4 text-oxblood" />
               <span>{actionNotice}</span>
             </div>
-            <button onClick={() => setActionNotice(null)} className="text-amber-800 font-bold ml-4">✕</button>
+            <button onClick={() => setActionNotice(null)} className="text-ink font-bold ml-4">✕</button>
           </div>
         )}
 
@@ -819,55 +819,55 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
             </div>
 
             {/* Required Actions Bar */}
-            <div className="space-y-3 pt-4 border-t border-stone-300">
-              <span className="text-[11px] uppercase tracking-wider font-semibold text-slate-500 block">
-                Archival Ingest & Scholar Actions (Phase 1 Ready)
+            <div className="space-y-3 pt-3 border-t-2 border-ink">
+              <span className="text-[10px] uppercase tracking-wider font-bold text-oxblood block">
+                SCHOLAR DISPATCH & CURATORIAL ACTIONS
               </span>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs font-mono">
                 {/* 1. Read */}
                 <button
                   onClick={() => setActiveTab('ocr')}
-                  className="p-2.5 bg-white hover:bg-stone-50 border border-stone-300 rounded font-semibold text-ink-900 flex items-center justify-center gap-1.5 transition shadow-sm"
+                  className="p-2 bg-[#FAF6EE] hover:bg-newsprint-300 border border-ink/40 font-bold uppercase text-ink flex items-center justify-center gap-1.5 transition shadow-letterpress-sm"
                 >
-                  <BookOpen className="w-3.5 h-3.5 text-heritage-600" />
-                  <span>Read</span>
+                  <BookOpen className="w-3.5 h-3.5 text-oxblood" />
+                  <span>[ Read ]</span>
                 </button>
 
                 {/* 2. View Original */}
                 <button
                   onClick={() => setActiveTab('preview')}
-                  className="p-2.5 bg-white hover:bg-stone-50 border border-stone-300 rounded font-semibold text-ink-900 flex items-center justify-center gap-1.5 transition shadow-sm"
+                  className="p-2 bg-[#FAF6EE] hover:bg-newsprint-300 border border-ink/40 font-bold uppercase text-ink flex items-center justify-center gap-1.5 transition shadow-letterpress-sm"
                 >
-                  <FileText className="w-3.5 h-3.5 text-heritage-600" />
-                  <span>View Original</span>
+                  <FileText className="w-3.5 h-3.5 text-oxblood" />
+                  <span>[ Facsimile ]</span>
                 </button>
 
                 {/* 3. View Metadata */}
                 <button
                   onClick={() => triggerPhaseNotice('Full Dublin Core Export', 'Phase 2 OAI-PMH')}
-                  className="p-2.5 bg-white hover:bg-stone-50 border border-stone-300 rounded font-semibold text-ink-900 flex items-center justify-center gap-1.5 transition shadow-sm"
+                  className="p-2 bg-[#FAF6EE] hover:bg-newsprint-300 border border-ink/40 font-bold uppercase text-ink flex items-center justify-center gap-1.5 transition shadow-letterpress-sm"
                 >
-                  <Info className="w-3.5 h-3.5 text-heritage-600" />
-                  <span>View Metadata</span>
+                  <Info className="w-3.5 h-3.5 text-oxblood" />
+                  <span>[ Metadata ]</span>
                 </button>
 
                 {/* 4. Listen */}
                 <button
                   onClick={() => setActiveTab('audio')}
-                  className="p-2.5 bg-white hover:bg-stone-50 border border-stone-300 rounded font-semibold text-ink-900 flex items-center justify-center gap-1.5 transition shadow-sm"
+                  className="p-2 bg-[#FAF6EE] hover:bg-newsprint-300 border border-ink/40 font-bold uppercase text-ink flex items-center justify-center gap-1.5 transition shadow-letterpress-sm"
                 >
-                  <Volume2 className="w-3.5 h-3.5 text-heritage-600" />
-                  <span>Listen</span>
+                  <Volume2 className="w-3.5 h-3.5 text-oxblood" />
+                  <span>[ Audio ]</span>
                 </button>
 
                 {/* 5. Translate */}
                 <button
                   onClick={() => setActiveTab('translations')}
-                  className="p-2.5 bg-white hover:bg-stone-50 border border-stone-300 rounded font-semibold text-ink-900 flex items-center justify-center gap-1.5 transition shadow-sm"
+                  className="p-2 bg-[#FAF6EE] hover:bg-newsprint-300 border border-ink/40 font-bold uppercase text-ink flex items-center justify-center gap-1.5 transition shadow-letterpress-sm"
                 >
-                  <Languages className="w-3.5 h-3.5 text-heritage-600" />
-                  <span>Translate</span>
+                  <Languages className="w-3.5 h-3.5 text-oxblood" />
+                  <span>[ Translate ]</span>
                 </button>
 
                 {/* 6. Ask Research Assistant */}
@@ -879,10 +879,10 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                       triggerPhaseNotice('RAG Assistant', 'Phase 5 RAG Knowledge Graph');
                     }
                   }}
-                  className="p-2.5 bg-national-800 hover:bg-national-900 text-white rounded font-semibold flex items-center justify-center gap-1.5 transition shadow-sm col-span-2 sm:col-span-1"
+                  className="p-2 bg-ink hover:bg-oxblood text-white uppercase font-bold flex items-center justify-center gap-1.5 transition shadow-letterpress-sm border border-ink col-span-2 sm:col-span-1"
                 >
-                  <Bot className="w-3.5 h-3.5 text-heritage-300" />
-                  <span>Ask AI</span>
+                  <Bot className="w-3.5 h-3.5 text-newsprint-300" />
+                  <span>[ ★ Ask AI ]</span>
                 </button>
               </div>
             </div>

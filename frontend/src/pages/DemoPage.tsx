@@ -87,50 +87,50 @@ export const DemoPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F5EE] text-slate-900 pb-28">
+    <div className="min-h-screen bg-[#F4EFE6] text-ink pb-28">
       {/* Top Presentation Header */}
-      <div className="bg-[#102038] text-white border-b-2 border-heritage-500 shadow-md">
+      <div className="bg-[#FAF6EE] text-ink border-b-2 border-double border-ink shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div className="flex items-center space-x-3">
-            <Link to="/" className="text-slate-400 hover:text-white flex items-center gap-1 text-xs">
+            <Link to="/" className="text-ink hover:text-oxblood flex items-center gap-1 text-xs font-mono font-bold uppercase">
               <ArrowLeft className="w-4 h-4" />
-              <span>Exit Demo</span>
+              <span>[ Exit Demo ]</span>
             </Link>
-            <span className="text-white/20">|</span>
+            <span className="text-ink/30 font-mono">|</span>
             <div className="flex items-center space-x-2">
-              <Sparkles className="w-5 h-5 text-heritage-400 animate-pulse" />
+              <Sparkles className="w-4 h-4 text-oxblood" />
               <div>
-                <span className="font-serif font-bold text-lg sm:text-xl text-white">
-                  SIH Demonstration Experience
+                <span className="font-serif font-black text-lg sm:text-xl text-ink">
+                  SIH Archival Demonstration Dossier
                 </span>
-                <span className="hidden md:inline-block ml-2 text-xs text-heritage-300 font-mono">
-                  • Stage {currentStepNumber} of 10
+                <span className="hidden md:inline-block ml-2 text-xs text-oxblood font-mono font-bold">
+                  • [ STAGE {currentStepNumber} OF 10 ]
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 font-mono">
             <Link
               to="/system-status"
-              className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-semibold text-slate-200 border border-white/20 transition flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-white hover:bg-stone-200 text-xs font-bold uppercase text-ink border border-ink transition flex items-center gap-1.5 shadow-letterpress-sm"
             >
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-              <span>System Status</span>
+              <CheckCircle2 className="w-3.5 h-3.5 text-oxblood" />
+              <span>[ System Status ]</span>
             </Link>
 
             <Link
               to="/demo/control"
-              className="px-3 py-1.5 rounded-lg bg-heritage-500 hover:bg-heritage-400 text-xs font-bold text-slate-950 transition flex items-center gap-1.5 shadow"
+              className="px-3 py-1.5 bg-ink hover:bg-oxblood text-xs font-bold uppercase text-white transition flex items-center gap-1.5 border border-ink shadow-letterpress-sm"
             >
-              <span>Curator Console</span>
+              <span>[ Curator Console ]</span>
               <ExternalLink className="w-3.5 h-3.5" />
             </Link>
           </div>
         </div>
 
         {/* 10-Stage Stepper Ribbon */}
-        <div className="bg-[#0A1424] border-t border-white/10 overflow-x-auto py-2 px-4 sm:px-6">
+        <div className="bg-[#EFE8DA] border-t-2 border-ink overflow-x-auto py-2 px-4 sm:px-6">
           <div className="max-w-7xl mx-auto flex items-center space-x-1 min-w-max">
             {stages.map((st, idx) => {
               const Icon = getStageIcon(st.stage_id);
@@ -141,17 +141,17 @@ export const DemoPage: React.FC = () => {
                 <button
                   key={st.stage_id}
                   onClick={() => handleSelectStage(st.stage_id)}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                  className={`flex items-center gap-2 px-3 py-1.5 text-xs font-mono font-bold uppercase transition border ${
                     isCurrent
-                      ? 'bg-heritage-500 text-slate-950 shadow-md font-bold'
+                      ? 'bg-ink text-white border-ink shadow-letterpress-sm'
                       : isDone
-                      ? 'bg-white/10 text-white hover:bg-white/15'
-                      : 'text-slate-400 hover:text-white hover:bg-white/5'
+                      ? 'bg-white text-ink border-ink/40 hover:border-ink'
+                      : 'bg-transparent text-stone-600 hover:text-ink border-transparent hover:border-ink/20'
                   }`}
                   title={st.title}
                 >
-                  <span className={`w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-mono ${
-                    isCurrent ? 'bg-slate-950 text-heritage-400' : 'bg-white/20 text-white'
+                  <span className={`w-4 h-4 text-[10px] flex items-center justify-center font-mono border ${
+                    isCurrent ? 'bg-oxblood text-white border-white' : 'bg-white text-ink border-ink/40'
                   }`}>
                     {idx + 1}
                   </span>
@@ -485,15 +485,15 @@ export const DemoPage: React.FC = () => {
       </div>
 
       {/* Floating Bottom Navigation Controller */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#102038] text-white border-t border-heritage-500/40 p-4 shadow-2xl">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#FAF6EE] text-ink border-t-2 border-double border-ink p-4 shadow-letterpress">
+        <div className="max-w-7xl mx-auto flex items-center justify-between font-mono">
           <button
             onClick={handlePrev}
             disabled={currentStageIndex <= 0}
-            className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed text-xs sm:text-sm font-bold flex items-center gap-2 transition"
+            className="px-4 py-2 bg-white hover:bg-stone-200 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-bold uppercase flex items-center gap-2 transition border border-ink shadow-letterpress-sm text-ink"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Previous</span>
+            <span>[ Previous ]</span>
           </button>
 
           <div className="flex items-center space-x-1.5">
@@ -501,12 +501,12 @@ export const DemoPage: React.FC = () => {
               <button
                 key={st.stage_id}
                 onClick={() => handleSelectStage(st.stage_id)}
-                className={`w-3 h-3 rounded-full transition-all ${
+                className={`h-2 transition-all border border-ink ${
                   st.stage_id === currentStageId
-                    ? 'bg-heritage-400 w-8'
+                    ? 'bg-oxblood w-8'
                     : i < currentStageIndex
-                    ? 'bg-white/60'
-                    : 'bg-white/20'
+                    ? 'bg-ink w-3'
+                    : 'bg-white w-3'
                 }`}
                 title={`Stage ${i + 1}: ${st.title}`}
               />
@@ -516,9 +516,9 @@ export const DemoPage: React.FC = () => {
           <button
             onClick={handleNext}
             disabled={currentStageIndex >= stages.length - 1}
-            className="px-5 py-2 rounded-xl bg-heritage-500 hover:bg-heritage-400 disabled:opacity-30 disabled:cursor-not-allowed text-slate-950 font-bold text-xs sm:text-sm flex items-center gap-2 shadow transition"
+            className="px-5 py-2 bg-ink hover:bg-oxblood disabled:opacity-30 disabled:cursor-not-allowed text-white font-bold uppercase text-xs flex items-center gap-2 transition border border-ink shadow-letterpress-sm"
           >
-            <span>Next Stage</span>
+            <span>[ Next Stage ]</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>

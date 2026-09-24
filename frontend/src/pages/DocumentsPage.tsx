@@ -42,18 +42,21 @@ export const DocumentsPage: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5]">
+    <div className="min-h-screen bg-newsprint-100 text-ink">
       <DemoBanner />
 
-      <section className="bg-[#1B2A4A] text-white py-12 px-4 sm:px-6 lg:px-8 border-b-2 border-heritage-500">
+      <section className="bg-[#FAF6EE] text-ink py-10 px-4 sm:px-6 lg:px-8 border-b-2 border-double border-ink">
         <div className="max-w-7xl mx-auto space-y-3">
-          <span className="font-mono text-xs text-heritage-300 uppercase tracking-wider">
-            PRIMARY CORPUS
-          </span>
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold">
+          <div className="flex items-center justify-between font-mono text-[11px] text-oxblood border-b border-ink/10 pb-1">
+            <span className="font-bold tracking-wider uppercase">
+              [ OFFICIAL CLASSIFIED LEDGER • PRIMARY CORPUS ]
+            </span>
+            <span>OAIS METADATA VERIFIED</span>
+          </div>
+          <h1 className="font-serif font-black text-3xl sm:text-4xl text-ink uppercase tracking-tight">
             Documents, Writings & Published Monographs
           </h1>
-          <p className="text-slate-300 text-sm max-w-3xl font-light">
+          <p className="font-editorial text-sm sm:text-base text-ink-700 max-w-3xl leading-relaxed italic">
             Scholarly books, economic treatises, social emancipation essays, legislative acts, and official memoranda authored by Dr. B. R. Ambedkar.
           </p>
 
@@ -63,48 +66,42 @@ export const DocumentsPage: React.FC = () => {
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Filter writings by title or keyword..."
-                className="w-full pl-10 pr-4 py-2.5 rounded-lg text-slate-900 bg-white border border-stone-300 text-sm focus:outline-none focus:border-heritage-500"
+                placeholder="Filter ledger by title, accession, or keyword..."
+                className="w-full pl-10 pr-4 py-2 border-2 border-ink text-ink bg-white font-mono text-xs focus:outline-none focus:bg-newsprint-50"
               />
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+              <Search className="w-4 h-4 text-ink-500 absolute left-3 top-2.5" />
             </div>
           </div>
         </div>
       </section>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="mb-6 flex justify-between items-center text-xs text-slate-500">
-          <span>Displaying {filteredDocs.length} Curated Writings</span>
-          {isDemo ? (
-            <span className="font-mono text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
-              [DEMO DATASET]
-            </span>
-          ) : (
-            <span className="font-mono text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-              [LIVE ARCHIVE REPOSITORY]
-            </span>
-          )}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-6 flex justify-between items-center text-xs font-mono text-ink-600 border-b border-ink/20 pb-2">
+          <span>Displaying {filteredDocs.length} Catalogued Holdings</span>
+          <span className="stamp-oxblood text-[9px] py-0 px-1.5">
+            [ARCHIVAL CORPUS]
+          </span>
         </div>
 
         {loading ? (
-          <div className="py-20 text-center space-y-3">
-            <div className="w-8 h-8 border-4 border-heritage-600 border-t-transparent rounded-full animate-spin mx-auto" />
-            <p className="text-xs text-slate-500 font-mono">Loading archival corpus records...</p>
+          <div className="py-20 text-center space-y-3 font-mono">
+            <div className="w-8 h-8 border-2 border-ink border-t-transparent animate-spin mx-auto" />
+            <p className="text-xs text-ink-600 uppercase tracking-widest">Retrieving archival ledger records...</p>
           </div>
         ) : error ? (
-          <div className="bg-rose-50 border border-rose-200 rounded-xl p-8 text-center max-w-xl mx-auto space-y-3">
-            <h3 className="font-serif font-bold text-rose-900 text-base">Archival Repository Unavailable</h3>
-            <p className="text-xs text-rose-700 leading-relaxed">{error}</p>
+          <div className="bg-[#FAF6EE] border-2 border-oxblood p-6 text-center max-w-xl mx-auto space-y-3 shadow-letterpress-sm font-mono">
+            <h3 className="font-serif font-bold text-oxblood text-base uppercase">Archival Repository Unavailable</h3>
+            <p className="text-xs text-ink-700 font-editorial leading-relaxed">{error}</p>
             <button
               onClick={fetchDocuments}
-              className="px-4 py-2 bg-rose-700 hover:bg-rose-800 text-white rounded text-xs font-bold transition shadow"
+              className="px-4 py-2 bg-oxblood hover:bg-ink text-white font-mono text-xs font-bold uppercase tracking-wider transition border border-oxblood shadow-letterpress-sm"
             >
-              Retry Connection
+              [ Retry Connection ]
             </button>
           </div>
         ) : filteredDocs.length === 0 ? (
-          <div className="py-16 text-center text-slate-400">
-            <BookOpen className="w-12 h-12 mx-auto mb-2 text-stone-300" />
+          <div className="py-16 text-center text-ink-500 font-mono">
+            <BookOpen className="w-12 h-12 mx-auto mb-2 text-ink-400" />
             <p className="text-sm font-serif">No writings matched your search criteria.</p>
           </div>
         ) : (

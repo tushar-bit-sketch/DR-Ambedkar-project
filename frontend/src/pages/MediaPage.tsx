@@ -48,57 +48,57 @@ export const MediaPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5]">
-      {/* Header Banner */}
-      <section className="bg-[#1B2A4A] text-white py-12 px-4 sm:px-6 lg:px-8 border-b-2 border-heritage-500">
+    <div className="min-h-screen bg-[#F4EFE6] text-ink">
+      {/* Broadsheet Masthead */}
+      <section className="bg-[#FAF6EE] text-ink py-8 px-4 sm:px-6 lg:px-8 border-b-2 border-double border-ink shadow-sm">
         <div className="max-w-7xl mx-auto space-y-4">
-          <div className="flex items-center space-x-2 text-xs font-mono text-heritage-300 uppercase tracking-wider">
-            <Film className="w-4 h-4 text-heritage-400" />
-            <span>PHASE 8 AUDIO-VISUAL DIGITAL PRESERVATION TIER</span>
+          <div className="flex items-center space-x-2 text-[11px] font-mono text-oxblood uppercase tracking-widest font-bold">
+            <Film className="w-3.5 h-3.5 text-oxblood" />
+            <span>RECORD DIVISION • MULTIMEDIA REPOSITORY & GRAMOPHONE DISPATCHES</span>
           </div>
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight">
-            Audio, Video & Photographic Heritage Archive
+          <h1 className="font-serif text-3xl sm:text-4xl font-black tracking-tight text-ink">
+            Audio, Gramophone & Film Dispatch Archive
           </h1>
-          <p className="text-slate-300 text-sm max-w-3xl font-light leading-relaxed">
-            Historical audio broadcasts, documentary footage, and authenticated photographic restorations.
-            Every media asset is anchored with immutable archival checksums and timestamped provenance.
+          <p className="text-stone-700 text-xs sm:text-sm max-w-3xl font-editorial italic leading-relaxed">
+            Historical audio recordings, All India Radio broadcasts, newsreel footage, and authenticated photographic restorations.
+            Every media asset is anchored with immutable cryptographic checksums and custodial provenance.
           </p>
 
-          {/* Search Bar */}
+          {/* Typewriter Search Bar */}
           <form onSubmit={handleSearch} className="max-w-2xl flex gap-2 pt-2">
             <div className="relative flex-1">
-              <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
+              <Search className="w-4 h-4 absolute left-3 top-3 text-stone-500" />
               <input
                 type="text"
-                placeholder="Search across media titles, speeches, and transcript texts..."
+                placeholder="Search across broadcast dispatches, audio speeches, transcript texts..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 bg-white/10 text-white placeholder-slate-400 border border-slate-700 rounded text-sm focus:outline-none focus:ring-2 focus:ring-heritage-400"
+                className="w-full pl-9 pr-4 py-2 bg-white text-ink placeholder-stone-400 border-2 border-ink text-xs font-mono focus:outline-none focus:ring-1 focus:ring-oxblood shadow-letterpress-sm"
               />
             </div>
             <button
               type="submit"
-              className="px-5 py-2 bg-heritage-500 hover:bg-heritage-600 text-slate-950 font-semibold text-sm rounded transition"
+              className="px-5 py-2 bg-ink hover:bg-oxblood text-white font-mono font-bold uppercase text-xs transition border border-ink shadow-letterpress-sm"
             >
-              Search
+              [ Inquire ]
             </button>
           </form>
 
           {/* Filter Tabs */}
           <div className="flex flex-wrap gap-2 pt-2">
             {[
-              { label: 'All Archives', value: 'ALL' },
-              { label: 'Audio Recordings', value: 'AUDIO' },
-              { label: 'Video Footage', value: 'VIDEO' },
+              { label: 'All Dispatches', value: 'ALL' },
+              { label: 'Audio & Speeches', value: 'AUDIO' },
+              { label: 'Newsreel & Video', value: 'VIDEO' },
               { label: 'Historical Photographs', value: 'PHOTOGRAPH' }
             ].map(tab => (
               <button
                 key={tab.value}
                 onClick={() => setActiveFilter(tab.value as any)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition ${
+                className={`px-3 py-1 text-xs font-mono font-bold uppercase transition border ${
                   activeFilter === tab.value
-                    ? 'bg-heritage-500 text-slate-950 shadow'
-                    : 'bg-white/10 hover:bg-white/20 text-slate-200'
+                    ? 'bg-ink text-white border-ink shadow-letterpress-sm'
+                    : 'bg-[#FAF6EE] text-ink border-ink/40 hover:border-ink hover:bg-[#EFE8DA]'
                 }`}
               >
                 {tab.label}
@@ -111,15 +111,15 @@ export const MediaPage: React.FC = () => {
       {/* Main Grid */}
       <main className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
         {loading ? (
-          <div className="text-center py-20 text-slate-500 font-mono text-sm">
-            Scanning authenticated media repository...
+          <div className="text-center py-20 text-stone-600 font-mono text-xs">
+            Scanning authenticated archival media registers...
           </div>
         ) : mediaItems.length === 0 ? (
-          <div className="text-center py-16 bg-white rounded-lg border border-slate-200 p-8 space-y-3">
-            <Film className="w-12 h-12 text-slate-400 mx-auto" />
-            <h3 className="font-serif text-lg font-bold text-slate-900">No Archival Media Records Found</h3>
-            <p className="text-slate-500 text-xs max-w-md mx-auto">
-              No verified media items matched your criteria. Administrators can ingest master recordings via the Admin Media Dashboard.
+          <div className="text-center py-16 bg-[#FAF6EE] border-2 border-ink p-8 space-y-3 shadow-letterpress">
+            <Film className="w-12 h-12 text-oxblood mx-auto" />
+            <h3 className="font-serif text-lg font-bold text-ink">No Archival Media Dispatches Found</h3>
+            <p className="text-stone-600 text-xs font-editorial max-w-md mx-auto">
+              No verified media items matched your criteria. Custodians can register audio-visual master recordings via the Admin Media Registry.
             </p>
           </div>
         ) : (
@@ -128,49 +128,49 @@ export const MediaPage: React.FC = () => {
               <div
                 key={item.id}
                 onClick={() => navigate(`/media/${item.id}`)}
-                className="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition cursor-pointer flex flex-col group"
+                className="bg-[#FAF6EE] border-2 border-ink overflow-hidden shadow-letterpress-sm hover:shadow-letterpress transition cursor-pointer flex flex-col group"
               >
                 {/* Thumbnail / Poster Area */}
-                <div className="relative aspect-video bg-slate-900 flex items-center justify-center overflow-hidden">
+                <div className="relative aspect-video bg-[#1A1714] flex items-center justify-center overflow-hidden border-b-2 border-ink">
                   {item.thumbnail_path ? (
                     <img
                       src={mediaApi.getThumbnailUrl(item.id)}
                       alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                      className="w-full h-full object-cover group-hover:scale-105 transition duration-300 filter contrast-105"
                     />
                   ) : item.poster_path ? (
                     <img
                       src={mediaApi.getPosterUrl(item.id)}
                       alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                      className="w-full h-full object-cover group-hover:scale-105 transition duration-300 filter contrast-105"
                     />
                   ) : (
-                    <div className="text-slate-500 flex flex-col items-center space-y-2">
-                      {item.media_type === 'AUDIO' && <Volume2 className="w-10 h-10 text-heritage-400" />}
-                      {item.media_type === 'VIDEO' && <Film className="w-10 h-10 text-heritage-400" />}
-                      {(item.media_type === 'IMAGE' || item.media_type === 'PHOTOGRAPH') && <Image className="w-10 h-10 text-heritage-400" />}
+                    <div className="text-stone-400 flex flex-col items-center space-y-2">
+                      {item.media_type === 'AUDIO' && <Volume2 className="w-10 h-10 text-oxblood" />}
+                      {item.media_type === 'VIDEO' && <Film className="w-10 h-10 text-oxblood" />}
+                      {(item.media_type === 'IMAGE' || item.media_type === 'PHOTOGRAPH') && <Image className="w-10 h-10 text-oxblood" />}
                     </div>
                   )}
 
                   {/* Play overlay */}
-                  <div className="absolute inset-0 bg-slate-950/30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition">
-                    <div className="w-12 h-12 rounded-full bg-heritage-500 text-slate-950 flex items-center justify-center shadow-lg">
-                      <Play className="w-6 h-6 fill-slate-950 ml-0.5" />
+                  <div className="absolute inset-0 bg-ink/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition">
+                    <div className="w-12 h-12 bg-white text-ink flex items-center justify-center shadow-letterpress-sm border border-ink">
+                      <Play className="w-6 h-6 fill-ink ml-0.5" />
                     </div>
                   </div>
 
                   {/* Badges */}
-                  <div className="absolute top-2 left-2 flex gap-1">
-                    <span className="px-2 py-0.5 bg-slate-900/80 backdrop-blur text-white text-[10px] font-mono rounded">
+                  <div className="absolute top-2 left-2 flex gap-1 font-mono">
+                    <span className="px-2 py-0.5 bg-ink text-white text-[10px] font-bold border border-ink uppercase">
                       {item.media_type}
                     </span>
-                    <span className="px-2 py-0.5 bg-heritage-500/90 text-slate-950 text-[10px] font-mono font-bold rounded">
+                    <span className="px-2 py-0.5 bg-oxblood text-white text-[10px] font-bold border border-ink uppercase">
                       {item.format}
                     </span>
                   </div>
 
                   {item.duration && (
-                    <span className="absolute bottom-2 right-2 px-1.5 py-0.5 bg-black/80 text-white font-mono text-[10px] rounded">
+                    <span className="absolute bottom-2 right-2 px-1.5 py-0.5 bg-ink text-white font-mono text-[10px] border border-ink font-bold">
                       {formatDuration(item.duration)}
                     </span>
                   )}
@@ -179,27 +179,27 @@ export const MediaPage: React.FC = () => {
                 {/* Content */}
                 <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
                   <div className="space-y-1.5">
-                    <div className="text-[11px] font-mono text-slate-500 uppercase tracking-wider">
+                    <div className="text-[10px] font-mono text-oxblood uppercase font-bold tracking-wider">
                       {item.archive_id}
                     </div>
-                    <h3 className="font-serif font-bold text-slate-900 text-base line-clamp-2 group-hover:text-heritage-700 transition">
+                    <h3 className="font-serif font-bold text-ink text-base line-clamp-2 group-hover:text-oxblood transition">
                       {item.title}
                     </h3>
                     {item.description && (
-                      <p className="text-slate-600 text-xs line-clamp-2">
+                      <p className="text-stone-700 text-xs font-editorial line-clamp-2">
                         {item.description}
                       </p>
                     )}
                   </div>
 
-                  <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+                  <div className="pt-2 border-t border-ink/20 flex items-center justify-between text-[11px] font-mono text-stone-600">
                     <div className="flex items-center space-x-1.5">
-                      <Calendar className="w-3.5 h-3.5 text-slate-400" />
-                      <span>{item.date || 'Undated Historical'}</span>
+                      <Calendar className="w-3.5 h-3.5 text-oxblood" />
+                      <span>{item.date || 'Historical Record'}</span>
                     </div>
                     {item.location && (
                       <div className="flex items-center space-x-1">
-                        <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                        <MapPin className="w-3.5 h-3.5 text-oxblood" />
                         <span className="truncate max-w-[120px]">{item.location}</span>
                       </div>
                     )}
