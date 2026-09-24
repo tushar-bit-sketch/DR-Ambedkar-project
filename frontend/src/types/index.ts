@@ -11,7 +11,12 @@ export type DocumentType =
   | 'VIDEO'
   | 'ESSAY' 
   | 'LETTER' 
-  | 'GAZETTE';
+  | 'GAZETTE'
+  | 'ARTICLE'
+  | 'REPORT'
+  | 'ACT'
+  | 'PERIODICAL'
+  | 'LEGAL_BRIEF';
 
 export type VerificationStatus = 
   | 'UNVERIFIED'

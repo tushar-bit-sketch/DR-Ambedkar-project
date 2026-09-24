@@ -36,7 +36,7 @@ export const ExplorePage: React.FC = () => {
       collection_id: selectedCollection || undefined,
       document_type: selectedType || undefined,
       year: selectedYear || undefined,
-      page_size: 24
+      page_size: 50
     }).then(res => {
       let filtered = res.items;
       if (selectedLanguage) {

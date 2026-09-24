@@ -18,11 +18,35 @@ export const HomePage: React.FC = () => {
   const [timelineEvents, setTimelineEvents] = useState<TimelineEvent[]>([]);
   const [selectedDoc, setSelectedDoc] = useState<DocumentItem | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [stats, setStats] = useState<{
+    documents: number;
+    collections: number;
+    timeline: number;
+    entities: number;
+    relations: number;
+  }>({
+    documents: 33,
+    collections: 8,
+    timeline: 31,
+    entities: 35,
+    relations: 25
+  });
 
   useEffect(() => {
     apiService.getCollections().then(setCollections);
     apiService.getDocuments({ page_size: 4 }).then(res => setFeaturedDocs(res.items));
     apiService.getTimelineEvents().then(events => setTimelineEvents(events.slice(0, 4)));
+    apiService.getSystemStatus().then(res => {
+      if (res?.counts) {
+        setStats({
+          documents: res.counts.documents ?? 33,
+          collections: res.counts.collections ?? 8,
+          timeline: res.counts.timeline ?? 31,
+          entities: res.counts.entities ?? 35,
+          relations: res.counts.relations ?? 25
+        });
+      }
+    }).catch(err => console.warn('Could not fetch dynamic stats:', err));
   }, []);
 
   const handleHeroSearch = (e: React.FormEvent) => {
@@ -197,32 +221,40 @@ export const HomePage: React.FC = () => {
         <div className="my-8 py-4 border-y-2 border-double border-ink bg-[#FAF6EE] font-mono">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center divide-x-0 md:divide-x divide-ink/20">
             <div className="p-2">
-              <div className="font-serif font-black text-2xl sm:text-3xl text-ink">43+</div>
+              <div className="font-serif font-black text-2xl sm:text-3xl text-ink">
+                {stats.documents}
+              </div>
               <div className="text-[10px] text-ink-700 uppercase font-bold tracking-widest mt-0.5">
                 CATALOGUED RECORDS
               </div>
               <div className="text-[9px] text-ink-500">BAWS & CAD Proceedings</div>
             </div>
             <div className="p-2">
-              <div className="font-serif font-black text-2xl sm:text-3xl text-ink">5</div>
+              <div className="font-serif font-black text-2xl sm:text-3xl text-ink">
+                {stats.collections}
+              </div>
               <div className="text-[10px] text-ink-700 uppercase font-bold tracking-widest mt-0.5">
                 CURATED LEDGERS
               </div>
               <div className="text-[9px] text-ink-500">Writings, Speeches & Media</div>
             </div>
             <div className="p-2">
-              <div className="font-serif font-black text-2xl sm:text-3xl text-ink">31</div>
+              <div className="font-serif font-black text-2xl sm:text-3xl text-ink">
+                {stats.timeline}
+              </div>
               <div className="text-[10px] text-ink-700 uppercase font-bold tracking-widest mt-0.5">
                 TIMELINE MILESTONES
               </div>
               <div className="text-[9px] text-ink-500">1891–1956 Chronology</div>
             </div>
             <div className="p-2">
-              <div className="font-serif font-black text-2xl sm:text-3xl text-oxblood">100%</div>
-              <div className="text-[10px] text-oxblood uppercase font-bold tracking-widest mt-0.5">
-                OPEN SCHOLARLY ACCESS
+              <div className="font-serif font-black text-2xl sm:text-3xl text-oxblood">
+                {stats.entities}+
               </div>
-              <div className="text-[9px] text-ink-500">OAIS & Dublin Core Standard</div>
+              <div className="text-[10px] text-oxblood uppercase font-bold tracking-widest mt-0.5">
+                GRAPH ENTITIES
+              </div>
+              <div className="text-[9px] text-ink-500">Curated Historical Relations</div>
             </div>
           </div>
         </div>
@@ -268,7 +300,7 @@ export const HomePage: React.FC = () => {
                 </div>
 
                 <div className="pt-3 border-t border-ink/10 flex items-center justify-between font-mono text-[11px] text-ink-600">
-                  <span>{coll.document_count || 4} Items Indexed</span>
+                  <span>{coll.document_count ?? 0} Items Indexed</span>
                   <span className="font-bold text-oxblood group-hover:translate-x-1 transition-transform">
                     Inspect →
                   </span>

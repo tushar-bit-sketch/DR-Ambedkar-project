@@ -8,7 +8,9 @@ import {
   TranscriptSearchResult
 } from '../types/media';
 
-const API_BASE = '/api/v1/media';
+import { API_BASE_URL } from '../config/api';
+
+const API_BASE = API_BASE_URL ? `${API_BASE_URL}/media` : '/api/v1/media';
 
 const getHeaders = (isJson = true): Record<string, string> => {
   const token = localStorage.getItem('token');

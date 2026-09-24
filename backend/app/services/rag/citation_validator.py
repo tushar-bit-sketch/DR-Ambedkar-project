@@ -144,9 +144,9 @@ class CitationValidator:
         # 4. Determine grounding status
         if not unique_indices:
             # Check if this is an explicit refusal / no-evidence answer
-            if "not contain sufficient evidence" in answer_text.lower() or "no archival evidence" in answer_text.lower():
+            if "not contain sufficient evidence" in answer_text.lower() or "no archival evidence" in answer_text.lower() or "insufficient" in answer_text.lower():
                 status = "EVIDENCE_INSUFFICIENT"
-                is_grounded = True  # Legitimate grounded refusal
+                is_grounded = False  # Legitimate refusal due to lack of evidence
             else:
                 status = "NO_CITATIONS"
                 is_grounded = False

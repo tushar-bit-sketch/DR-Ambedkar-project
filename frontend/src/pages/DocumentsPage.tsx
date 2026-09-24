@@ -22,7 +22,7 @@ export const DocumentsPage: React.FC = () => {
       .then(res => {
         setIsDemo(Boolean(res.is_demo_data));
         const writings = res.items.filter(d => 
-          d.document_type === 'BOOK' || d.document_type === 'ESSAY' || d.document_type === 'GAZETTE'
+          d.document_type === 'BOOK' || d.document_type === 'ESSAY' || d.document_type === 'ARTICLE' || d.document_type === 'REPORT' || d.document_type === 'ACT' || d.document_type === 'PERIODICAL' || d.document_type === 'GAZETTE'
         );
         setDocs(writings.length > 0 ? writings : res.items);
       })

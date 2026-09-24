@@ -315,7 +315,12 @@ class ArchivalRAGEngine:
             source_map=source_map
         )
 
-        status = "SUCCESS" if val_result["is_grounded"] else "CITATION_VALIDATION_FAILED"
+        if val_result["validation_status"] == "EVIDENCE_INSUFFICIENT":
+            status = "INSUFFICIENT_EVIDENCE"
+        elif val_result["is_grounded"]:
+            status = "SUCCESS"
+        else:
+            status = "CITATION_VALIDATION_FAILED"
 
         combined_diag = {
             **retrieval_diag,

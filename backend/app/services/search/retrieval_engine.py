@@ -232,6 +232,11 @@ class ArchivalRetrievalEngine:
             term_matches = sum(1 for t in terms if re.search(rf'\b{re.escape(t.lower())}\b', text_lower))
             score += term_matches * 1.0
 
+            # If multi-term query (>= 3 terms) without phrase match, require at least 2 matching terms or >= 35% overlap
+            if len(terms) >= 3 and q_lower not in text_lower and q_lower not in title_lower:
+                if term_matches < 2 and (term_matches / len(terms)) < 0.35:
+                    score = 0.0
+
             if score > 0:
                 cand = self._assemble_candidate_provenance(chunk, doc, score, "KEYWORD")
                 cand["keyword_score"] = round(score, 4)
@@ -265,6 +270,10 @@ class ArchivalRetrievalEngine:
                     score += 2.0
                 term_matches = sum(1 for t in terms if re.search(rf'\b{re.escape(t.lower())}\b', desc_lower) or re.search(rf'\b{re.escape(t.lower())}\b', title_lower))
                 score += term_matches * 1.0
+
+                if len(terms) >= 3 and q_lower not in title_lower and q_lower not in desc_lower:
+                    if term_matches < 2 and (term_matches / len(terms)) < 0.35:
+                        score = 0.0
 
                 if score <= 0:
                     continue

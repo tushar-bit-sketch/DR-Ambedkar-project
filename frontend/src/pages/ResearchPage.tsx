@@ -18,7 +18,7 @@ export const ResearchPage: React.FC = () => {
   const navigate = useNavigate();
 
   // State
-  const [query, setQuery] = useState(searchParams.get('query') || '');
+  const [query, setQuery] = useState(searchParams.get('query') || searchParams.get('q') || '');
   const [loading, setLoading] = useState(false);
   const [mode, setMode] = useState<'hybrid' | 'keyword' | 'semantic'>('hybrid');
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
@@ -48,7 +48,7 @@ export const ResearchPage: React.FC = () => {
 
   // Handle URL query parameter
   useEffect(() => {
-    const urlQuery = searchParams.get('query');
+    const urlQuery = searchParams.get('query') || searchParams.get('q');
     if (urlQuery && urlQuery !== query) {
       setQuery(urlQuery);
       handleAsk(urlQuery);

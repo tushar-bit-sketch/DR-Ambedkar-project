@@ -8,6 +8,7 @@ api_router = APIRouter()
 
 api_router.include_router(health.router, tags=["Health"])
 api_router.include_router(system_status.router, prefix="/system", tags=["System Status"])
+api_router.include_router(system_status.router, tags=["System Status"])
 api_router.include_router(demo.router, prefix="/demo", tags=["SIH Demo Mode"])
 api_router.include_router(documents.router, prefix="/documents", tags=["Documents & Ingestion"])
 api_router.include_router(ocr.router, prefix="/ocr", tags=["OCR & Manuscript Digitization"])

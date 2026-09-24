@@ -176,5 +176,15 @@ def get_system_subsystems_status(db: Session = Depends(get_db)):
         "phase": settings.ARCHIVE_PHASE,
         "environment": settings.ENVIRONMENT,
         "overall_status": "OPERATIONAL",
+        "counts": {
+            "documents": doc_count,
+            "collections": coll_count,
+            "media": media_count,
+            "timeline": timeline_count,
+            "entities": entity_count,
+            "relations": relation_count,
+            "ocr_jobs": ocr_count,
+            "kiosks": kiosk_count
+        },
         "subsystems": subsystems
     }
