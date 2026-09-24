@@ -154,10 +154,12 @@ export interface HardwareCapabilityReport {
   runtime_status: string;
 }
 
-const API_BASE = '/api/v1';
+import { API_BASE_URL } from '../config/api';
+
+const API_BASE = API_BASE_URL || '/api/v1';
 
 const getHeaders = (tokenOverride?: string): Record<string, string> => {
-  const token = tokenOverride || localStorage.getItem('token');
+  const token = tokenOverride || localStorage.getItem('archive_jwt_token') || localStorage.getItem('token');
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
   };

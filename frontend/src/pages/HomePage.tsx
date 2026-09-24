@@ -31,22 +31,42 @@ export const HomePage: React.FC = () => {
     entities: 35,
     relations: 25
   });
+  const [isOffline, setIsOffline] = useState(false);
 
   useEffect(() => {
-    apiService.getCollections().then(setCollections);
-    apiService.getDocuments({ page_size: 4 }).then(res => setFeaturedDocs(res.items));
-    apiService.getTimelineEvents().then(events => setTimelineEvents(events.slice(0, 4)));
-    apiService.getSystemStatus().then(res => {
-      if (res?.counts) {
-        setStats({
-          documents: res.counts.documents ?? 33,
-          collections: res.counts.collections ?? 8,
-          timeline: res.counts.timeline ?? 31,
-          entities: res.counts.entities ?? 35,
-          relations: res.counts.relations ?? 25
-        });
-      }
-    }).catch(err => console.warn('Could not fetch dynamic stats:', err));
+    apiService.getCollections()
+      .then(setCollections)
+      .catch(err => {
+        console.warn('Collections fetch failed:', err);
+        setIsOffline(true);
+      });
+
+    apiService.getDocuments({ page_size: 4 })
+      .then(res => setFeaturedDocs(res.items))
+      .catch(err => {
+        console.warn('Featured docs fetch failed:', err);
+        setIsOffline(true);
+      });
+
+    apiService.getTimelineEvents()
+      .then(events => setTimelineEvents(events.slice(0, 4)))
+      .catch(err => {
+        console.warn('Timeline events fetch failed:', err);
+      });
+
+    apiService.getSystemStatus()
+      .then(res => {
+        if (res?.counts) {
+          setStats({
+            documents: res.counts.documents ?? 33,
+            collections: res.counts.collections ?? 8,
+            timeline: res.counts.timeline ?? 31,
+            entities: res.counts.entities ?? 35,
+            relations: res.counts.relations ?? 25
+          });
+        }
+      })
+      .catch(err => console.warn('Could not fetch dynamic stats:', err));
   }, []);
 
   const handleHeroSearch = (e: React.FormEvent) => {
@@ -60,7 +80,7 @@ export const HomePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-newsprint-100 text-ink">
-      <DemoBanner isDemoData={false} />
+      <DemoBanner isDemoData={false} isOffline={isOffline} />
 
       {/* Broadsheet Front Page Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">

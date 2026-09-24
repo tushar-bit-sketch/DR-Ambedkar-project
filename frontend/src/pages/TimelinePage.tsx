@@ -23,9 +23,13 @@ export const TimelinePage: React.FC = () => {
   const entityId = entityIdParam ? parseInt(entityIdParam, 10) : undefined;
   const [filteredEntityName, setFilteredEntityName] = useState<string | null>(null);
 
+  const [error, setError] = useState<string | null>(null);
+  const [isOffline, setIsOffline] = useState(false);
+
   useEffect(() => {
     let mounted = true;
     setLoading(true);
+    setError(null);
 
     if (entityId) {
       apiService.getEntity(entityId).then(ent => {
@@ -38,12 +42,16 @@ export const TimelinePage: React.FC = () => {
     apiService.getTimelineEvents({ entity_id: entityId }).then(res => {
       if (mounted) {
         setEvents(res);
+        setIsOffline(false);
         if (res.length > 0) setActiveEvent(res[0]);
         setLoading(false);
       }
     }).catch(err => {
       if (mounted) {
-        console.warn('Timeline fetch fallback:', err);
+        console.warn('Timeline fetch error:', err);
+        setError(err.message || 'Archival backend service is unreachable.');
+        setIsOffline(true);
+        setEvents([]);
         setLoading(false);
       }
     });
@@ -88,7 +96,7 @@ export const TimelinePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#F4EFE6] text-ink">
-      <DemoBanner />
+      <DemoBanner isOffline={isOffline} />
 
       {/* Broadsheet Gazette Masthead */}
       <section className="bg-[#FAF6EE] border-b-2 border-double border-ink py-8 px-4 sm:px-6 lg:px-8 shadow-sm">
@@ -171,7 +179,26 @@ export const TimelinePage: React.FC = () => {
           </span>
         </div>
 
-        {viewMode === 'timeline' ? (
+        {isOffline ? (
+          <div className="bg-amber-50 border-2 border-amber-600 p-12 text-center shadow-letterpress-sm font-mono space-y-3">
+            <p className="font-serif font-black text-lg text-oxblood uppercase">
+              [ ARCHIVE BACKEND OFFLINE ]
+            </p>
+            <p className="font-editorial text-xs text-ink-700 max-w-md mx-auto italic">
+              Chronological milestones and archival dispatches require an active HTTPS connection to the institutional repository backend.
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-ink hover:bg-oxblood text-white text-xs font-mono font-bold uppercase tracking-wider transition border border-ink shadow-letterpress-sm"
+            >
+              [ Retry Connection ]
+            </button>
+          </div>
+        ) : loading ? (
+          <div className="bg-[#FAF6EE] border-2 border-ink p-12 text-center shadow-letterpress-sm font-mono space-y-3">
+            <p className="font-serif font-black text-base text-ink uppercase">Loading chronological records...</p>
+          </div>
+        ) : viewMode === 'timeline' ? (
           /* Interactive Timeline Visualization */
           <div className="relative border-l-2 border-ink md:border-l-0 md:before:absolute md:before:top-0 md:before:bottom-0 md:before:left-1/2 md:before:w-0.5 md:before:bg-ink ml-4 md:ml-0 space-y-12">
             {filteredEvents.map((event, idx) => {

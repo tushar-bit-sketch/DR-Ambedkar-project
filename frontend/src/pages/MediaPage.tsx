@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Film, Volume2, Image, Play, Calendar, MapPin, Search, Tag, Eye } from 'lucide-react';
 import { mediaApi } from '../services/mediaApi';
 import { MediaAsset } from '../types/media';
+import { DemoBanner } from '../components/archive/DemoBanner';
 
 export const MediaPage: React.FC = () => {
   const navigate = useNavigate();
@@ -10,6 +11,8 @@ export const MediaPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [activeFilter, setActiveFilter] = useState<'ALL' | 'AUDIO' | 'VIDEO' | 'PHOTOGRAPH'>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
+  const [isOffline, setIsOffline] = useState(false);
 
   useEffect(() => {
     loadMedia();
@@ -17,6 +20,7 @@ export const MediaPage: React.FC = () => {
 
   const loadMedia = async () => {
     setLoading(true);
+    setError(null);
     try {
       if (searchQuery.trim()) {
         const results = await mediaApi.searchMedia(searchQuery, activeFilter === 'ALL' ? undefined : activeFilter);
@@ -28,8 +32,12 @@ export const MediaPage: React.FC = () => {
         });
         setMediaItems(items);
       }
-    } catch (err) {
+      setIsOffline(false);
+    } catch (err: any) {
       console.error('Failed to load media:', err);
+      setError(err.message || 'Media repository service is unreachable');
+      setIsOffline(true);
+      setMediaItems([]);
     } finally {
       setLoading(false);
     }
@@ -49,6 +57,7 @@ export const MediaPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#F4EFE6] text-ink">
+      <DemoBanner isOffline={isOffline} />
       {/* Broadsheet Masthead */}
       <section className="bg-[#FAF6EE] text-ink py-8 px-4 sm:px-6 lg:px-8 border-b-2 border-double border-ink shadow-sm">
         <div className="max-w-7xl mx-auto space-y-4">
@@ -113,6 +122,21 @@ export const MediaPage: React.FC = () => {
         {loading ? (
           <div className="text-center py-20 text-stone-600 font-mono text-xs">
             Scanning authenticated archival media registers...
+          </div>
+        ) : isOffline ? (
+          <div className="bg-amber-50 border-2 border-amber-600 p-12 text-center shadow-letterpress font-mono space-y-3">
+            <p className="font-serif font-black text-lg text-oxblood uppercase">
+              [ ARCHIVE BACKEND OFFLINE ]
+            </p>
+            <p className="font-editorial text-xs text-ink-700 max-w-md mx-auto italic">
+              Multimedia streaming, gramophone recordings, and archival newsreels require an active HTTPS connection to the institutional backend.
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-ink hover:bg-oxblood text-white text-xs font-mono font-bold uppercase tracking-wider transition border border-ink shadow-letterpress-sm"
+            >
+              [ Retry Connection ]
+            </button>
           </div>
         ) : mediaItems.length === 0 ? (
           <div className="text-center py-16 bg-[#FAF6EE] border-2 border-ink p-8 space-y-3 shadow-letterpress">

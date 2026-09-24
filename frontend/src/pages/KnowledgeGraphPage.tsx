@@ -67,10 +67,14 @@ export const KnowledgeGraphPage: React.FC = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
 
+  const [error, setError] = useState<string | null>(null);
+  const [isOffline, setIsOffline] = useState(false);
+
   // Initial Data Fetch
   useEffect(() => {
     let mounted = true;
     setLoading(true);
+    setError(null);
 
     Promise.all([
       apiService.searchEntities({ limit: 100 }),
@@ -81,12 +85,17 @@ export const KnowledgeGraphPage: React.FC = () => {
         setEntities(ents);
         setRelationships(rels);
         setGraphStatus(st);
+        setIsOffline(false);
         if (ents.length > 0) setSelectedNode(ents[0]);
         setLoading(false);
       }
     }).catch(err => {
       if (mounted) {
-        console.warn('Graph initialization fallback:', err);
+        console.warn('Graph initialization error:', err);
+        setError(err.message || 'Archival knowledge graph service is unreachable.');
+        setIsOffline(true);
+        setEntities([]);
+        setRelationships([]);
         setLoading(false);
       }
     });
@@ -352,7 +361,7 @@ export const KnowledgeGraphPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#F4EFE6] text-ink flex flex-col">
-      <DemoBanner />
+      <DemoBanner isOffline={isOffline} />
 
       {/* Broadsheet Masthead */}
       <section className="bg-[#FAF6EE] text-ink py-6 px-4 sm:px-6 lg:px-8 border-b-2 border-double border-ink shadow-sm">
@@ -458,7 +467,22 @@ export const KnowledgeGraphPage: React.FC = () => {
 
       {/* Main Graph Content Canvas + Inspector Sidebar */}
       <div className="flex-1 flex flex-col md:flex-row relative max-w-7xl mx-auto w-full p-4 gap-4">
-        {viewMode === 'visual' ? (
+        {isOffline ? (
+          <div className="flex-1 bg-amber-50 border-2 border-amber-600 p-12 text-center shadow-letterpress font-mono space-y-3 flex flex-col items-center justify-center min-h-[450px]">
+            <p className="font-serif font-black text-xl text-oxblood uppercase">
+              [ ARCHIVE BACKEND OFFLINE ]
+            </p>
+            <p className="font-editorial text-xs text-ink-700 max-w-md mx-auto italic">
+              Archival knowledge graph topology, canonical entities, and verified relationship provenance require an active HTTPS connection to the FastAPI backend service.
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-ink hover:bg-oxblood text-white text-xs font-mono font-bold uppercase tracking-wider transition border border-ink shadow-letterpress-sm"
+            >
+              [ Retry Connection ]
+            </button>
+          </div>
+        ) : viewMode === 'visual' ? (
           <div className="flex-1 bg-[#FAF6EE] border-2 border-ink relative shadow-letterpress overflow-hidden min-h-[550px]">
             {/* Zoom / Pan Controls Overlay */}
             <div className="absolute top-4 right-4 z-20 flex flex-col gap-1 bg-[#FAF6EE] border-2 border-ink p-1 shadow-letterpress-sm">

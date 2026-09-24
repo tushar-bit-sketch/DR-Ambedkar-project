@@ -13,7 +13,7 @@ import { API_BASE_URL } from '../config/api';
 const API_BASE = API_BASE_URL ? `${API_BASE_URL}/media` : '/api/v1/media';
 
 const getHeaders = (isJson = true): Record<string, string> => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('archive_jwt_token') || localStorage.getItem('token');
   const headers: Record<string, string> = {};
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;

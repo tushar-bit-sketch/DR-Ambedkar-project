@@ -2,11 +2,43 @@ import os
 import hashlib
 import uuid
 import mimetypes
-from typing import Tuple, Optional
+from typing import Tuple, Optional, Any
+import logging
 from fastapi import UploadFile, HTTPException
+
+from app.core.config import settings
+
+logger = logging.getLogger("archive.storage")
 
 # Base storage directory relative to backend root
 STORAGE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "storage", "uploads"))
+
+# Optional S3 Object Storage Client
+_s3_client: Optional[Any] = None
+
+def get_s3_client():
+    global _s3_client
+    if _s3_client is not None:
+        return _s3_client
+    if settings.OBJECT_STORAGE_ACCESS_KEY and settings.OBJECT_STORAGE_SECRET_KEY:
+        try:
+            import boto3
+            from botocore.config import Config
+            _s3_client = boto3.client(
+                "s3",
+                endpoint_url=settings.OBJECT_STORAGE_ENDPOINT,
+                aws_access_key_id=settings.OBJECT_STORAGE_ACCESS_KEY,
+                aws_secret_access_key=settings.OBJECT_STORAGE_SECRET_KEY,
+                region_name=settings.OBJECT_STORAGE_REGION,
+                config=Config(signature_version="s3v4")
+            )
+            logger.info("Connected to S3-compatible Object Storage bucket: %s", settings.OBJECT_STORAGE_BUCKET)
+        except Exception as e:
+            logger.warning("Could not initialize S3 client: %s. Falling back to local vault.", e)
+            _s3_client = False
+    else:
+        _s3_client = False
+    return _s3_client if _s3_client is not False else None
 
 # Allowed MIME types and extensions
 ALLOWED_EXTENSIONS = {
@@ -88,9 +120,22 @@ class StorageService:
         # Relative path for portable storage reference
         relative_path = os.path.join("storage", "uploads", sanitized_filename).replace("\\", "/")
         absolute_path = os.path.join(STORAGE_DIR, sanitized_filename)
-
         with open(absolute_path, "wb") as f:
             f.write(file_bytes)
+
+        # Upload to S3-compatible Object Storage if configured
+        s3 = get_s3_client()
+        if s3:
+            try:
+                s3.put_object(
+                    Bucket=settings.OBJECT_STORAGE_BUCKET,
+                    Key=sanitized_filename,
+                    Body=file_bytes,
+                    ContentType=mimetypes.guess_type(sanitized_filename)[0] or "application/octet-stream"
+                )
+                logger.info("Persisted archival master %s to S3 bucket %s", sanitized_filename, settings.OBJECT_STORAGE_BUCKET)
+            except Exception as e:
+                logger.error("Failed persisting %s to S3 bucket %s: %s", sanitized_filename, settings.OBJECT_STORAGE_BUCKET, e)
 
         return sanitized_filename, relative_path, sha256, size_bytes
 

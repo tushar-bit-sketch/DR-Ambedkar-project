@@ -68,7 +68,15 @@ services:
       - ARCHIVE_PHASE=PHASE_9_KIOSK_DEPLOYMENT_SECURITY
       - DATABASE_URL=postgresql+psycopg2://${POSTGRES_USER:-archive_user}:${POSTGRES_PASSWORD:-archive_secure_password_2026}@postgres:5432/${POSTGRES_DB:-ambedkar_archive}
       - SECRET_KEY=${SECRET_KEY:-institutional-vault-production-secret-key-phase9-change-in-production}
-      - BACKEND_CORS_ORIGINS=["http://localhost","https://archive.ambedkar.gov.in"]
+      - BACKEND_CORS_ORIGINS=${BACKEND_CORS_ORIGINS:-["http://localhost","https://ambedkar-archive.vercel.app"]}
+      - HF_TOKEN=${HF_TOKEN:-}
+      - HF_MODEL=${HF_MODEL:-BAAI/bge-m3}
+      - HF_BASE_URL=${HF_BASE_URL:-https://router.huggingface.co/v1}
+      - VECTOR_BACKEND=${VECTOR_BACKEND:-PGVECTOR}
+      - OBJECT_STORAGE_ENDPOINT=${OBJECT_STORAGE_ENDPOINT:-}
+      - OBJECT_STORAGE_BUCKET=${OBJECT_STORAGE_BUCKET:-}
+      - OBJECT_STORAGE_ACCESS_KEY=${OBJECT_STORAGE_ACCESS_KEY:-}
+      - OBJECT_STORAGE_SECRET_KEY=${OBJECT_STORAGE_SECRET_KEY:-}
       - SECURITY_HEADERS_ENABLED=true
       - RATE_LIMIT_ENABLED=true
       - KIOSK_IDLE_TIMEOUT_SECONDS=120

@@ -67,6 +67,7 @@ class BGE_M3_EmbeddingProvider(BaseEmbeddingProvider):
                 self._dimension = int(sample_vec.shape[1])
 
             self._is_available = True
+            self._is_available = True
             self._status = "READY"
             self._error_detail = None
             logger.info(f"BGE-M3 model initialized via transformers. Verified runtime dimension: {self._dimension}")
@@ -74,7 +75,34 @@ class BGE_M3_EmbeddingProvider(BaseEmbeddingProvider):
         except Exception as e:
             logger.warning(f"transformers backend unavailable for {self._model_name}: {e}")
 
-        # 3. Model unavailable in current execution environment
+        # 3. Check Hugging Face Inference API feature-extraction if token configured
+        if settings.HF_TOKEN:
+            try:
+                import httpx
+                hf_url = f"https://api-inference.huggingface.co/pipeline/feature-extraction/{self._model_name}"
+                headers = {"Authorization": f"Bearer {settings.HF_TOKEN}"}
+                resp = httpx.post(
+                    hf_url,
+                    headers=headers,
+                    json={"inputs": ["Dr. B.R. Ambedkar archival index"], "options": {"wait_for_model": False}},
+                    timeout=4.0
+                )
+                if resp.status_code == 200:
+                    vec = resp.json()
+                    if isinstance(vec, list) and len(vec) > 0:
+                        dim = len(vec[0]) if isinstance(vec[0], list) else len(vec)
+                        self._model_instance = {"api_url": hf_url, "headers": headers}
+                        self._backend = "huggingface_inference_api"
+                        self._dimension = int(dim)
+                        self._is_available = True
+                        self._status = "READY"
+                        self._error_detail = None
+                        logger.info(f"BGE-M3 model initialized via Hugging Face Inference API. Dimension: {self._dimension}")
+                        return
+            except Exception as hf_err:
+                logger.warning(f"Hugging Face embedding API probe unavailable: {hf_err}")
+
+        # 4. Model unavailable in current execution environment
         self._model_instance = None
         self._backend = None
         self._dimension = None
@@ -82,7 +110,8 @@ class BGE_M3_EmbeddingProvider(BaseEmbeddingProvider):
         self._status = "MODEL_UNAVAILABLE"
         self._error_detail = (
             f"BGE-M3 model weights ('{self._model_name}') could not be loaded into memory. "
-            "Model dependencies (sentence-transformers / transformers + torch) or weights are uninitialized. "
+            "Model dependencies (sentence-transformers / transformers + torch) or weights are uninitialized, "
+            "and Hugging Face feature extraction endpoint is unauthenticated or unreachable. "
             "System strictly operating in DEGRADED mode without vector generation. Fake vectors are forbidden."
         )
         logger.warning(f"BGE-M3 Provider Status: {self._status}. Detail: {self._error_detail}")
@@ -144,7 +173,26 @@ class BGE_M3_EmbeddingProvider(BaseEmbeddingProvider):
                 # CLS token representation + L2 norm
                 embeddings = outputs.last_hidden_state[:, 0, :]
                 normalized = torch.nn.functional.normalize(embeddings, p=2, dim=1)
-                return normalized.cpu().numpy().tolist()
+        elif self._backend == "huggingface_inference_api":
+            import httpx
+            resp = httpx.post(
+                self._model_instance["api_url"],
+                headers=self._model_instance["headers"],
+                json={"inputs": texts, "options": {"wait_for_model": True}},
+                timeout=30.0
+            )
+            if resp.status_code == 200:
+                raw = resp.json()
+                results = []
+                for vec in raw:
+                    arr = np.array(vec, dtype=np.float32)
+                    norm = np.linalg.norm(arr)
+                    if norm > 0:
+                        arr = arr / norm
+                    results.append(arr.tolist())
+                return results
+            else:
+                raise RuntimeError(f"Hugging Face feature extraction returned HTTP {resp.status_code}: {resp.text}")
 
         raise RuntimeError(f"Unknown neural backend: {self._backend}")
 

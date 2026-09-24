@@ -58,6 +58,13 @@ class Settings(BaseSettings):
     AUDIO_STORAGE_DIR: str = os.getenv("AUDIO_STORAGE_DIR", "storage/audio")
     TRANSLATION_STORAGE_DIR: str = os.getenv("TRANSLATION_STORAGE_DIR", "storage/translations")
 
+    # Production S3-Compatible Object Storage
+    OBJECT_STORAGE_ENDPOINT: Union[str, None] = os.getenv("OBJECT_STORAGE_ENDPOINT", None)
+    OBJECT_STORAGE_BUCKET: str = os.getenv("OBJECT_STORAGE_BUCKET", "ambedkar-archive-masters")
+    OBJECT_STORAGE_ACCESS_KEY: Union[str, None] = os.getenv("OBJECT_STORAGE_ACCESS_KEY", None)
+    OBJECT_STORAGE_SECRET_KEY: Union[str, None] = os.getenv("OBJECT_STORAGE_SECRET_KEY", None)
+    OBJECT_STORAGE_REGION: str = os.getenv("OBJECT_STORAGE_REGION", "us-east-1")
+
     # Phase 7: Knowledge Graph & Intelligent Timeline Configuration
     GRAPH_BACKEND: str = os.getenv("GRAPH_BACKEND", "postgres") # "neo4j" or "postgres"
     NEO4J_URI: Union[str, None] = os.getenv("NEO4J_URI", None)

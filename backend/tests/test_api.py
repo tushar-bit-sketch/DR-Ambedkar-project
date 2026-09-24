@@ -68,7 +68,7 @@ def test_research_assistant_placeholder():
     )
     assert response.status_code == 200
     data = response.json()
-    assert "DEMO RESPONSE" in data["disclaimer"]
+    assert "RETIRED" in data["disclaimer"]
     assert data["is_live_rag"] is False
     assert len(data["sources"]) >= 1
     assert "document_title" in data["sources"][0]

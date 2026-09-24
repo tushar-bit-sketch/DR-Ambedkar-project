@@ -17,52 +17,35 @@ from app.services.rag.engine import ArchivalRAGEngine
 logger = logging.getLogger("archive.api.research")
 router = APIRouter()
 
-# Phase 1 Legacy Placeholder Endpoint (Maintained for backward compatibility)
+# Phase 1 Legacy Placeholder Endpoint — Formally Retired under Zero-Canned-Answer Rule
 @router.post("/query", response_model=ResearchQueryResponse)
 def query_research_assistant(payload: ResearchQueryRequest):
     """
-    Phase 1 Foundation Placeholder for the AI Research Assistant.
-    Maintained for backward compatibility with Phase 1 test suite.
+    Formally retired placeholder endpoint.
+    Under the platform's Zero-Canned-Answer rule, canned historical texts are strictly prohibited.
+    All research queries must be directed to POST /api/v1/research/ask for real source-grounded RAG.
     """
-    sample_answer = (
-        "In his landmark address on November 25, 1949, Dr. B.R. Ambedkar warned that "
-        "political democracy must not be mistaken for a permanent guarantee of liberty "
-        "unless it is anchored in social democracy. He famously asserted that 'we must make "
-        "our political democracy a social democracy as well. Political democracy cannot last "
-        "unless there lies at the base of it social democracy... which means a way of life "
-        "which recognises liberty, equality and fraternity as the principles of life.' "
-        "Furthermore, he specifically identified constitutional morality, the cessation of "
-        "unconstitutional agitations, and vigilance against hero-worship (Bhakti in politics) "
-        "as foundational prerequisites for safeguarding democratic institutions."
-    )
-
-    sample_sources = [
-        ResearchSourceCitation(
-            document_id=1,
-            archive_id="AMB-CAD-1949-042",
-            document_title="Speech on the Third Reading of the Draft Constitution: 'Grammar of Anarchy' Address",
-            page=979,
-            collection="Constituent Assembly of India & The Draft Constitution",
-            date="November 25, 1949",
-            excerpt="In politics we will have equality and in social and economic life we will have inequality. In politics we will be recognising the principle of one man one vote and one vote one value. In our social and economic life, we shall, by reason of our social and economic structure, continue to deny the principle of one man one value..."
-        ),
-        ResearchSourceCitation(
-            document_id=6,
-            archive_id="AMB-CAD-1948-019",
-            document_title="Debate on Draft Article 25 (Article 32): 'Heart and Soul of the Constitution'",
-            page=953,
-            collection="Constituent Assembly of India & The Draft Constitution",
-            date="December 9, 1948",
-            excerpt="If I was asked to name any particular article in this Constitution as the most important... I could not refer to any other article except this one. It is the very soul of the Constitution and the very heart of it."
-        )
-    ]
-
     return ResearchQueryResponse(
         query=payload.query,
-        disclaimer="DEMO RESPONSE — NOT CONNECTED TO ARCHIVE (PHASE 1 FOUNDATION ONLY)",
+        disclaimer="ENDPOINT RETIRED — USE POST /api/v1/research/ask (ZERO-CANNED-ANSWER MANDATE)",
         is_live_rag=False,
-        answer=sample_answer,
-        sources=sample_sources
+        answer=(
+            "The legacy /research/query endpoint has been retired under the institutional "
+            "Zero-Fabrication and Zero-Canned-Answer mandate. Canned historical texts have been "
+            "permanently removed. All research inquiries must be directed to POST /api/v1/research/ask "
+            "for verified source-grounded retrieval."
+        ),
+        sources=[
+            ResearchSourceCitation(
+                document_id=1,
+                archive_id="SYS-RETIRED-001",
+                document_title="Archival Policy Notice: Canned AI Responses Retired",
+                page=1,
+                collection="Institutional Governance",
+                date="2026-09-24",
+                excerpt="Under the Zero-Fabrication rule, automated speculative or canned answers are strictly forbidden without live primary source retrieval."
+            )
+        ]
     )
 
 # Phase 5 Real Source-Grounded RAG Endpoints

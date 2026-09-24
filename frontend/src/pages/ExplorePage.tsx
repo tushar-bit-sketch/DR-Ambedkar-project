@@ -25,12 +25,20 @@ export const ExplorePage: React.FC = () => {
   const selectedYear = searchParams.get('year') ? Number(searchParams.get('year')) : null;
   const selectedTopic = searchParams.get('topic') || null;
 
+  const [error, setError] = useState<string | null>(null);
+  const [isOffline, setIsOffline] = useState(false);
+
   useEffect(() => {
-    apiService.getCollections().then(setCollections);
+    apiService.getCollections()
+      .then(setCollections)
+      .catch(err => {
+        console.warn('Collections fetch failed:', err);
+      });
   }, []);
 
   useEffect(() => {
     setLoading(true);
+    setError(null);
     apiService.getDocuments({
       q: searchQuery || undefined,
       collection_id: selectedCollection || undefined,
@@ -43,6 +51,13 @@ export const ExplorePage: React.FC = () => {
         filtered = filtered.filter(d => d.language_name?.toLowerCase() === selectedLanguage.toLowerCase());
       }
       setDocuments(filtered);
+      setIsOffline(false);
+      setLoading(false);
+    }).catch(err => {
+      console.warn('Documents fetch failed:', err);
+      setError(err.message || 'Archival backend service unreachable');
+      setIsOffline(true);
+      setDocuments([]);
       setLoading(false);
     });
   }, [searchQuery, selectedCollection, selectedType, selectedLanguage, selectedYear, selectedTopic]);
@@ -63,7 +78,7 @@ export const ExplorePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-newsprint-100 text-ink">
-      <DemoBanner isDemoData={documents.some(d => d.is_demo_data)} />
+      <DemoBanner isDemoData={documents.some(d => d.is_demo_data)} isOffline={isOffline} />
 
       {/* Explore Header Bar */}
       <section className="bg-[#FAF6EE] text-ink py-10 px-4 sm:px-6 lg:px-8 border-b-2 border-double border-ink">
@@ -201,6 +216,21 @@ export const ExplorePage: React.FC = () => {
               <div className="bg-[#FAF6EE] border-2 border-ink p-12 text-center shadow-letterpress-sm font-mono flex flex-col items-center justify-center space-y-3">
                 <RefreshCw className="w-8 h-8 text-oxblood animate-spin" />
                 <span className="text-xs uppercase font-bold text-ink">Retrieving archival ledger records...</span>
+              </div>
+            ) : isOffline ? (
+              <div className="bg-amber-50 border-2 border-amber-600 p-12 text-center shadow-letterpress-sm font-mono space-y-3">
+                <p className="font-serif font-black text-lg text-oxblood uppercase">
+                  [ ARCHIVE BACKEND OFFLINE ]
+                </p>
+                <p className="font-editorial text-xs text-ink-700 max-w-md mx-auto italic">
+                  The primary archival backend service is unreachable. Real-time document discovery requires an active HTTPS FastAPI service.
+                </p>
+                <button
+                  onClick={() => window.location.reload()}
+                  className="px-4 py-2 bg-ink hover:bg-oxblood text-white text-xs font-mono font-bold uppercase tracking-wider transition border border-ink shadow-letterpress-sm"
+                >
+                  [ Retry Connection ]
+                </button>
               </div>
             ) : documents.length === 0 ? (
               <div className="bg-[#FAF6EE] border-2 border-ink p-12 text-center shadow-letterpress-sm font-mono space-y-3">
