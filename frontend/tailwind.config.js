@@ -79,6 +79,26 @@ export default {
           700: '#1A1714',
           800: '#151210',
           900: '#0E0C0A',
+        },
+        verified: {
+          text: '#1A4A2A',
+          bg: '#E8F0EB',
+          border: '#2D6A4F',
+        },
+        fallback: {
+          text: '#6B4E00',
+          bg: '#F7EFD8',
+          border: '#A37200',
+        },
+        offline: {
+          text: '#5C3A00',
+          bg: '#F5E9CA',
+          border: '#7A4D00',
+        },
+        danger: {
+          text: '#5C0F0F',
+          bg: '#F5E8E8',
+          border: '#6B1D1D',
         }
       },
       fontFamily: {

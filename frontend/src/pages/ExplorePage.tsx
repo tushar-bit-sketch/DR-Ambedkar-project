@@ -7,6 +7,7 @@ import { DocumentCard } from '../components/archive/DocumentCard';
 import { FilterSidebar } from '../components/archive/FilterSidebar';
 import { DocumentViewerModal } from '../components/archive/DocumentViewerModal';
 import { DemoBanner } from '../components/archive/DemoBanner';
+import { PageMasthead } from '../components/layout/PageMasthead';
 
 export const ExplorePage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -76,27 +77,23 @@ export const ExplorePage: React.FC = () => {
     setSearchParams(new URLSearchParams());
   };
 
+  const activeCollectionObj = collections.find(c => c.id === selectedCollection);
+  const hasActiveFilters = Boolean(
+    selectedCollection || selectedType || selectedLanguage || selectedYear || selectedTopic || searchQuery
+  );
+
   return (
     <div className="min-h-screen bg-newsprint-100 text-ink">
       <DemoBanner isDemoData={documents.some(d => d.is_demo_data)} isOffline={isOffline} />
 
-      {/* Explore Header Bar */}
-      <section className="bg-[#FAF6EE] text-ink py-10 px-4 sm:px-6 lg:px-8 border-b-2 border-double border-ink">
-        <div className="max-w-7xl mx-auto space-y-3">
-          <div className="flex items-center space-x-2 text-xs font-mono text-oxblood uppercase tracking-wider font-bold border-b border-ink/10 pb-1">
-            <span>[ OFFICIAL HOLDINGS EXPLORATION • DUBLIN CORE REPOSITORY ]</span>
-          </div>
-
-          <h1 className="font-serif font-black text-3xl sm:text-4xl text-ink uppercase tracking-tight">
-            Explore Archival Records
-          </h1>
-
-          <p className="font-editorial text-sm sm:text-base text-ink-700 max-w-3xl leading-relaxed italic">
-            Search across speeches, constituent assembly debates, published monographs, gazette orders, and manuscript facsimiles.
-          </p>
-
-          {/* Main Search Input */}
-          <div className="pt-2 max-w-3xl">
+      {/* Explore Header Bar with Standardized PageMasthead */}
+      <PageMasthead
+        eyebrow="OFFICIAL HOLDINGS EXPLORATION • DUBLIN CORE REPOSITORY"
+        headline="Explore Archival Records"
+        subheadline="Search across speeches, constituent assembly debates, published monographs, gazette orders, and manuscript facsimiles."
+        accession={`CATALOGUE ENTRIES: ${documents.length}`}
+        bottomSlot={
+          <div className="max-w-3xl">
             <div className="relative flex items-center shadow-letterpress-sm">
               <input
                 type="text"
@@ -116,11 +113,60 @@ export const ExplorePage: React.FC = () => {
               )}
             </div>
           </div>
-        </div>
-      </section>
+        }
+      />
 
       {/* Main Content Area: Sidebar + Results */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Active Filter Chips Strip */}
+        {hasActiveFilters && (
+          <div className="mb-4 p-2.5 bg-newsprint-200 border border-ink/30 flex flex-wrap items-center gap-2 font-mono text-xs shadow-xs">
+            <span className="text-[10px] uppercase font-bold text-oxblood mr-1">Active Criteria:</span>
+            {searchQuery && (
+              <span className="inline-flex items-center gap-1 bg-[#FAF6EE] border border-ink/40 px-2 py-0.5 text-[11px]">
+                <span>Query: "{searchQuery}"</span>
+                <button onClick={() => updateFilter('q', null)} className="hover:text-oxblood font-bold"><X className="w-3 h-3" /></button>
+              </span>
+            )}
+            {activeCollectionObj && (
+              <span className="inline-flex items-center gap-1 bg-[#FAF6EE] border border-ink/40 px-2 py-0.5 text-[11px]">
+                <span>Collection: {activeCollectionObj.title}</span>
+                <button onClick={() => updateFilter('collection_id', null)} className="hover:text-oxblood font-bold"><X className="w-3 h-3" /></button>
+              </span>
+            )}
+            {selectedType && (
+              <span className="inline-flex items-center gap-1 bg-[#FAF6EE] border border-ink/40 px-2 py-0.5 text-[11px]">
+                <span>Type: {selectedType}</span>
+                <button onClick={() => updateFilter('document_type', null)} className="hover:text-oxblood font-bold"><X className="w-3 h-3" /></button>
+              </span>
+            )}
+            {selectedYear && (
+              <span className="inline-flex items-center gap-1 bg-[#FAF6EE] border border-ink/40 px-2 py-0.5 text-[11px]">
+                <span>Year: {selectedYear}</span>
+                <button onClick={() => updateFilter('year', null)} className="hover:text-oxblood font-bold"><X className="w-3 h-3" /></button>
+              </span>
+            )}
+            {selectedLanguage && (
+              <span className="inline-flex items-center gap-1 bg-[#FAF6EE] border border-ink/40 px-2 py-0.5 text-[11px]">
+                <span>Lang: {selectedLanguage}</span>
+                <button onClick={() => updateFilter('language', null)} className="hover:text-oxblood font-bold"><X className="w-3 h-3" /></button>
+              </span>
+            )}
+            {selectedTopic && (
+              <span className="inline-flex items-center gap-1 bg-[#FAF6EE] border border-ink/40 px-2 py-0.5 text-[11px]">
+                <span>Topic: {selectedTopic}</span>
+                <button onClick={() => updateFilter('topic', null)} className="hover:text-oxblood font-bold"><X className="w-3 h-3" /></button>
+              </span>
+            )}
+            <button
+              onClick={handleResetFilters}
+              className="text-[10px] text-oxblood hover:underline font-bold uppercase ml-auto"
+            >
+              [ Clear All Filters ]
+            </button>
+          </div>
+        )}
+
         <div className="flex items-center justify-between pb-3 mb-6 border-b border-ink/20 font-mono text-xs">
           <div className="flex items-center space-x-2">
             <button

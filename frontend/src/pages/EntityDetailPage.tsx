@@ -10,6 +10,8 @@ import { GraphEntityItem, GraphRelationshipItem, TimelineEvent } from '../types'
 import { ProvenanceChainViewer } from '../components/archive/ProvenanceChainViewer';
 import { DemoBanner } from '../components/archive/DemoBanner';
 
+import { PageMasthead } from '../components/layout/PageMasthead';
+
 export const EntityDetailPage: React.FC = () => {
   const { entityId } = useParams<{ entityId: string }>();
   const navigate = useNavigate();
@@ -58,10 +60,11 @@ export const EntityDetailPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#FAF8F5] flex items-center justify-center">
-        <div className="text-center font-serif text-stone-500">
-          <div className="inline-block w-8 h-8 border-2 border-heritage-600 border-t-transparent rounded-full animate-spin mb-3" />
-          <p className="text-sm">Loading historical entity profile...</p>
+      <div className="min-h-screen bg-[#F4EFE6] flex items-center justify-center p-8">
+        <div className="max-w-md w-full bg-[#FAF6EE] border-2 border-ink p-8 text-center shadow-letterpress">
+          <div className="archival-loading-bar mb-4" />
+          <h2 className="font-serif font-black text-xl text-ink">Accessing Custodial Dossier</h2>
+          <p className="text-xs font-mono text-ink/70 mt-2">RETRIEVING HISTORICAL ENTITY PROVENANCE & RELATIONS...</p>
         </div>
       </div>
     );
@@ -69,16 +72,16 @@ export const EntityDetailPage: React.FC = () => {
 
   if (error || !entity) {
     return (
-      <div className="min-h-screen bg-[#FAF8F5] flex items-center justify-center p-4">
-        <div className="max-w-md w-full bg-white border border-stone-200 rounded-xl p-6 text-center shadow-sm">
-          <AlertTriangle className="w-10 h-10 text-amber-500 mx-auto mb-3" />
-          <h2 className="font-serif font-bold text-lg text-stone-900 mb-1">Entity Not Found</h2>
-          <p className="text-stone-600 text-xs mb-4">{error || 'Requested entity does not exist in the archive.'}</p>
+      <div className="min-h-screen bg-[#F4EFE6] flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-[#FAF6EE] border-2 border-ink p-8 text-center shadow-letterpress">
+          <AlertTriangle className="w-10 h-10 text-oxblood mx-auto mb-3" />
+          <h2 className="font-serif font-black text-xl text-ink mb-1">Entity Record Not Located</h2>
+          <p className="text-ink/80 text-xs font-editorial mb-6">{error || 'Requested entity does not exist in the active archival registry.'}</p>
           <Link
             to="/knowledge-graph"
-            className="inline-flex items-center gap-1.5 px-4 py-2 bg-heritage-600 text-white rounded-lg text-xs font-bold hover:bg-heritage-700 transition"
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-ink text-white text-xs font-mono font-bold uppercase hover:bg-oxblood transition border border-ink shadow-letterpress-sm"
           >
-            <ArrowLeft className="w-3.5 h-3.5" /> Back to Knowledge Graph
+            <ArrowLeft className="w-3.5 h-3.5" /> [ Return to Knowledge Graph ]
           </Link>
         </div>
       </div>
@@ -89,25 +92,30 @@ export const EntityDetailPage: React.FC = () => {
     <div className="min-h-screen bg-[#F4EFE6] text-ink pb-16">
       <DemoBanner />
 
-      {/* Top Gazette Breadcrumb Bar */}
-      <div className="bg-[#FAF6EE] text-ink border-b-2 border-double border-ink px-4 sm:px-6 lg:px-8 py-3.5 shadow-sm">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <button
-            onClick={() => navigate(-1)}
-            className="flex items-center gap-1.5 text-xs font-mono font-bold uppercase text-ink hover:text-oxblood transition"
-          >
-            <ArrowLeft className="w-4 h-4" /> [ Return to Ledger ]
-          </button>
+      {/* Top Gazette Masthead */}
+      <PageMasthead
+        eyebrow="Archival Records Office • Entity Dossier Bureau"
+        headline={entity.canonical_name}
+        subheadline={entity.description ? entity.description.slice(0, 160) + '...' : 'Verified historical entity record and relational graph index.'}
+        accession={`RECORD #${entity.id} • TYPE: ${entity.entity_type.toUpperCase()}`}
+        badge={`SEAL: ${entity.verification_status.toUpperCase()}`}
+        rightSlot={
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => navigate(-1)}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-white text-ink text-xs font-mono font-bold uppercase hover:bg-[#E2D7C3] transition border border-ink shadow-letterpress-sm"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" /> [ Return ]
+            </button>
             <Link
               to="/knowledge-graph"
-              className="flex items-center gap-1 text-xs font-mono font-bold uppercase text-oxblood hover:text-ink"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-ink text-white text-xs font-mono font-bold uppercase hover:bg-oxblood transition border border-ink shadow-letterpress-sm"
             >
-              <Network className="w-3.5 h-3.5" /> [ Open Full Ontology Graph ]
+              <Network className="w-3.5 h-3.5" /> [ Graph Web ]
             </Link>
           </div>
-        </div>
-      </div>
+        }
+      />
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
         {/* Profile Card / Archival Dossier */}
@@ -126,7 +134,7 @@ export const EntityDetailPage: React.FC = () => {
                 {entity.canonical_name}
               </h1>
               {entity.alternate_names && entity.alternate_names.length > 0 && (
-                <p className="text-xs font-mono text-stone-600">
+                <p className="text-xs font-mono text-ink/70">
                   RECORD ALIASES: <span className="text-ink font-bold italic">{entity.alternate_names.join(', ')}</span>
                 </p>
               )}
@@ -161,7 +169,7 @@ export const EntityDetailPage: React.FC = () => {
               <div className="flex items-start gap-2 bg-white p-3 border-2 border-ink shadow-letterpress-sm">
                 <Calendar className="w-4 h-4 text-oxblood shrink-0 mt-0.5" />
                 <div>
-                  <span className="text-stone-500 block text-[10px] uppercase font-mono">Lifespan Era</span>
+                  <span className="text-ink/60 block text-[10px] uppercase font-mono">Lifespan Era</span>
                   <span className="font-bold text-ink font-mono text-xs">
                     {entity.birth_date || '?'} – {entity.death_date || 'Present'}
                   </span>
@@ -172,7 +180,7 @@ export const EntityDetailPage: React.FC = () => {
               <div className="flex items-start gap-2 bg-white p-3 border-2 border-ink shadow-letterpress-sm">
                 <MapPin className="w-4 h-4 text-oxblood shrink-0 mt-0.5" />
                 <div>
-                  <span className="text-stone-500 block text-[10px] uppercase font-mono">Seat / Locale</span>
+                  <span className="text-ink/60 block text-[10px] uppercase font-mono">Seat / Locale</span>
                   <span className="font-bold text-ink text-xs">{entity.location}</span>
                 </div>
               </div>
@@ -181,7 +189,7 @@ export const EntityDetailPage: React.FC = () => {
               <div className="flex items-start gap-2 bg-white p-3 border-2 border-ink shadow-letterpress-sm">
                 <FileText className="w-4 h-4 text-oxblood shrink-0 mt-0.5" />
                 <div>
-                  <span className="text-stone-500 block text-[10px] uppercase font-mono">Custodial Citation</span>
+                  <span className="text-ink/60 block text-[10px] uppercase font-mono">Custodial Citation</span>
                   <span className="font-mono font-bold text-ink text-[11px] truncate block max-w-[200px]">
                     {entity.source_reference}
                   </span>
@@ -199,15 +207,15 @@ export const EntityDetailPage: React.FC = () => {
                 <Network className="w-5 h-5 text-oxblood" />
                 Verified Archival Links & Relational Ties
               </h2>
-              <p className="text-stone-700 text-xs font-editorial">
+              <p className="text-ink/80 text-xs font-editorial">
                 Direct relational links anchored in cataloged records or verified OCR passages.
               </p>
             </div>
-            <span className="font-mono text-xs text-stone-600 font-bold">LINKS: {relationships.length}</span>
+            <span className="font-mono text-xs text-ink/70 font-bold">LINKS: {relationships.length}</span>
           </div>
 
           {relationships.length === 0 ? (
-            <p className="text-xs font-mono text-stone-500 italic py-4 text-center">
+            <p className="text-xs font-mono text-ink/60 italic py-4 text-center">
               No direct relationships cataloged yet.
             </p>
           ) : (
@@ -233,24 +241,24 @@ export const EntityDetailPage: React.FC = () => {
                     </div>
 
                     <div className="text-xs font-mono">
-                      <span className="text-stone-500">{isSource ? 'Direct link to:' : 'Incoming citation from:'}</span>{' '}
+                      <span className="text-ink/60">{isSource ? 'Direct link to:' : 'Incoming citation from:'}</span>{' '}
                       <Link 
                         to={`/entities/${otherId}`} 
                         className="font-bold text-ink hover:text-oxblood font-serif text-sm underline"
                       >
                         {otherName}
                       </Link>{' '}
-                      <span className="text-stone-500 font-mono text-[10px]">({otherType})</span>
+                      <span className="text-ink/60 font-mono text-[10px]">({otherType})</span>
                     </div>
 
                     {rel.evidence_text && (
-                      <p className="text-xs text-stone-800 italic bg-[#FAF6EE] p-2 border border-ink/30 font-editorial line-clamp-2">
+                      <p className="text-xs text-ink/90 italic bg-[#FAF6EE] p-2 border border-ink/30 font-editorial line-clamp-2">
                         "{rel.evidence_text}"
                       </p>
                     )}
 
                     <div className="flex items-center justify-between pt-1 border-t border-ink/20 text-[11px] font-mono">
-                      <span className="text-stone-500">
+                      <span className="text-ink/60">
                         {rel.confidence_label || `Conf: ${Math.round(rel.confidence * 100)}%`}
                       </span>
                       <button
@@ -276,11 +284,11 @@ export const EntityDetailPage: React.FC = () => {
                   <Clock className="w-5 h-5 text-oxblood" />
                   Chronological Gazette Milestones
                 </h2>
-                <p className="text-stone-700 text-xs font-editorial">
+                <p className="text-ink/80 text-xs font-editorial">
                   Key historical moments in which this entity participated or was documented.
                 </p>
               </div>
-              <span className="font-mono text-xs text-stone-600 font-bold">MILESTONES: {timelineEvents.length}</span>
+              <span className="font-mono text-xs text-ink/70 font-bold">MILESTONES: {timelineEvents.length}</span>
             </div>
 
             <div className="space-y-3 pt-2">
@@ -288,13 +296,13 @@ export const EntityDetailPage: React.FC = () => {
                 <div key={ev.id} className="p-3.5 bg-white border-2 border-ink flex items-start gap-4 shadow-letterpress-sm">
                   <div className="w-16 shrink-0 text-center bg-[#EFE8DA] p-1.5 border border-ink">
                     <span className="font-mono font-black text-sm text-oxblood block">{ev.year}</span>
-                    <span className="font-mono text-[9px] text-stone-600 block uppercase font-bold">{ev.date_precision || 'YEAR'}</span>
+                    <span className="font-mono text-[9px] text-ink/70 block uppercase font-bold">{ev.date_precision || 'YEAR'}</span>
                   </div>
                   <div className="flex-1 space-y-1">
                     <h3 className="font-serif font-bold text-ink text-sm sm:text-base">{ev.title}</h3>
-                    <p className="text-xs sm:text-sm text-stone-700 leading-relaxed font-editorial">{ev.description}</p>
+                    <p className="text-xs sm:text-sm text-ink/80 leading-relaxed font-editorial">{ev.description}</p>
                     {ev.exact_date && (
-                      <p className="text-[10px] font-mono text-stone-500">EXACT RECORD: {ev.exact_date}</p>
+                      <p className="text-[10px] font-mono text-ink/60">EXACT RECORD: {ev.exact_date}</p>
                     )}
                   </div>
                 </div>

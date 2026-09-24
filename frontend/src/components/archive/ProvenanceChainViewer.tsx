@@ -43,20 +43,20 @@ export const ProvenanceChainViewer: React.FC<ProvenanceChainViewerProps> = ({
 
   if (loading) {
     return (
-      <div className="p-8 text-center text-stone-500 font-serif">
-        <div className="inline-block w-6 h-6 border-2 border-heritage-600 border-t-transparent rounded-full animate-spin mb-2" />
-        <p className="text-xs">Resolving unbroken archival provenance chain...</p>
+      <div className="p-8 text-center text-ink-600 font-mono space-y-2">
+        <div className="archival-loading-bar max-w-xs mx-auto mb-2" />
+        <p className="text-xs uppercase font-bold">[ Resolving unbroken archival provenance chain... ]</p>
       </div>
     );
   }
 
   if (error || !data) {
     return (
-      <div className="p-6 bg-red-50 border border-red-200 rounded-lg text-red-800 text-xs">
-        <p className="font-bold flex items-center gap-1.5 mb-1">
-          <AlertTriangle className="w-4 h-4 text-red-600" /> Provenance Resolution Error
+      <div className="p-6 bg-danger-bg border-2 border-oxblood text-danger-text text-xs font-mono space-y-1">
+        <p className="font-bold flex items-center gap-1.5 uppercase">
+          <AlertTriangle className="w-4 h-4 text-oxblood" /> [ Provenance Resolution Error ]
         </p>
-        <p>{error || 'Record unavailable'}</p>
+        <p className="font-editorial italic">{error || 'Record unavailable'}</p>
       </div>
     );
   }
@@ -64,18 +64,18 @@ export const ProvenanceChainViewer: React.FC<ProvenanceChainViewerProps> = ({
   const rel = data.relationship;
 
   return (
-    <div className="bg-[#FAF8F5] border border-stone-200 rounded-xl p-5 shadow-sm space-y-5">
-      <div className="flex items-center justify-between border-b border-stone-200 pb-3">
+    <div className="bg-[#FAF6EE] border-2 border-ink p-5 shadow-letterpress space-y-5">
+      <div className="flex items-center justify-between border-b-2 border-ink pb-3">
         <div className="flex items-center gap-2">
-          <ShieldCheck className="w-5 h-5 text-heritage-600" />
-          <h3 className="font-serif font-bold text-sm text-stone-900">
+          <ShieldCheck className="w-5 h-5 text-oxblood" />
+          <h3 className="font-serif font-black text-sm uppercase tracking-wide text-ink">
             Unbroken Archival Provenance Trail
           </h3>
         </div>
         {onClose && (
           <button 
             onClick={onClose} 
-            className="text-stone-400 hover:text-stone-700 p-1 rounded-md"
+            className="text-ink-500 hover:text-oxblood p-1"
             aria-label="Close provenance drawer"
           >
             <X className="w-4 h-4" />
@@ -84,83 +84,83 @@ export const ProvenanceChainViewer: React.FC<ProvenanceChainViewerProps> = ({
       </div>
 
       {/* Claim Summary Badge */}
-      <div className="bg-white border border-stone-200 rounded-lg p-3 space-y-1.5 shadow-xs">
-        <div className="flex items-center justify-between text-xs">
-          <span className="font-mono text-[10px] text-stone-500 uppercase tracking-wider">
-            HISTORICAL CLAIM / RELATIONSHIP
+      <div className="bg-newsprint-100 border border-ink/40 p-3 space-y-1.5 shadow-letterpress-sm">
+        <div className="flex items-center justify-between text-xs font-mono">
+          <span className="text-[10px] text-oxblood font-bold uppercase tracking-wider">
+            [ HISTORICAL CLAIM / RELATIONSHIP ]
           </span>
-          <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+          <span className={`px-2 py-0.5 text-[10px] font-bold uppercase border ${
             data.verification_status === 'APPROVED' || data.verification_status === 'VERIFIED'
-              ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
-              : 'bg-amber-50 text-amber-800 border border-amber-200'
+              ? 'bg-verified-bg text-verified-text border-verified-border'
+              : 'bg-fallback-bg text-fallback-text border-fallback-border'
           }`}>
-            {data.verification_status}
+            [{data.verification_status}]
           </span>
         </div>
-        <p className="font-serif font-bold text-sm text-stone-900">
-          {rel?.source_entity_name} <span className="text-heritage-600 font-mono text-xs uppercase px-1.5 py-0.5 bg-heritage-50 rounded border border-heritage-200">{rel?.relationship_type}</span> {rel?.target_entity_name}
+        <p className="font-serif font-bold text-sm text-ink">
+          {rel?.source_entity_name} <span className="text-oxblood font-mono text-xs uppercase px-1.5 py-0.5 bg-newsprint-200 border border-ink/30 font-bold">[{rel?.relationship_type}]</span> {rel?.target_entity_name}
         </p>
         {rel?.evidence_text && (
-          <p className="text-xs text-stone-600 italic bg-stone-50 p-2 rounded border border-stone-200">
+          <p className="text-xs text-ink-700 italic bg-white p-2 border border-ink/20 font-editorial">
             "{rel.evidence_text}"
           </p>
         )}
-        <div className="flex items-center gap-2 text-[11px] text-stone-500 pt-1">
-          <span>Classification: <strong className="text-stone-800">{data.provenance_classification}</strong></span>
+        <div className="flex items-center gap-2 text-[11px] font-mono text-ink-600 pt-1">
+          <span>Classification: <strong className="text-ink font-bold">{data.provenance_classification}</strong></span>
           <span>•</span>
-          <span>Confidence: <strong className="text-stone-800">{rel?.confidence_label || `${Math.round((rel?.confidence || 1) * 100)}%`}</strong></span>
+          <span>Confidence: <strong className="text-ink font-bold">{rel?.confidence_label || `${Math.round((rel?.confidence || 1) * 100)}%`}</strong></span>
         </div>
       </div>
 
       {/* The 6-Step Visual Archival Stepper */}
       <div className="space-y-3">
-        <h4 className="text-[11px] font-mono uppercase tracking-wider text-stone-500">
+        <h4 className="text-[11px] font-mono uppercase tracking-wider text-ink-600 font-bold border-b border-ink/15 pb-1">
           Lineage Steps to Primary Custodian
         </h4>
 
-        <div className="space-y-2 text-xs">
+        <div className="space-y-2 text-xs font-mono">
           {/* Step 1: Physical Archival Repository */}
-          <div className="flex items-start gap-3 bg-white p-2.5 rounded-lg border border-stone-200">
-            <div className="w-6 h-6 rounded-full bg-stone-100 border border-stone-300 flex items-center justify-center text-stone-700 shrink-0 font-mono font-bold text-[10px]">
+          <div className="flex items-start gap-3 bg-white p-2.5 border border-ink/40 shadow-letterpress-sm">
+            <div className="w-5 h-5 bg-ink text-white flex items-center justify-center shrink-0 font-bold text-[10px]">
               1
             </div>
             <div className="flex-1">
-              <p className="font-bold text-stone-900 flex items-center gap-1.5">
-                <Landmark className="w-3.5 h-3.5 text-stone-600" />
+              <p className="font-bold text-ink flex items-center gap-1.5 uppercase text-[11px]">
+                <Landmark className="w-3.5 h-3.5 text-oxblood" />
                 Physical Custodian / Primary Source
               </p>
-              <p className="text-stone-600 text-[11px]">
+              <p className="text-ink-700 text-[11px] font-editorial italic">
                 {data.physical_source?.source || data.document?.source_institution || 'Institutional Heritage Archives of India'}
               </p>
               {data.physical_source?.collection_name && (
-                <p className="text-[10px] text-stone-500 font-mono">Collection: {data.physical_source.collection_name}</p>
+                <p className="text-[10px] text-oxblood font-mono font-bold mt-0.5">Collection: {data.physical_source.collection_name}</p>
               )}
             </div>
           </div>
 
           {/* Step 2: Archival Master Document */}
-          <div className="flex items-start gap-3 bg-white p-2.5 rounded-lg border border-stone-200">
-            <div className="w-6 h-6 rounded-full bg-stone-100 border border-stone-300 flex items-center justify-center text-stone-700 shrink-0 font-mono font-bold text-[10px]">
+          <div className="flex items-start gap-3 bg-white p-2.5 border border-ink/40 shadow-letterpress-sm">
+            <div className="w-5 h-5 bg-ink text-white flex items-center justify-center shrink-0 font-bold text-[10px]">
               2
             </div>
             <div className="flex-1">
-              <p className="font-bold text-stone-900 flex items-center gap-1.5">
-                <FileText className="w-3.5 h-3.5 text-stone-600" />
+              <p className="font-bold text-ink flex items-center gap-1.5 uppercase text-[11px]">
+                <FileText className="w-3.5 h-3.5 text-oxblood" />
                 Archival Master Record
               </p>
-              <p className="text-stone-700 font-serif">
+              <p className="text-ink font-serif font-bold text-sm">
                 {data.document?.title || 'Cataloged Historical Document'}
               </p>
               <div className="flex items-center gap-2 mt-1">
-                <span className="font-mono text-[10px] bg-stone-100 text-stone-600 px-1.5 py-0.5 rounded">
+                <span className="font-mono text-[10px] bg-newsprint-200 text-oxblood px-1.5 py-0.2 border border-ink/30 font-bold">
                   {data.document?.archive_id || 'ID Verified'}
                 </span>
                 {data.document?.id && onOpenDocument && (
                   <button
                     onClick={() => onOpenDocument(data.document!.id)}
-                    className="text-[11px] text-heritage-600 hover:text-heritage-800 flex items-center gap-1 font-semibold"
+                    className="text-[11px] text-oxblood hover:text-ink flex items-center gap-1 font-bold uppercase transition"
                   >
-                    View Document <ExternalLink className="w-3 h-3" />
+                    [ View Document <ExternalLink className="w-3 h-3" /> ]
                   </button>
                 )}
               </div>
@@ -168,48 +168,48 @@ export const ProvenanceChainViewer: React.FC<ProvenanceChainViewerProps> = ({
           </div>
 
           {/* Step 3: Document Version */}
-          <div className="flex items-start gap-3 bg-white p-2.5 rounded-lg border border-stone-200">
-            <div className="w-6 h-6 rounded-full bg-stone-100 border border-stone-300 flex items-center justify-center text-stone-700 shrink-0 font-mono font-bold text-[10px]">
+          <div className="flex items-start gap-3 bg-white p-2.5 border border-ink/40 shadow-letterpress-sm">
+            <div className="w-5 h-5 bg-ink text-white flex items-center justify-center shrink-0 font-bold text-[10px]">
               3
             </div>
             <div className="flex-1">
-              <p className="font-bold text-stone-900 flex items-center gap-1.5">
-                <GitCommit className="w-3.5 h-3.5 text-stone-600" />
+              <p className="font-bold text-ink flex items-center gap-1.5 uppercase text-[11px]">
+                <GitCommit className="w-3.5 h-3.5 text-oxblood" />
                 Immutable Document Version #{data.document_version?.version_number || 1}
               </p>
-              <p className="text-stone-600 text-[11px]">
+              <p className="text-ink-600 text-[11px] font-editorial italic">
                 {data.document_version?.change_summary || 'Preserved versioned archival master.'}
               </p>
             </div>
           </div>
 
           {/* Step 4: OCR Page / Folio */}
-          <div className="flex items-start gap-3 bg-white p-2.5 rounded-lg border border-stone-200">
-            <div className="w-6 h-6 rounded-full bg-stone-100 border border-stone-300 flex items-center justify-center text-stone-700 shrink-0 font-mono font-bold text-[10px]">
+          <div className="flex items-start gap-3 bg-white p-2.5 border border-ink/40 shadow-letterpress-sm">
+            <div className="w-5 h-5 bg-ink text-white flex items-center justify-center shrink-0 font-bold text-[10px]">
               4
             </div>
             <div className="flex-1">
-              <p className="font-bold text-stone-900 flex items-center gap-1.5">
-                <Eye className="w-3.5 h-3.5 text-stone-600" />
+              <p className="font-bold text-ink flex items-center gap-1.5 uppercase text-[11px]">
+                <Eye className="w-3.5 h-3.5 text-oxblood" />
                 OCR Folio / Page #{data.ocr_page?.page_number || 1}
               </p>
-              <p className="text-stone-600 text-[11px]">
-                Transcription Status: <strong className="text-emerald-700">{data.ocr_page?.review_status || 'VERIFIED'}</strong>
+              <p className="text-ink-700 text-[11px]">
+                Transcription Status: <strong className="text-verified-text font-bold">[{data.ocr_page?.review_status || 'VERIFIED'}]</strong>
               </p>
             </div>
           </div>
 
           {/* Step 5: Search Chunk Passage */}
-          <div className="flex items-start gap-3 bg-white p-2.5 rounded-lg border border-stone-200">
-            <div className="w-6 h-6 rounded-full bg-stone-100 border border-stone-300 flex items-center justify-center text-stone-700 shrink-0 font-mono font-bold text-[10px]">
+          <div className="flex items-start gap-3 bg-white p-2.5 border border-ink/40 shadow-letterpress-sm">
+            <div className="w-5 h-5 bg-ink text-white flex items-center justify-center shrink-0 font-bold text-[10px]">
               5
             </div>
             <div className="flex-1">
-              <p className="font-bold text-stone-900 flex items-center gap-1.5">
-                <Layers className="w-3.5 h-3.5 text-stone-600" />
+              <p className="font-bold text-ink flex items-center gap-1.5 uppercase text-[11px]">
+                <Layers className="w-3.5 h-3.5 text-oxblood" />
                 Discrete Evidence Passage #{data.search_chunk?.chunk_index || 0}
               </p>
-              <p className="text-stone-600 text-[11px]">
+              <p className="text-ink-600 text-[11px] font-editorial italic">
                 Anchors relational proposition with verified exact text quotation.
               </p>
             </div>

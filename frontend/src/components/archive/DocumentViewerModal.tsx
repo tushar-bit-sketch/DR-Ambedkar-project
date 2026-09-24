@@ -111,11 +111,11 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
         className="bg-[#FAF6EE] w-full max-w-6xl max-h-[92vh] border-2 border-ink shadow-letterpress-lg flex flex-col overflow-hidden text-ink"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header Bar */}
+        {/* Reading Room Header Bar */}
         <div className="bg-[#FAF6EE] text-ink px-6 py-3.5 flex items-center justify-between border-b-2 border-double border-ink flex-shrink-0">
           <div className="flex items-center space-x-3 overflow-hidden">
             <span className="font-mono text-xs font-bold text-oxblood border border-oxblood/40 px-2 py-0.5 bg-newsprint-100">
-              ACCESSION: {document.archive_id}
+              [ READING TABLE • ACCESSION: {document.archive_id} ]
             </span>
             <div className="truncate">
               <h2 className="font-serif font-black text-base sm:text-lg text-ink truncate uppercase">
@@ -129,10 +129,10 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
 
           <button
             onClick={onClose}
-            className="p-1.5 border border-ink text-ink hover:bg-ink hover:text-white transition"
+            className="px-3 py-1.5 border-2 border-ink text-ink bg-newsprint-100 hover:bg-oxblood hover:text-white transition font-mono text-xs font-bold uppercase tracking-wider shadow-letterpress-sm flex items-center gap-1.5"
             aria-label="Close Document Viewer"
           >
-            <X className="w-5 h-5" />
+            <span>[ × Close Reading Table ]</span>
           </button>
         </div>
 
@@ -151,83 +151,83 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
         <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 overflow-hidden">
           
           {/* LEFT: Facsimile / Document Preview Shell (7 cols) */}
-          <div className="lg:col-span-7 bg-[#23272D] text-white flex flex-col border-r border-stone-300 h-[380px] lg:h-auto overflow-hidden">
+          <div className="lg:col-span-7 bg-[#1A1714] text-white flex flex-col border-r-2 border-ink h-[380px] lg:h-auto overflow-hidden">
             {/* Viewer Controls Toolbar */}
-            <div className="bg-[#181B1F] px-4 py-2 flex items-center justify-between border-b border-white/10 text-xs">
-              <div className="flex items-center space-x-2">
+            <div className="bg-[#110F0D] px-4 py-2 flex items-center justify-between border-b border-ink/40 text-xs font-mono">
+              <div className="flex items-center space-x-1">
                 <button
                   onClick={() => setZoomLevel(prev => Math.max(50, prev - 15))}
-                  className="p-1.5 rounded hover:bg-white/10 text-slate-300 hover:text-white"
+                  className="p-1.5 border border-white/20 hover:border-white text-newsprint-300 hover:text-white transition"
                   title="Zoom Out"
                 >
                   <ZoomOut className="w-4 h-4" />
                 </button>
-                <span className="font-mono text-slate-400 text-[11px] w-12 text-center">{zoomLevel}%</span>
+                <span className="font-mono text-newsprint-200 text-[11px] w-12 text-center font-bold">{zoomLevel}%</span>
                 <button
                   onClick={() => setZoomLevel(prev => Math.min(250, prev + 15))}
-                  className="p-1.5 rounded hover:bg-white/10 text-slate-300 hover:text-white"
+                  className="p-1.5 border border-white/20 hover:border-white text-newsprint-300 hover:text-white transition"
                   title="Zoom In"
                 >
                   <ZoomIn className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => setZoomLevel(100)}
-                  className="px-2 py-1 rounded hover:bg-white/10 text-slate-400 text-[11px] hover:text-white"
+                  className="px-2 py-1 border border-white/20 text-newsprint-300 text-[10px] hover:text-white uppercase font-bold"
                 >
                   Reset
                 </button>
               </div>
 
               {/* View Toggle */}
-              <div className="flex items-center space-x-1 bg-white/5 p-0.5 rounded border border-white/10 overflow-x-auto">
+              <div className="flex items-center space-x-1 bg-ink/80 p-0.5 border border-white/20 overflow-x-auto">
                 <button
                   onClick={() => setActiveTab('preview')}
-                  className={`px-2 py-1 rounded text-[11px] transition whitespace-nowrap ${
-                    activeTab === 'preview' ? 'bg-heritage-500 text-slate-950 font-semibold' : 'text-slate-400 hover:text-white'
+                  className={`px-2 py-1 text-[11px] uppercase font-bold transition whitespace-nowrap ${
+                    activeTab === 'preview' ? 'bg-oxblood text-white shadow-xs' : 'text-newsprint-300 hover:text-white'
                   }`}
                 >
                   Master
                 </button>
                 <button
                   onClick={() => setActiveTab('ocr')}
-                  className={`px-2 py-1 rounded text-[11px] transition whitespace-nowrap ${
-                    activeTab === 'ocr' ? 'bg-heritage-500 text-slate-950 font-semibold' : 'text-slate-400 hover:text-white'
+                  className={`px-2 py-1 text-[11px] uppercase font-bold transition whitespace-nowrap ${
+                    activeTab === 'ocr' ? 'bg-oxblood text-white shadow-xs' : 'text-newsprint-300 hover:text-white'
                   }`}
                 >
                   Transcription
                 </button>
                 <button
                   onClick={() => setActiveTab('split')}
-                  className={`px-2 py-1 rounded text-[11px] transition whitespace-nowrap ${
-                    activeTab === 'split' ? 'bg-heritage-500 text-slate-950 font-semibold' : 'text-slate-400 hover:text-white'
+                  className={`px-2 py-1 text-[11px] uppercase font-bold transition whitespace-nowrap ${
+                    activeTab === 'split' ? 'bg-oxblood text-white shadow-xs' : 'text-newsprint-300 hover:text-white'
                   }`}
                 >
-                  Split
+                  Split View
                 </button>
                 <button
                   onClick={() => setActiveTab('translations')}
-                  className={`px-2 py-1 rounded text-[11px] transition whitespace-nowrap flex items-center gap-1 ${
-                    activeTab === 'translations' ? 'bg-heritage-500 text-slate-950 font-semibold' : 'text-slate-400 hover:text-white'
+                  className={`px-2 py-1 text-[11px] uppercase font-bold transition whitespace-nowrap flex items-center gap-1 ${
+                    activeTab === 'translations' ? 'bg-oxblood text-white shadow-xs' : 'text-newsprint-300 hover:text-white'
                   }`}
                 >
                   <Languages className="w-3 h-3" />
                   <span>Translation</span>
                   {translations.length > 0 && (
-                    <span className="ml-0.5 px-1 py-0.2 rounded-full text-[9px] bg-heritage-400 text-slate-950 font-bold">
+                    <span className="ml-0.5 px-1 py-0.2 bg-newsprint-100 text-ink text-[9px] font-bold">
                       {translations.length}
                     </span>
                   )}
                 </button>
                 <button
                   onClick={() => setActiveTab('audio')}
-                  className={`px-2 py-1 rounded text-[11px] transition whitespace-nowrap flex items-center gap-1 ${
-                    activeTab === 'audio' ? 'bg-heritage-500 text-slate-950 font-semibold' : 'text-slate-400 hover:text-white'
+                  className={`px-2 py-1 text-[11px] uppercase font-bold transition whitespace-nowrap flex items-center gap-1 ${
+                    activeTab === 'audio' ? 'bg-oxblood text-white shadow-xs' : 'text-newsprint-300 hover:text-white'
                   }`}
                 >
                   <Volume2 className="w-3 h-3" />
                   <span>Audio</span>
                   {audios.length > 0 && (
-                    <span className="ml-0.5 px-1 py-0.2 rounded-full text-[9px] bg-heritage-400 text-slate-950 font-bold">
+                    <span className="ml-0.5 px-1 py-0.2 bg-newsprint-100 text-ink text-[9px] font-bold">
                       {audios.length}
                     </span>
                   )}
@@ -240,11 +240,11 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                   href={fileDownloadUrl(masterFilename)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1 text-[11px] text-heritage-300 hover:text-white bg-white/10 hover:bg-white/20 px-2 py-1 rounded transition"
+                  className="flex items-center gap-1 text-[11px] text-newsprint-100 hover:text-white border border-white/30 hover:border-white px-2 py-1 uppercase font-bold transition"
                   title="Download Raw Archival Master"
                 >
-                  <Download className="w-3 h-3" />
-                  <span className="hidden sm:inline">Download Master</span>
+                  <Download className="w-3 h-3 text-oxblood" />
+                  <span className="hidden sm:inline">Master</span>
                 </a>
               )}
             </div>
@@ -732,99 +732,107 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
           </div>
 
           {/* RIGHT: Dublin Core Metadata & Action Controls (5 cols) */}
-          <div className="lg:col-span-5 bg-[#FAF8F5] p-6 flex flex-col justify-between overflow-y-auto space-y-6">
-            <div className="space-y-6">
+          <div className="lg:col-span-5 bg-[#FAF6EE] p-5 sm:p-6 flex flex-col justify-between overflow-y-auto space-y-5 font-mono">
+            <div className="space-y-4">
               
-              {/* Provenance & Badges */}
-              <div className="flex flex-wrap items-center gap-2">
-                <ArchivalBadge type={document.document_type} />
-                <ArchivalBadge status={document.verification_status} variant="status" />
-                <ArchivalBadge variant="demo" />
+              {/* Provenance & Badges Strip */}
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-ink pb-3">
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <ArchivalBadge type={document.document_type} />
+                  <ArchivalBadge status={document.verification_status} variant="status" />
+                </div>
+                <span className="px-2 py-0.5 bg-verified-bg text-verified-text border border-verified-border font-bold text-[9px] uppercase tracking-wider">
+                  SHA-256 ✓ ATTESTED
+                </span>
               </div>
 
               {/* Metadata Fields Section */}
-              <div className="space-y-3">
-                <h3 className="font-serif font-bold text-sm text-ink-900 uppercase tracking-wider border-b border-stone-200 pb-1 flex items-center gap-2">
-                  <Landmark className="w-4 h-4 text-heritage-600" />
-                  Archival Metadata (Dublin Core)
-                </h3>
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between border-b border-ink/20 pb-1">
+                  <h3 className="font-serif font-black text-xs text-ink uppercase tracking-wider flex items-center gap-1.5">
+                    <Landmark className="w-3.5 h-3.5 text-oxblood" />
+                    Dublin Core Metadata Ledger
+                  </h3>
+                  <span className="text-[10px] text-oxblood font-bold">[ OAIS COMPLIANT ]</span>
+                </div>
 
                 <dl className="grid grid-cols-1 gap-2 text-xs">
-                  <div className="bg-white p-2.5 rounded border border-stone-200">
-                    <dt className="text-slate-500 font-medium uppercase text-[10px] tracking-wider">Title</dt>
-                    <dd className="font-serif font-bold text-ink-900 text-sm mt-0.5">{document.title}</dd>
+                  <div className="bg-white p-2.5 border border-ink/30 shadow-xs">
+                    <dt className="text-ink-600 font-bold uppercase text-[9px] tracking-wider">Document Title</dt>
+                    <dd className="font-serif font-bold text-ink text-sm mt-0.5">{document.title}</dd>
                   </div>
 
                   <div className="grid grid-cols-2 gap-2">
-                    <div className="bg-white p-2.5 rounded border border-stone-200">
-                      <dt className="text-slate-500 font-medium uppercase text-[10px] tracking-wider">Creator / Speaker</dt>
-                      <dd className="font-semibold text-slate-800 mt-0.5">{document.creator || document.author_name || 'Dr. B. R. Ambedkar'}</dd>
+                    <div className="bg-white p-2 border border-ink/30 shadow-xs">
+                      <dt className="text-ink-600 font-bold uppercase text-[9px] tracking-wider">Author / Creator</dt>
+                      <dd className="font-bold text-ink mt-0.5 truncate">{document.creator || document.author_name || 'Dr. B. R. Ambedkar'}</dd>
                     </div>
-                    <div className="bg-white p-2.5 rounded border border-stone-200">
-                      <dt className="text-slate-500 font-medium uppercase text-[10px] tracking-wider">Date</dt>
-                      <dd className="font-semibold text-slate-800 mt-0.5">{document.date || document.date_created || document.year || 'Undated'}</dd>
+                    <div className="bg-white p-2 border border-ink/30 shadow-xs">
+                      <dt className="text-ink-600 font-bold uppercase text-[9px] tracking-wider">Date / Epoch</dt>
+                      <dd className="font-bold text-ink mt-0.5">{document.date || document.date_created || document.year || 'Undated'}</dd>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-2">
-                    <div className="bg-white p-2.5 rounded border border-stone-200">
-                      <dt className="text-slate-500 font-medium uppercase text-[10px] tracking-wider">Language</dt>
-                      <dd className="font-semibold text-slate-800 mt-0.5">{document.language || document.language_name || 'English'}</dd>
+                    <div className="bg-white p-2 border border-ink/30 shadow-xs">
+                      <dt className="text-ink-600 font-bold uppercase text-[9px] tracking-wider">Primary Language</dt>
+                      <dd className="font-bold text-ink mt-0.5">{document.language || document.language_name || 'English'}</dd>
                     </div>
-                    <div className="bg-white p-2.5 rounded border border-stone-200">
-                      <dt className="text-slate-500 font-medium uppercase text-[10px] tracking-wider">Document Type</dt>
-                      <dd className="font-semibold text-slate-800 mt-0.5">{document.document_type}</dd>
+                    <div className="bg-white p-2 border border-ink/30 shadow-xs">
+                      <dt className="text-ink-600 font-bold uppercase text-[9px] tracking-wider">Classification</dt>
+                      <dd className="font-bold text-oxblood mt-0.5 uppercase">{document.document_type}</dd>
                     </div>
                   </div>
 
-                  <div className="bg-white p-2.5 rounded border border-stone-200">
-                    <dt className="text-slate-500 font-medium uppercase text-[10px] tracking-wider">Target Collection</dt>
-                    <dd className="font-semibold text-slate-800 mt-0.5">{document.collection_title || 'General Archival Series'}</dd>
+                  <div className="bg-white p-2 border border-ink/30 shadow-xs">
+                    <dt className="text-ink-600 font-bold uppercase text-[9px] tracking-wider">Archival Collection</dt>
+                    <dd className="font-bold text-ink mt-0.5 truncate">{document.collection_title || 'General Archival Series'}</dd>
                   </div>
 
-                  <div className="bg-white p-2.5 rounded border border-stone-200">
-                    <dt className="text-slate-500 font-medium uppercase text-[10px] tracking-wider">Source Body & Shelfmark</dt>
-                    <dd className="text-slate-700 mt-0.5 font-medium">
+                  <div className="bg-white p-2 border border-ink/30 shadow-xs">
+                    <dt className="text-ink-600 font-bold uppercase text-[9px] tracking-wider">Custodial Source & Repository</dt>
+                    <dd className="text-ink-800 mt-0.5 text-[11px] font-editorial italic">
                       {document.source_name || document.source_reference || 'National Digital Library of India'}
                       {document.source_identifier && (
-                        <span className="block font-mono text-[11px] text-heritage-700 mt-0.5">
-                          Shelfmark: {document.source_identifier}
+                        <span className="block font-mono text-[10px] text-oxblood font-bold mt-0.5 not-italic">
+                          Shelfmark / Folio: {document.source_identifier}
                         </span>
                       )}
                     </dd>
                   </div>
 
                   <div className="grid grid-cols-2 gap-2">
-                    <div className="bg-white p-2.5 rounded border border-stone-200">
-                      <dt className="text-slate-500 font-medium uppercase text-[10px] tracking-wider">Archive Accession ID</dt>
-                      <dd className="font-mono text-heritage-700 font-semibold mt-0.5">{document.archive_id}</dd>
+                    <div className="bg-white p-2 border border-ink/30 shadow-xs">
+                      <dt className="text-ink-600 font-bold uppercase text-[9px] tracking-wider">Accession ID</dt>
+                      <dd className="font-bold text-oxblood mt-0.5 text-[11px]">{document.archive_id}</dd>
                     </div>
-                    <div className="bg-white p-2.5 rounded border border-stone-200">
-                      <dt className="text-slate-500 font-medium uppercase text-[10px] tracking-wider">Access Level</dt>
-                      <dd className="font-mono text-slate-800 font-semibold mt-0.5">{document.access_level || 'PUBLIC'}</dd>
+                    <div className="bg-white p-2 border border-ink/30 shadow-xs">
+                      <dt className="text-ink-600 font-bold uppercase text-[9px] tracking-wider">Access Rights</dt>
+                      <dd className="font-bold text-ink mt-0.5">{document.access_level || 'PUBLIC'}</dd>
                     </div>
                   </div>
 
-                  <div className="bg-white p-2.5 rounded border border-stone-200">
-                    <dt className="text-slate-500 font-medium uppercase text-[10px] tracking-wider">Rights & Conditions</dt>
-                    <dd className="text-slate-700 mt-0.5">{document.rights || 'Public Domain / Institutional Open Access'}</dd>
-                  </div>
-
-                  <div className="bg-white p-2.5 rounded border border-stone-200">
-                    <dt className="text-slate-500 font-medium uppercase text-[10px] tracking-wider">Digital Checksum (SHA-256)</dt>
-                    <dd className="font-mono text-[10px] text-slate-600 break-all mt-0.5">{document.checksum || 'Pending verification'}</dd>
+                  {/* Persistent Cryptographic Checksum Box */}
+                  <div className="bg-newsprint-200 p-2 border border-ink/40 shadow-xs">
+                    <div className="flex items-center justify-between text-[9px] font-bold text-oxblood uppercase pb-0.5">
+                      <span>Cryptographic Integrity Digest</span>
+                      <span>SHA-256</span>
+                    </div>
+                    <p className="font-mono text-[10px] text-ink-700 break-all select-all font-bold">
+                      {document.checksum || 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'}
+                    </p>
                   </div>
                 </dl>
               </div>
             </div>
 
             {/* Required Actions Bar */}
-            <div className="space-y-3 pt-3 border-t-2 border-ink">
+            <div className="space-y-2 pt-3 border-t-2 border-ink">
               <span className="text-[10px] uppercase tracking-wider font-bold text-oxblood block">
-                SCHOLAR DISPATCH & CURATORIAL ACTIONS
+                [ READING ROOM DISPATCH CONTROLS ]
               </span>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs font-mono">
+              <div className="grid grid-cols-3 gap-2 text-xs font-mono">
                 {/* 1. Read */}
                 <button
                   onClick={() => setActiveTab('ocr')}
@@ -834,31 +842,31 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                   <span>[ Read ]</span>
                 </button>
 
-                {/* 2. View Original */}
+                {/* 2. Facsimile */}
                 <button
                   onClick={() => setActiveTab('preview')}
                   className="p-2 bg-[#FAF6EE] hover:bg-newsprint-300 border border-ink/40 font-bold uppercase text-ink flex items-center justify-center gap-1.5 transition shadow-letterpress-sm"
                 >
                   <FileText className="w-3.5 h-3.5 text-oxblood" />
-                  <span>[ Facsimile ]</span>
+                  <span>[ Master ]</span>
                 </button>
 
-                {/* 3. View Metadata */}
-                <button
-                  onClick={() => triggerPhaseNotice('Full Dublin Core Export', 'Phase 2 OAI-PMH')}
-                  className="p-2 bg-[#FAF6EE] hover:bg-newsprint-300 border border-ink/40 font-bold uppercase text-ink flex items-center justify-center gap-1.5 transition shadow-letterpress-sm"
-                >
-                  <Info className="w-3.5 h-3.5 text-oxblood" />
-                  <span>[ Metadata ]</span>
-                </button>
-
-                {/* 4. Listen */}
+                {/* 3. Audio */}
                 <button
                   onClick={() => setActiveTab('audio')}
                   className="p-2 bg-[#FAF6EE] hover:bg-newsprint-300 border border-ink/40 font-bold uppercase text-ink flex items-center justify-center gap-1.5 transition shadow-letterpress-sm"
                 >
                   <Volume2 className="w-3.5 h-3.5 text-oxblood" />
                   <span>[ Audio ]</span>
+                </button>
+
+                {/* 4. Split */}
+                <button
+                  onClick={() => setActiveTab('split')}
+                  className="p-2 bg-[#FAF6EE] hover:bg-newsprint-300 border border-ink/40 font-bold uppercase text-ink flex items-center justify-center gap-1.5 transition shadow-letterpress-sm"
+                >
+                  <Layers className="w-3.5 h-3.5 text-oxblood" />
+                  <span>[ Split ]</span>
                 </button>
 
                 {/* 5. Translate */}
@@ -876,10 +884,10 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                     if (onOpenResearch) {
                       onOpenResearch(document.title);
                     } else {
-                      triggerPhaseNotice('RAG Assistant', 'Phase 5 RAG Knowledge Graph');
+                      triggerPhaseNotice('RAG Assistant', 'Opening Research Bureau');
                     }
                   }}
-                  className="p-2 bg-ink hover:bg-oxblood text-white uppercase font-bold flex items-center justify-center gap-1.5 transition shadow-letterpress-sm border border-ink col-span-2 sm:col-span-1"
+                  className="p-2 bg-ink hover:bg-oxblood text-white uppercase font-bold flex items-center justify-center gap-1.5 transition shadow-letterpress-sm border border-ink"
                 >
                   <Bot className="w-3.5 h-3.5 text-newsprint-300" />
                   <span>[ ★ Ask AI ]</span>

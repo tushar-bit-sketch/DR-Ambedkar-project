@@ -56,33 +56,30 @@ export const KioskMediaPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4EFE6] flex flex-col p-4 sm:p-8 select-none">
+    <div className="min-h-screen bg-[#F4EFE6] flex flex-col p-4 sm:p-8 select-none text-ink">
       {/* Kiosk Header Banner */}
-      <div className="bg-[#102038] text-white rounded-3xl p-6 sm:p-8 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8 border-2 border-heritage-500/40">
+      <div className="bg-[#FAF6EE] text-ink border-2 border-double border-ink p-6 sm:p-8 shadow-letterpress flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8">
         <div className="flex items-center gap-5">
-          <div className="w-16 h-16 rounded-2xl bg-heritage-500 text-slate-950 flex items-center justify-center font-bold shadow-inner">
-            <Film className="w-9 h-9" />
+          <div className="w-14 h-14 bg-white text-oxblood flex items-center justify-center border-2 border-ink shadow-letterpress-sm font-bold text-2xl shrink-0">
+            <Film className="w-7 h-7" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-full bg-heritage-500/20 text-heritage-300 font-mono text-xs font-semibold uppercase tracking-wider">
-                Touchscreen Archival Gallery
-              </span>
-              <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono text-xs font-semibold">
-                Authentic Masters
+              <span className="text-[10px] font-mono text-oxblood uppercase font-bold tracking-widest">
+                [ TOUCHSCREEN ARCHIVAL GALLERY • AUTHENTIC MASTERS ]
               </span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-white mt-1">
+            <h1 className="text-2xl sm:text-3xl font-serif font-black tracking-tight text-ink mt-0.5">
               Historical Audiovisual Vault
             </h1>
-            <p className="text-xs sm:text-sm text-heritage-200 mt-1">
-              Verified original recordings, speeches, ceremonies, and photographic glass plates
+            <p className="text-xs sm:text-sm text-ink/80 font-editorial italic mt-0.5">
+              Verified original recordings, speeches, ceremonies, and photographic glass plates.
             </p>
           </div>
         </div>
 
         {/* Media Type Filter Pills (Touch-Friendly Large Buttons) */}
-        <div className="flex flex-wrap items-center gap-2 sm:gap-3 bg-white/5 p-2 rounded-2xl border border-white/10 w-full md:w-auto">
+        <div className="flex flex-wrap items-center gap-2 bg-[#EFE8DA] p-2 border-2 border-ink shadow-letterpress-sm w-full md:w-auto font-mono text-xs">
           {[
             { id: 'ALL', label: 'All Media' },
             { id: 'VIDEO', label: 'Film & Video' },
@@ -92,10 +89,10 @@ export const KioskMediaPage: React.FC = () => {
             <button
               key={f.id}
               onClick={() => setMediaTypeFilter(f.id)}
-              className={`flex-1 md:flex-initial px-4 py-3 rounded-xl font-bold text-sm transition-all text-center ${
+              className={`flex-1 md:flex-initial px-4 py-2.5 border font-bold uppercase transition-all text-center ${
                 mediaTypeFilter === f.id
-                  ? 'bg-heritage-500 text-slate-950 shadow-md scale-105'
-                  : 'bg-white/10 text-white hover:bg-white/20'
+                  ? 'bg-oxblood text-white border-oxblood shadow-letterpress-sm'
+                  : 'bg-white text-ink border-ink/40 hover:border-ink'
               }`}
             >
               {f.label}
@@ -106,21 +103,21 @@ export const KioskMediaPage: React.FC = () => {
 
       {/* Touch Search Bar */}
       <div className="mb-8">
-        <div className="relative">
-          <Search className="w-6 h-6 text-slate-400 absolute left-5 top-1/2 -translate-y-1/2" />
+        <div className="relative max-w-3xl">
+          <Search className="w-5 h-5 text-ink/40 absolute left-4 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Touch to search speeches, titles, historical context..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-14 pr-6 py-4 bg-white rounded-2xl border-2 border-stone-300 focus:border-heritage-500 shadow-sm text-base sm:text-lg font-medium text-slate-900 focus:outline-none transition"
+            className="w-full pl-12 pr-6 py-3.5 bg-white border-2 border-ink shadow-letterpress-sm text-xs sm:text-sm font-mono text-ink placeholder:text-ink/40 focus:outline-none focus:border-oxblood transition"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="absolute right-4 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-stone-200 hover:bg-stone-300 rounded-lg text-xs font-bold text-stone-700"
+              className="absolute right-3 top-1/2 -translate-y-1/2 px-3 py-1 bg-[#EFE8DA] hover:bg-[#E2D7C3] border border-ink text-xs font-mono font-bold uppercase text-ink"
             >
-              Clear
+              [ Clear ]
             </button>
           )}
         </div>
@@ -128,15 +125,15 @@ export const KioskMediaPage: React.FC = () => {
 
       {/* Grid of Media Cards */}
       {loading ? (
-        <div className="flex-1 flex flex-col items-center justify-center p-12 text-center">
-          <div className="w-12 h-12 border-4 border-heritage-500 border-t-transparent rounded-full animate-spin mb-4" />
-          <p className="font-serif text-lg text-slate-700">Loading verified archival media...</p>
+        <div className="bg-[#FAF6EE] border-2 border-ink p-12 text-center shadow-letterpress font-mono space-y-3 max-w-md mx-auto my-12">
+          <div className="archival-loading-bar mb-3" />
+          <p className="text-xs uppercase font-bold text-ink tracking-widest">[ Loading Verified Archival Media... ]</p>
         </div>
       ) : filteredAssets.length === 0 ? (
-        <div className="bg-white rounded-3xl p-12 text-center border-2 border-dashed border-stone-300 max-w-xl mx-auto my-12">
-          <Film className="w-12 h-12 text-stone-400 mx-auto mb-3" />
-          <h3 className="font-serif text-xl font-bold text-slate-800">No archival recordings found</h3>
-          <p className="text-xs text-slate-500 mt-2">
+        <div className="bg-[#FAF6EE] border-2 border-ink p-12 text-center shadow-letterpress max-w-xl mx-auto my-12 space-y-3 font-mono">
+          <Film className="w-12 h-12 text-oxblood mx-auto" />
+          <h3 className="font-serif text-xl font-bold text-ink">No Archival Recordings Found</h3>
+          <p className="text-xs text-ink/70 font-editorial">
             No media matches the selected criteria. Try selecting another filter or clearing the search.
           </p>
         </div>
@@ -146,76 +143,76 @@ export const KioskMediaPage: React.FC = () => {
             <div
               key={asset.id}
               onClick={() => navigate(`/kiosk/media/${asset.id}`)}
-              className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl border-2 border-stone-200 hover:border-heritage-500 transition cursor-pointer flex flex-col transform hover:-translate-y-1 active:scale-[0.99]"
+              className="bg-[#FAF6EE] border-2 border-ink overflow-hidden shadow-letterpress-sm hover:shadow-letterpress transition cursor-pointer flex flex-col group"
             >
               {/* Thumbnail / Poster Area */}
-              <div className="relative aspect-video bg-slate-900 flex items-center justify-center overflow-hidden">
+              <div className="relative aspect-video bg-[#1A1714] flex items-center justify-center overflow-hidden border-b-2 border-ink">
                 <img
                   src={mediaApi.getPosterUrl(asset.id)}
                   alt={asset.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover filter contrast-105 group-hover:scale-105 transition duration-300"
                   onError={(e) => {
-                    // Fallback to placeholder if thumbnail is unavailable
                     (e.target as HTMLElement).style.display = 'none';
                   }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-black/30 pointer-events-none" />
                 
-                {/* Media Icon & Play Indicator */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-16 h-16 rounded-full bg-heritage-500/90 text-slate-950 flex items-center justify-center shadow-lg transform group-hover:scale-110 transition">
-                    <Play className="w-8 h-8 fill-current ml-1" />
+                {/* Play Indicator */}
+                <div className="absolute inset-0 bg-ink/30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition">
+                  <div className="w-14 h-14 bg-white text-ink flex items-center justify-center border-2 border-ink shadow-letterpress-sm">
+                    <Play className="w-7 h-7 fill-current ml-1" />
                   </div>
                 </div>
 
                 {/* Top Badges */}
-                <div className="absolute top-3 left-3 flex items-center gap-2">
-                  <span className="px-2.5 py-1 rounded-md bg-black/70 backdrop-blur text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 border border-white/20">
-                    {getMediaIcon(asset.media_type)}
-                    <span className="text-[11px]">{asset.media_type}</span>
+                <div className="absolute top-2 left-2 flex items-center gap-1.5 font-mono">
+                  <span className="px-2 py-0.5 bg-ink text-white text-[10px] font-bold border border-ink uppercase">
+                    {asset.media_type}
+                  </span>
+                  <span className="px-2 py-0.5 bg-oxblood text-white text-[10px] font-bold border border-ink uppercase">
+                    {asset.format}
                   </span>
                 </div>
 
                 {/* Duration Badge */}
-                {asset.duration_seconds && (
-                  <div className="absolute bottom-3 right-3 px-2 py-0.5 rounded bg-black/80 backdrop-blur text-white font-mono text-xs flex items-center gap-1 border border-white/20">
-                    <Clock className="w-3.5 h-3.5 text-heritage-400" />
-                    <span>{formatDuration(asset.duration_seconds)}</span>
+                {asset.duration && (
+                  <div className="absolute bottom-2 right-2 px-1.5 py-0.5 bg-ink text-white font-mono text-[10px] flex items-center gap-1 border border-ink font-bold">
+                    <Clock className="w-3 h-3 text-oxblood-light" />
+                    <span>{formatDuration(asset.duration)}</span>
                   </div>
                 )}
               </div>
 
               {/* Details Body */}
-              <div className="p-6 flex-1 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center gap-2 mb-2 text-xs text-slate-500">
-                    {asset.date_recorded && (
-                      <span className="flex items-center gap-1 font-mono">
-                        <Calendar className="w-3.5 h-3.5 text-heritage-600" />
-                        {asset.date_recorded}
+              <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-2 text-[10px] font-mono text-ink/70">
+                    {asset.date && (
+                      <span className="flex items-center gap-1 font-bold">
+                        <Calendar className="w-3.5 h-3.5 text-oxblood" />
+                        {asset.date}
                       </span>
                     )}
-                    <span className="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-mono text-[10px] font-bold">
-                      {asset.verification_status}
+                    <span className="px-1.5 py-0.2 bg-[#EFE8DA] text-ink border border-ink/30 font-bold uppercase">
+                      {asset.archive_id}
                     </span>
                   </div>
 
-                  <h3 className="font-serif font-bold text-lg text-slate-900 line-clamp-2 leading-snug">
+                  <h3 className="font-serif font-bold text-base text-ink line-clamp-2 leading-snug group-hover:text-oxblood transition">
                     {asset.title}
                   </h3>
 
-                  <p className="text-xs text-slate-600 line-clamp-2 mt-2 leading-relaxed">
-                    {asset.description || asset.historical_context || 'Verified archival accession.'}
+                  <p className="text-xs text-ink/80 font-editorial line-clamp-2 leading-relaxed">
+                    {asset.description || 'Verified archival accession.'}
                   </p>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-stone-200 flex items-center justify-between">
-                  <span className="text-xs font-mono text-slate-500 uppercase">
-                    Format: {asset.file_format || 'Original Master'}
+                <div className="pt-3 border-t border-ink/20 flex items-center justify-between font-mono text-xs">
+                  <span className="text-[10px] text-ink/60 uppercase font-bold">
+                    Format: {asset.format || 'Master'}
                   </span>
-                  <div className="flex items-center gap-1 text-heritage-700 font-bold text-sm">
-                    <span>Touch to Play</span>
-                    <ChevronRight className="w-4 h-4" />
+                  <div className="flex items-center gap-1 text-oxblood font-bold uppercase">
+                    <span>[ Touch to Play ]</span>
+                    <ChevronRight className="w-3.5 h-3.5" />
                   </div>
                 </div>
               </div>

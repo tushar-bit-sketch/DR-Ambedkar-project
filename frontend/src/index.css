@@ -128,3 +128,40 @@
   font-size: 1.15rem;
   user-select: none;
 }
+
+/* Archival Loading Block with Animated Rule */
+.archival-loading-bar {
+  height: 2px;
+  background-color: #1A1714;
+  position: relative;
+  overflow: hidden;
+}
+
+.archival-loading-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 40%;
+  background-color: #6B1D1D;
+  animation: archival-slide 1.5s infinite ease-in-out;
+}
+
+@keyframes archival-slide {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(150%); }
+  100% { transform: translateX(350%); }
+}
+
+/* Reduced Motion Preference (WCAG 2.1 AA) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

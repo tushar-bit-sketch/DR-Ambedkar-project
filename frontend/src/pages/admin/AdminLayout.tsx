@@ -47,39 +47,39 @@ export const AdminLayout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4EFE6] flex flex-col">
+    <div className="min-h-screen bg-[#F4EFE6] flex flex-col text-ink">
       <DemoBanner customMessage="ARCHIVAL ADMINISTRATION PORTAL — INSTITUTIONAL CURATORIAL CONSOLE" />
 
       {/* Admin Top Header */}
-      <header className="bg-[#102038] text-white border-b-2 border-heritage-500 px-4 sm:px-6 py-3 flex items-center justify-between shadow-md">
+      <header className="bg-[#FAF6EE] text-ink border-b-2 border-double border-ink px-4 sm:px-6 py-3 flex items-center justify-between shadow-letterpress-sm">
         <div className="flex items-center space-x-3">
-          <Link to="/" className="text-slate-300 hover:text-white flex items-center gap-1 text-xs font-semibold">
+          <Link to="/" className="text-ink hover:text-oxblood flex items-center gap-1.5 text-xs font-mono font-bold uppercase transition">
             <ArrowLeft className="w-4 h-4" />
-            <span className="hidden sm:inline">Back to Archive</span>
+            <span className="hidden sm:inline">[ Return to Public Archive ]</span>
           </Link>
-          <span className="text-white/20">|</span>
+          <span className="text-ink/30">|</span>
           <div className="flex items-center space-x-2">
-            <Shield className="w-5 h-5 text-heritage-400" />
-            <span className="font-serif font-bold text-base sm:text-lg">
-              Institutional Archive Administration
+            <Shield className="w-4 h-4 text-oxblood" />
+            <span className="font-serif font-black text-sm sm:text-base tracking-tight text-ink">
+              Archival Administration & Records Office
             </span>
           </div>
         </div>
 
         {/* Role Switcher for Phase 1 RBAC Testing */}
         <div className="flex items-center space-x-3 text-xs">
-          <div className="hidden md:flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded-lg border border-white/10">
-            <span className="text-slate-300">Active Role:</span>
+          <div className="hidden md:flex items-center gap-2 bg-white px-3 py-1 border-2 border-ink shadow-letterpress-sm">
+            <span className="text-ink/70 font-mono uppercase text-[11px] font-bold">Role:</span>
             <select
               value={role}
               onChange={(e) => handleRoleChange(e.target.value as UserRole)}
-              className="bg-transparent text-heritage-300 font-bold focus:outline-none cursor-pointer"
+              className="bg-transparent text-oxblood font-mono font-bold focus:outline-none cursor-pointer text-xs uppercase"
             >
-              <option value="SUPER_ADMIN" className="bg-[#102038] text-white">SUPER_ADMIN</option>
-              <option value="ARCHIVIST" className="bg-[#102038] text-white">ARCHIVIST</option>
-              <option value="RESEARCHER" className="bg-[#102038] text-white">RESEARCHER</option>
-              <option value="REVIEWER" className="bg-[#102038] text-white">REVIEWER</option>
-              <option value="VISITOR" className="bg-[#102038] text-white">VISITOR (Read Only)</option>
+              <option value="SUPER_ADMIN" className="bg-[#FAF6EE] text-ink font-mono">SUPER_ADMIN</option>
+              <option value="ARCHIVIST" className="bg-[#FAF6EE] text-ink font-mono">ARCHIVIST</option>
+              <option value="RESEARCHER" className="bg-[#FAF6EE] text-ink font-mono">RESEARCHER</option>
+              <option value="REVIEWER" className="bg-[#FAF6EE] text-ink font-mono">REVIEWER</option>
+              <option value="VISITOR" className="bg-[#FAF6EE] text-ink font-mono">VISITOR (Read Only)</option>
             </select>
           </div>
 
@@ -88,7 +88,7 @@ export const AdminLayout: React.FC = () => {
               logout();
               navigate('/');
             }}
-            className="p-1.5 text-slate-300 hover:text-white rounded hover:bg-white/10 transition"
+            className="p-1.5 bg-white text-ink hover:bg-oxblood hover:text-white border-2 border-ink shadow-letterpress-sm transition"
             title="Sign Out"
           >
             <LogOut className="w-4 h-4" />
@@ -99,14 +99,16 @@ export const AdminLayout: React.FC = () => {
       {/* Main Admin Area */}
       <div className="flex-1 flex flex-col md:flex-row">
         {/* Left Sidebar */}
-        <aside aria-label="Admin Navigation" className="w-full md:w-64 bg-[#1B2A4A] text-slate-200 border-r border-stone-300 p-4 space-y-6 flex-shrink-0">
-          <div className="px-3 py-2 bg-white/5 rounded-lg border border-white/10">
-            <div className="text-[11px] text-slate-400 font-mono uppercase">Logged In As</div>
-            <div className="font-bold text-sm text-white truncate">{user?.full_name || 'Archival Officer'}</div>
-            <div className="text-[10px] text-heritage-300 font-mono">{role}</div>
+        <aside aria-label="Admin Navigation" className="w-full md:w-64 bg-[#1A1714] text-[#FAF6EE] border-r-2 border-ink p-4 space-y-6 flex-shrink-0">
+          <div className="p-3 bg-[#23201C] border border-[#3D332A] shadow-inner space-y-1">
+            <div className="text-[10px] text-[#FAF6EE]/60 font-mono uppercase tracking-wider font-bold">Logged In Officer</div>
+            <div className="font-bold text-sm text-[#FAF6EE] font-serif truncate">{user?.full_name || 'Archival Officer'}</div>
+            <div className="text-[10px] text-oxblood-light font-mono font-bold bg-[#FAF6EE]/10 px-1.5 py-0.5 inline-block border border-[#3D332A] uppercase">
+              {role}
+            </div>
           </div>
 
-          <nav className="space-y-1">
+          <nav className="space-y-1 font-mono text-xs">
             {navItems.map((item) => {
               const active = isActive(item.path);
               const Icon = item.icon;
@@ -114,23 +116,23 @@ export const AdminLayout: React.FC = () => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition ${
+                  className={`flex items-center gap-2.5 px-3 py-2 border transition ${
                     active
-                      ? 'bg-heritage-500 text-slate-950 shadow font-bold'
-                      : 'text-slate-300 hover:bg-white/5 hover:text-white'
+                      ? 'bg-oxblood text-white border-oxblood shadow-letterpress-sm font-bold'
+                      : 'text-[#FAF6EE]/80 hover:bg-[#23201C] hover:text-white border-transparent'
                   }`}
                 >
-                  <Icon className="w-4 h-4 flex-shrink-0" />
-                  <span>{item.label}</span>
+                  <Icon className="w-3.5 h-3.5 flex-shrink-0" />
+                  <span className="uppercase tracking-wider text-[11px]">{item.label}</span>
                 </Link>
               );
             })}
           </nav>
 
-          <div className="pt-6 border-t border-white/10 text-[11px] text-slate-400 space-y-2">
-            <div className="font-mono text-heritage-400">Archival Node #01</div>
-            <div>PostgreSQL Schema v1.0</div>
-            <div>OAuth2 / JWT Active</div>
+          <div className="pt-4 border-t border-[#3D332A] text-[10px] font-mono text-[#FAF6EE]/60 space-y-1">
+            <div className="text-white font-bold uppercase">[ NODE: CENTRAL ARCHIVE #01 ]</div>
+            <div>POSTGRESQL SCHEMA V1.0 • OAIS ISO 14721</div>
+            <div>OAUTH2 / JWT ACTIVE • ED25519 ATTESTATION</div>
           </div>
         </aside>
 

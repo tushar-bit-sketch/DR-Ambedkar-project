@@ -9,18 +9,19 @@ import { apiService } from '../services/api';
 import { GraphEntityItem, GraphRelationshipItem, GraphStatusData } from '../types';
 import { ProvenanceChainViewer } from '../components/archive/ProvenanceChainViewer';
 import { DemoBanner } from '../components/archive/DemoBanner';
+import { PageMasthead } from '../components/layout/PageMasthead';
 
-// Entity type color tokens for museum-grade visual hierarchy
+// Entity type color tokens for museum-grade visual hierarchy (Archival Broadsheet Palette)
 const ENTITY_COLORS: Record<string, { bg: string; border: string; text: string; dot: string }> = {
-  Person: { bg: '#EFF6FF', border: '#3B82F6', text: '#1D4ED8', dot: '#2563EB' },
-  Document: { bg: '#FEF3C7', border: '#D97706', text: '#B45309', dot: '#D97706' },
-  Speech: { bg: '#FEF9C3', border: '#EAB308', text: '#A16207', dot: '#CA8A04' },
-  Event: { bg: '#ECFDF5', border: '#10B981', text: '#047857', dot: '#059669' },
-  Institution: { bg: '#EEF2FF', border: '#6366F1', text: '#4338CA', dot: '#4F46E5' },
-  Topic: { bg: '#FAF5FF', border: '#A855F7', text: '#7E22CE', dot: '#9333EA' },
-  Concept: { bg: '#FDF4FF', border: '#D946EF', text: '#A21CAF', dot: '#C026D3' },
-  Place: { bg: '#FFF7ED', border: '#F97316', text: '#C2410C', dot: '#EA580C' },
-  Collection: { bg: '#F0FDFA', border: '#14B8A6', text: '#0F766E', dot: '#0D9488' }
+  Person: { bg: '#FAF6EE', border: '#6B1D1D', text: '#6B1D1D', dot: '#6B1D1D' },
+  Document: { bg: '#F4EFE6', border: '#1A1714', text: '#1A1714', dot: '#1A1714' },
+  Speech: { bg: '#EFE8DA', border: '#8B2525', text: '#5A1717', dot: '#8B2525' },
+  Event: { bg: '#E8F0EB', border: '#2D6A4F', text: '#1A4A2A', dot: '#2D6A4F' },
+  Institution: { bg: '#EAE2D7', border: '#3D332A', text: '#241D17', dot: '#3D332A' },
+  Topic: { bg: '#F5E8E8', border: '#6B1D1D', text: '#4D1414', dot: '#6B1D1D' },
+  Concept: { bg: '#F7EFD8', border: '#A37200', text: '#6B4E00', dot: '#A37200' },
+  Place: { bg: '#E2D7C3', border: '#5C4E40', text: '#3D332A', dot: '#5C4E40' },
+  Collection: { bg: '#FAF6EE', border: '#1A1714', text: '#1A1714', dot: '#1A1714' }
 };
 
 interface GraphNode extends GraphEntityItem {
@@ -364,32 +365,18 @@ export const KnowledgeGraphPage: React.FC = () => {
       <DemoBanner isOffline={isOffline} />
 
       {/* Broadsheet Masthead */}
-      <section className="bg-[#FAF6EE] text-ink py-6 px-4 sm:px-6 lg:px-8 border-b-2 border-double border-ink shadow-sm">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div className="space-y-1.5">
-            <div className="flex items-center space-x-2 text-[11px] font-mono text-oxblood uppercase tracking-widest font-bold">
-              <Network className="w-3.5 h-3.5 text-oxblood" />
-              <span>RECORD REPOSITORY • HISTORICAL ONTOLOGY & KNOWLEDGE GRAPH</span>
-              {graphStatus && (
-                <span className="ml-2 px-2 py-0.5 text-[10px] font-mono font-bold bg-[#EFE8DA] text-ink border border-ink">
-                  ENGINE: {graphStatus.backend.toUpperCase()}
-                </span>
-              )}
-            </div>
-            <h1 className="font-serif text-2xl sm:text-3xl font-black tracking-tight text-ink">
-              Archival Knowledge Graph & Entity Index
-            </h1>
-            <p className="text-stone-700 text-xs sm:text-sm font-editorial italic max-w-2xl">
-              Evidence-anchored relational network mapping Dr. B.R. Ambedkar, constitutional proceedings, scholarly treatises, civic institutions, and verified custodial documents.
-            </p>
-          </div>
-
-          {/* View Mode Toggle */}
-          <div className="flex items-center gap-1 bg-[#EFE8DA] p-1 border-2 border-ink self-start md:self-auto shadow-letterpress-sm">
+      <PageMasthead
+        eyebrow="Department of Archival Intelligence & Ontological Relations"
+        headline="Archival Knowledge Graph & Entity Index"
+        subheadline="Evidence-anchored relational network mapping Dr. B.R. Ambedkar, constitutional proceedings, scholarly treatises, civic institutions, and verified custodial documents."
+        accession={graphStatus ? `ENGINE: ${graphStatus.backend.toUpperCase()} • NODES: ${entities.length} • EDGES: ${relationships.length}` : 'HISTORICAL ONTOLOGY & KNOWLEDGE GRAPH'}
+        badge="ONTOLOGY GRAPH"
+        rightSlot={
+          <div className="flex items-center gap-1 bg-[#EFE8DA] p-1 border-2 border-ink shadow-letterpress-sm">
             <button
               onClick={() => setViewMode('visual')}
               className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-bold uppercase transition ${
-                viewMode === 'visual' ? 'bg-ink text-white shadow-sm' : 'text-ink hover:bg-stone-200'
+                viewMode === 'visual' ? 'bg-ink text-white shadow-sm' : 'text-ink hover:bg-[#E2D7C3]'
               }`}
             >
               <Network className="w-3.5 h-3.5" /> [ Visual Web ]
@@ -397,14 +384,14 @@ export const KnowledgeGraphPage: React.FC = () => {
             <button
               onClick={() => setViewMode('accessible_list')}
               className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-bold uppercase transition ${
-                viewMode === 'accessible_list' ? 'bg-ink text-white shadow-sm' : 'text-ink hover:bg-stone-200'
+                viewMode === 'accessible_list' ? 'bg-ink text-white shadow-sm' : 'text-ink hover:bg-[#E2D7C3]'
               }`}
             >
               <List className="w-3.5 h-3.5" /> [ Structured Index ]
             </button>
           </div>
-        </div>
-      </section>
+        }
+      />
 
       {/* Filter and Search Ribbon */}
       <div className="bg-[#FAF6EE] border-b-2 border-ink px-4 sm:px-6 lg:px-8 py-3 sticky top-14 z-30 shadow-letterpress-sm">
@@ -516,7 +503,10 @@ export const KnowledgeGraphPage: React.FC = () => {
               onMouseMove={handleMouseMove}
               onMouseUp={handleMouseUp}
               onMouseLeave={handleMouseUp}
-              className="w-full h-full cursor-grab active:cursor-grabbing"
+              role="img"
+              aria-label="Interactive archival knowledge graph visualization mapping Dr. Ambedkar, historical figures, organizations, works, and events. Toggle Structured Index for screen-reader ledger."
+              tabIndex={0}
+              className="w-full h-full cursor-grab active:cursor-grabbing focus:outline-none focus:ring-2 focus:ring-oxblood"
             />
 
             {/* Bottom Status / Stats Legend */}
@@ -538,11 +528,11 @@ export const KnowledgeGraphPage: React.FC = () => {
                 <h2 className="font-serif font-black text-xl text-ink">
                   Accessible Knowledge Graph Ledger
                 </h2>
-                <p className="text-stone-700 text-xs font-editorial">
+                <p className="text-ink/80 text-xs font-editorial">
                   Full text-based hierarchy with keyboard navigable entity relationships.
                 </p>
               </div>
-              <span className="font-mono text-xs text-stone-600 font-bold">
+              <span className="font-mono text-xs text-ink/70 font-bold">
                 ENTRIES: {filteredEntities.length}
               </span>
             </div>
@@ -567,15 +557,15 @@ export const KnowledgeGraphPage: React.FC = () => {
                         {ent.canonical_name}
                       </h3>
                     </div>
-                    <span className="text-xs text-stone-500 font-mono">#{ent.id}</span>
+                    <span className="text-xs text-ink/60 font-mono">#{ent.id}</span>
                   </div>
                   {ent.description && (
-                    <p className="text-xs text-stone-700 mt-1 font-editorial line-clamp-2">
+                    <p className="text-xs text-ink/80 mt-1 font-editorial line-clamp-2">
                       {ent.description}
                     </p>
                   )}
                   {ent.alternate_names && ent.alternate_names.length > 0 && (
-                    <p className="text-[11px] text-stone-500 font-mono mt-1">
+                    <p className="text-[11px] text-ink/60 font-mono mt-1">
                       Aliases: {ent.alternate_names.join(', ')}
                     </p>
                   )}
@@ -609,28 +599,28 @@ export const KnowledgeGraphPage: React.FC = () => {
               </div>
 
               {selectedNode.description && (
-                <p className="text-xs text-stone-800 leading-relaxed font-editorial">
+                <p className="text-xs text-ink/90 leading-relaxed font-editorial">
                   {selectedNode.description}
                 </p>
               )}
 
               {/* Entity Attributes */}
-              <div className="space-y-1.5 text-xs text-stone-700 border-t border-ink/20 pt-3 font-mono">
+              <div className="space-y-1.5 text-xs text-ink/80 border-t border-ink/20 pt-3 font-mono">
                 {selectedNode.birth_date && (
                   <div className="flex justify-between">
-                    <span className="text-stone-500">Lifespan:</span>
+                    <span className="text-ink/60">Lifespan:</span>
                     <span className="font-mono font-bold text-ink">{selectedNode.birth_date} – {selectedNode.death_date || 'Present'}</span>
                   </div>
                 )}
                 {selectedNode.location && (
                   <div className="flex justify-between">
-                    <span className="text-stone-500">Location:</span>
+                    <span className="text-ink/60">Location:</span>
                     <span className="font-bold text-ink">{selectedNode.location}</span>
                   </div>
                 )}
                 {selectedNode.alternate_names && selectedNode.alternate_names.length > 0 && (
                   <div>
-                    <span className="text-stone-500 block mb-0.5">Known Aliases:</span>
+                    <span className="text-ink/60 block mb-0.5">Known Aliases:</span>
                     <div className="flex flex-wrap gap-1">
                       {selectedNode.alternate_names.map(a => (
                         <span key={a} className="bg-white text-ink border border-ink/30 px-1.5 py-0.5 text-[10px] font-mono font-bold">
@@ -652,7 +642,7 @@ export const KnowledgeGraphPage: React.FC = () => {
                 </button>
                 <button
                   onClick={() => navigate(`/timeline?entity_id=${selectedNode.id}`)}
-                  className="w-full py-2 bg-white hover:bg-stone-200 text-ink border border-ink text-xs font-mono font-bold uppercase flex items-center justify-center gap-1.5 transition shadow-letterpress-sm"
+                  className="w-full py-2 bg-white hover:bg-[#EFE8DA] text-ink border border-ink text-xs font-mono font-bold uppercase flex items-center justify-center gap-1.5 transition shadow-letterpress-sm"
                 >
                   <Clock className="w-3.5 h-3.5 text-oxblood" /> [ Timeline Milestones ]
                 </button>
@@ -673,7 +663,7 @@ export const KnowledgeGraphPage: React.FC = () => {
               </div>
 
               <div className="space-y-1">
-                <p className="text-xs text-stone-500 font-mono uppercase">DISPATCH RELATION</p>
+                <p className="text-xs text-ink/60 font-mono uppercase">DISPATCH RELATION</p>
                 <p className="font-serif font-bold text-ink text-sm">
                   {selectedEdge.source_entity_name} → <span className="text-oxblood font-mono underline">{selectedEdge.relationship_type}</span> → {selectedEdge.target_entity_name}
                 </p>
@@ -681,14 +671,14 @@ export const KnowledgeGraphPage: React.FC = () => {
 
               {selectedEdge.evidence_text && (
                 <div className="space-y-1">
-                  <p className="text-xs text-stone-500 font-mono uppercase">ARCHIVAL EVIDENCE EXCERPT</p>
-                  <p className="text-xs text-stone-800 italic bg-white p-2.5 border border-ink font-editorial leading-relaxed">
+                  <p className="text-xs text-ink/60 font-mono uppercase">ARCHIVAL EVIDENCE EXCERPT</p>
+                  <p className="text-xs text-ink/90 italic bg-white p-2.5 border border-ink font-editorial leading-relaxed">
                     "{selectedEdge.evidence_text}"
                   </p>
                 </div>
               )}
 
-              <div className="text-[11px] text-stone-600 space-y-1 border-t border-ink/20 pt-2 font-mono">
+              <div className="text-[11px] text-ink/70 space-y-1 border-t border-ink/20 pt-2 font-mono">
                 <div>Provenance: <strong className="text-ink">{selectedEdge.provenance_type}</strong></div>
                 <div>Confidence: <strong className="text-ink">{selectedEdge.confidence_label || `${Math.round(selectedEdge.confidence * 100)}%`}</strong></div>
               </div>

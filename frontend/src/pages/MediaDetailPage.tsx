@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { mediaApi } from '../services/mediaApi';
 import { MediaAsset, MediaProvenance, MediaTranscript } from '../types/media';
+import { PageMasthead } from '../components/layout/PageMasthead';
 
 export const MediaDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -114,46 +115,63 @@ export const MediaDetailPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#FAF8F5] flex items-center justify-center font-mono text-sm text-slate-500">
-        Loading authenticated media asset #{mediaId}...
+      <div className="min-h-screen bg-[#F4EFE6] flex items-center justify-center p-8">
+        <div className="max-w-md w-full bg-[#FAF6EE] border-2 border-ink p-8 text-center shadow-letterpress">
+          <div className="archival-loading-bar mb-4" />
+          <h2 className="font-serif font-black text-xl text-ink">Accessing Media Vault</h2>
+          <p className="text-xs font-mono text-ink/70 mt-2">RETRIEVING AUTHENTICATED AUDIO-VISUAL ASSET #{mediaId}...</p>
+        </div>
       </div>
     );
   }
 
   if (!asset) {
     return (
-      <div className="min-h-screen bg-[#FAF8F5] p-8 text-center">
-        <h2 className="font-serif text-xl font-bold text-slate-900">Archival Media Item Not Found</h2>
-        <button onClick={() => navigate('/media')} className="mt-4 px-4 py-2 bg-heritage-500 rounded text-xs font-semibold">
-          Return to Media Catalog
-        </button>
+      <div className="min-h-screen bg-[#F4EFE6] flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-[#FAF6EE] border-2 border-ink p-8 text-center shadow-letterpress">
+          <Film className="w-10 h-10 text-oxblood mx-auto mb-3" />
+          <h2 className="font-serif font-black text-xl text-ink mb-1">Archival Media Item Not Found</h2>
+          <p className="text-ink/80 text-xs font-editorial mb-6">Requested media dispatch does not exist in the active archival repository.</p>
+          <button
+            onClick={() => navigate('/media')}
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-ink text-white text-xs font-mono font-bold uppercase hover:bg-oxblood transition border border-ink shadow-letterpress-sm"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" /> [ Return to Media Catalog ]
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-[#F4EFE6] text-ink pb-16">
-      {/* Top Banner */}
-      <div className="bg-[#FAF6EE] text-ink border-b-2 border-double border-ink py-3.5 px-4 sm:px-8 shadow-sm">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <button
-            onClick={() => navigate('/media')}
-            className="flex items-center space-x-2 text-xs font-mono font-bold uppercase text-ink hover:text-oxblood transition"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>[ RETURN TO MEDIA REGISTRY ]</span>
-          </button>
-          <div className="flex items-center space-x-3 text-xs font-mono">
-            <span className="px-2 py-0.5 bg-[#EFE8DA] text-ink border border-ink font-bold">
-              {asset.archive_id}
-            </span>
-            <span className="px-2 py-0.5 bg-red-50 text-oxblood border border-oxblood flex items-center space-x-1 font-bold">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>SEAL: SHA-256 VERIFIED MASTER</span>
-            </span>
+      {/* Top Gazette Masthead */}
+      <PageMasthead
+        eyebrow="Archival Multimedia Vault • Dispatch Master Record"
+        headline={asset.title}
+        subheadline={asset.description || 'Primary audio-visual record with synchronized transcripts, waveform acoustic analysis, and SHA-256 cryptographic attestation.'}
+        accession={`RECORD ID: ${asset.archive_id} • TYPE: ${asset.media_type} • FORMAT: ${asset.format}`}
+        badge="SHA-256 VERIFIED MASTER"
+        rightSlot={
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => navigate('/media')}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-white text-ink text-xs font-mono font-bold uppercase hover:bg-[#E2D7C3] transition border border-ink shadow-letterpress-sm"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" /> [ Return ]
+            </button>
+            {asset.download_policy === 'DOWNLOAD_ALLOWED' && (
+              <a
+                href={mediaApi.getDownloadUrl(asset.id)}
+                download={asset.original_filename}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-ink text-white text-xs font-mono font-bold uppercase hover:bg-oxblood transition border border-ink shadow-letterpress-sm"
+              >
+                <Download className="w-3.5 h-3.5" /> [ Download ]
+              </a>
+            )}
           </div>
-        </div>
-      </div>
+        }
+      />
 
       <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Main Grid: Player on left, Quick Metadata on right */}
@@ -291,7 +309,7 @@ export const MediaDetailPage: React.FC = () => {
                 {asset.title}
               </h1>
               {asset.description && (
-                <p className="text-stone-800 text-sm font-editorial leading-relaxed">
+                <p className="text-ink/90 text-sm font-editorial leading-relaxed">
                   {asset.description}
                 </p>
               )}
@@ -306,28 +324,28 @@ export const MediaDetailPage: React.FC = () => {
               </h3>
               <div className="space-y-3 text-xs font-mono">
                 <div>
-                  <span className="text-stone-500 block uppercase">Primary Creator</span>
+                  <span className="text-ink/60 block uppercase">Primary Creator</span>
                   <span className="font-bold text-ink text-sm font-serif">{asset.creator || 'Dr. B. R. Ambedkar'}</span>
                 </div>
                 <div>
-                  <span className="text-stone-500 block uppercase">Date of Recording / Event</span>
+                  <span className="text-ink/60 block uppercase">Date of Recording / Event</span>
                   <span className="font-bold text-ink">{asset.date || 'Historical Record'} ({asset.date_precision})</span>
                 </div>
                 <div>
-                  <span className="text-stone-500 block uppercase">Location of Origin</span>
+                  <span className="text-ink/60 block uppercase">Location of Origin</span>
                   <span className="font-bold text-ink">{asset.location || 'Central Provinces / Bombay Presidency'}</span>
                 </div>
                 <div>
-                  <span className="text-stone-500 block uppercase">Custodial Institution</span>
+                  <span className="text-ink/60 block uppercase">Custodial Institution</span>
                   <span className="font-bold text-ink">{asset.source_name}</span>
                 </div>
                 <div>
-                  <span className="text-stone-500 block uppercase">Rights & Access Level</span>
+                  <span className="text-ink/60 block uppercase">Rights & Access Level</span>
                   <span className="font-bold text-ink">{asset.access_level} ({asset.download_policy})</span>
                 </div>
                 <div className="pt-2 border-t border-ink/20">
-                  <span className="text-stone-500 block font-mono text-[10px] uppercase font-bold">MASTER SHA-256</span>
-                  <span className="font-mono text-[10px] break-all text-stone-700">{asset.checksum_sha256}</span>
+                  <span className="text-ink/60 block font-mono text-[10px] uppercase font-bold">MASTER SHA-256</span>
+                  <span className="font-mono text-[10px] break-all text-ink/80">{asset.checksum_sha256}</span>
                 </div>
               </div>
 
@@ -362,7 +380,7 @@ export const MediaDetailPage: React.FC = () => {
                   className={`py-3.5 flex items-center space-x-2 border-b-2 transition ${
                     activeTab === tab.id
                       ? 'border-ink text-ink font-bold bg-[#FAF6EE]'
-                      : 'border-transparent text-stone-600 hover:text-ink'
+                      : 'border-transparent text-ink/70 hover:text-ink'
                   }`}
                 >
                   <Icon className="w-4 h-4 text-oxblood" />
@@ -384,7 +402,7 @@ export const MediaDetailPage: React.FC = () => {
                         <span className="px-2 py-0.5 bg-oxblood text-white border border-ink uppercase font-bold text-[10px]">
                           {activeTranscript.status}
                         </span>
-                        <span className="text-stone-600">
+                        <span className="text-ink/70">
                           Source: {activeTranscript.source_type}
                         </span>
                       </div>
@@ -415,7 +433,7 @@ export const MediaDetailPage: React.FC = () => {
                             {seg.start_timestamp_str}
                           </span>
                           <div className="space-y-1 flex-1">
-                            <span className="font-mono text-[10px] text-stone-500 block uppercase font-bold">
+                            <span className="font-mono text-[10px] text-ink/60 block uppercase font-bold">
                               {seg.speaker_label}
                             </span>
                             <p className="text-ink font-editorial text-sm leading-relaxed">
@@ -427,7 +445,7 @@ export const MediaDetailPage: React.FC = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="text-center py-8 text-stone-500 text-xs font-mono">
+                  <div className="text-center py-8 text-ink/60 text-xs font-mono">
                     No transcript has been verified for this recording yet. Curators can transcribe or import captions via the Admin Panel.
                   </div>
                 )}
@@ -439,7 +457,7 @@ export const MediaDetailPage: React.FC = () => {
               <div className="space-y-4">
                 <div className="bg-white p-4 border-2 border-ink text-xs text-ink shadow-letterpress-sm">
                   <h4 className="font-bold text-oxblood font-mono uppercase mb-1">Unbroken 5-Tier Archival Chain</h4>
-                  <p className="text-stone-700 font-editorial">
+                  <p className="text-ink/80 font-editorial">
                     This media item is anchored to an original physical recording and verified with SHA-256 cryptographic hashes.
                   </p>
                 </div>
@@ -453,7 +471,7 @@ export const MediaDetailPage: React.FC = () => {
                         </span>
                         <div className="space-y-1 text-xs font-mono">
                           <span className="font-bold text-ink uppercase">{tier.tier}</span>
-                          <div className="text-stone-600 space-x-2">
+                          <div className="text-ink/70 space-x-2">
                             {Object.entries(tier).map(([k, v]) => {
                               if (k === 'tier' || !v) return null;
                               return (
@@ -476,19 +494,19 @@ export const MediaDetailPage: React.FC = () => {
               <div className="space-y-4">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs font-mono">
                   <div className="p-3 bg-white border-2 border-ink shadow-letterpress-sm">
-                    <span className="text-stone-500 block uppercase">CONTAINER</span>
+                    <span className="text-ink/60 block uppercase">CONTAINER</span>
                     <span className="font-bold text-ink">{asset.format}</span>
                   </div>
                   <div className="p-3 bg-white border-2 border-ink shadow-letterpress-sm">
-                    <span className="text-stone-500 block uppercase">MIME TYPE</span>
+                    <span className="text-ink/60 block uppercase">MIME TYPE</span>
                     <span className="font-bold text-ink">{asset.mime_type}</span>
                   </div>
                   <div className="p-3 bg-white border-2 border-ink shadow-letterpress-sm">
-                    <span className="text-stone-500 block uppercase">DURATION</span>
+                    <span className="text-ink/60 block uppercase">DURATION</span>
                     <span className="font-bold text-ink">{asset.duration ? `${asset.duration} sec` : 'N/A'}</span>
                   </div>
                   <div className="p-3 bg-white border-2 border-ink shadow-letterpress-sm">
-                    <span className="text-stone-500 block uppercase">FILE SIZE</span>
+                    <span className="text-ink/60 block uppercase">FILE SIZE</span>
                     <span className="font-bold text-ink">{(asset.file_size / (1024 * 1024)).toFixed(2)} MB</span>
                   </div>
                 </div>
@@ -505,17 +523,17 @@ export const MediaDetailPage: React.FC = () => {
                         <span className="font-bold text-ink uppercase">
                           VERSION #{ver.version_number} — {ver.derivative_type}
                         </span>
-                        <div className="text-stone-500 text-[11px]">
+                        <div className="text-ink/60 text-[11px]">
                           {ver.mime_type} • {ver.resolution || 'Audio/Binary'} • {ver.file_size ? `${(ver.file_size / 1024).toFixed(1)} KB` : ''}
                         </div>
                       </div>
-                      <span className="text-[10px] text-stone-600 font-bold bg-[#EFE8DA] px-2 py-0.5 border border-ink/30">
+                      <span className="text-[10px] text-ink/70 font-bold bg-[#EFE8DA] px-2 py-0.5 border border-ink/30">
                         {ver.checksum_sha256?.substring(0, 16)}...
                       </span>
                     </div>
                   ))
                 ) : (
-                  <div className="text-center py-6 text-stone-500 text-xs">No version derivatives recorded.</div>
+                  <div className="text-center py-6 text-ink/60 text-xs">No version derivatives recorded.</div>
                 )}
               </div>
             )}

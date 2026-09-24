@@ -4,6 +4,7 @@ import { Film, Volume2, Image, Play, Calendar, MapPin, Search, Tag, Eye } from '
 import { mediaApi } from '../services/mediaApi';
 import { MediaAsset } from '../types/media';
 import { DemoBanner } from '../components/archive/DemoBanner';
+import { PageMasthead } from '../components/layout/PageMasthead';
 
 export const MediaPage: React.FC = () => {
   const navigate = useNavigate();
@@ -58,70 +59,67 @@ export const MediaPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#F4EFE6] text-ink">
       <DemoBanner isOffline={isOffline} />
+
       {/* Broadsheet Masthead */}
-      <section className="bg-[#FAF6EE] text-ink py-8 px-4 sm:px-6 lg:px-8 border-b-2 border-double border-ink shadow-sm">
-        <div className="max-w-7xl mx-auto space-y-4">
-          <div className="flex items-center space-x-2 text-[11px] font-mono text-oxblood uppercase tracking-widest font-bold">
-            <Film className="w-3.5 h-3.5 text-oxblood" />
-            <span>RECORD DIVISION • MULTIMEDIA REPOSITORY & GRAMOPHONE DISPATCHES</span>
-          </div>
-          <h1 className="font-serif text-3xl sm:text-4xl font-black tracking-tight text-ink">
-            Audio, Gramophone & Film Dispatch Archive
-          </h1>
-          <p className="text-stone-700 text-xs sm:text-sm max-w-3xl font-editorial italic leading-relaxed">
-            Historical audio recordings, All India Radio broadcasts, newsreel footage, and authenticated photographic restorations.
-            Every media asset is anchored with immutable cryptographic checksums and custodial provenance.
-          </p>
-
-          {/* Typewriter Search Bar */}
-          <form onSubmit={handleSearch} className="max-w-2xl flex gap-2 pt-2">
-            <div className="relative flex-1">
-              <Search className="w-4 h-4 absolute left-3 top-3 text-stone-500" />
-              <input
-                type="text"
-                placeholder="Search across broadcast dispatches, audio speeches, transcript texts..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 bg-white text-ink placeholder-stone-400 border-2 border-ink text-xs font-mono focus:outline-none focus:ring-1 focus:ring-oxblood shadow-letterpress-sm"
-              />
-            </div>
-            <button
-              type="submit"
-              className="px-5 py-2 bg-ink hover:bg-oxblood text-white font-mono font-bold uppercase text-xs transition border border-ink shadow-letterpress-sm"
-            >
-              [ Inquire ]
-            </button>
-          </form>
-
-          {/* Filter Tabs */}
-          <div className="flex flex-wrap gap-2 pt-2">
-            {[
-              { label: 'All Dispatches', value: 'ALL' },
-              { label: 'Audio & Speeches', value: 'AUDIO' },
-              { label: 'Newsreel & Video', value: 'VIDEO' },
-              { label: 'Historical Photographs', value: 'PHOTOGRAPH' }
-            ].map(tab => (
+      <PageMasthead
+        eyebrow="Record Division • Multimedia Repository & Gramophone Dispatches"
+        headline="Audio, Gramophone & Film Dispatch Archive"
+        subheadline="Historical audio recordings, All India Radio broadcasts, newsreel footage, and authenticated photographic restorations. Every media asset is anchored with immutable cryptographic checksums and custodial provenance."
+        accession={`MEDIA HOLDINGS: ${mediaItems.length}`}
+        badge="OAIS MEDIA VAULT"
+        bottomSlot={
+          <div className="space-y-3 pt-1">
+            {/* Typewriter Search Bar */}
+            <form onSubmit={handleSearch} className="max-w-2xl flex gap-2">
+              <div className="relative flex-1">
+                <Search className="w-4 h-4 absolute left-3 top-2.5 text-ink/40" />
+                <input
+                  type="text"
+                  placeholder="Search across broadcast dispatches, audio speeches, transcript texts..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-9 pr-4 py-2 bg-white text-ink placeholder:text-ink/40 border-2 border-ink text-xs font-mono focus:outline-none focus:ring-1 focus:ring-oxblood shadow-letterpress-sm"
+                />
+              </div>
               <button
-                key={tab.value}
-                onClick={() => setActiveFilter(tab.value as any)}
-                className={`px-3 py-1 text-xs font-mono font-bold uppercase transition border ${
-                  activeFilter === tab.value
-                    ? 'bg-ink text-white border-ink shadow-letterpress-sm'
-                    : 'bg-[#FAF6EE] text-ink border-ink/40 hover:border-ink hover:bg-[#EFE8DA]'
-                }`}
+                type="submit"
+                className="px-5 py-2 bg-ink hover:bg-oxblood text-white font-mono font-bold uppercase text-xs transition border border-ink shadow-letterpress-sm"
               >
-                {tab.label}
+                [ Inquire ]
               </button>
-            ))}
+            </form>
+
+            {/* Filter Tabs */}
+            <div className="flex flex-wrap gap-2">
+              {[
+                { label: 'All Dispatches', value: 'ALL' },
+                { label: 'Audio & Speeches', value: 'AUDIO' },
+                { label: 'Newsreel & Video', value: 'VIDEO' },
+                { label: 'Historical Photographs', value: 'PHOTOGRAPH' }
+              ].map(tab => (
+                <button
+                  key={tab.value}
+                  onClick={() => setActiveFilter(tab.value as any)}
+                  className={`px-3 py-1 text-xs font-mono font-bold uppercase transition border ${
+                    activeFilter === tab.value
+                      ? 'bg-ink text-white border-ink shadow-letterpress-sm'
+                      : 'bg-[#FAF6EE] text-ink border-ink/40 hover:border-ink hover:bg-[#EFE8DA]'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        }
+      />
 
       {/* Main Grid */}
       <main className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
         {loading ? (
-          <div className="text-center py-20 text-stone-600 font-mono text-xs">
-            Scanning authenticated archival media registers...
+          <div className="bg-[#FAF6EE] border-2 border-ink p-12 text-center shadow-letterpress-sm font-mono space-y-3">
+            <div className="archival-loading-bar max-w-sm mx-auto mb-3" />
+            <p className="text-xs uppercase font-bold text-ink tracking-widest">[ Scanning Authenticated Archival Media Registers... ]</p>
           </div>
         ) : isOffline ? (
           <div className="bg-amber-50 border-2 border-amber-600 p-12 text-center shadow-letterpress font-mono space-y-3">
@@ -142,7 +140,7 @@ export const MediaPage: React.FC = () => {
           <div className="text-center py-16 bg-[#FAF6EE] border-2 border-ink p-8 space-y-3 shadow-letterpress">
             <Film className="w-12 h-12 text-oxblood mx-auto" />
             <h3 className="font-serif text-lg font-bold text-ink">No Archival Media Dispatches Found</h3>
-            <p className="text-stone-600 text-xs font-editorial max-w-md mx-auto">
+            <p className="text-ink/70 text-xs font-editorial max-w-md mx-auto">
               No verified media items matched your criteria. Custodians can register audio-visual master recordings via the Admin Media Registry.
             </p>
           </div>
@@ -169,7 +167,7 @@ export const MediaPage: React.FC = () => {
                       className="w-full h-full object-cover group-hover:scale-105 transition duration-300 filter contrast-105"
                     />
                   ) : (
-                    <div className="text-stone-400 flex flex-col items-center space-y-2">
+                    <div className="text-ink/40 flex flex-col items-center space-y-2">
                       {item.media_type === 'AUDIO' && <Volume2 className="w-10 h-10 text-oxblood" />}
                       {item.media_type === 'VIDEO' && <Film className="w-10 h-10 text-oxblood" />}
                       {(item.media_type === 'IMAGE' || item.media_type === 'PHOTOGRAPH') && <Image className="w-10 h-10 text-oxblood" />}
@@ -210,13 +208,13 @@ export const MediaPage: React.FC = () => {
                       {item.title}
                     </h3>
                     {item.description && (
-                      <p className="text-stone-700 text-xs font-editorial line-clamp-2">
+                      <p className="text-ink/80 text-xs font-editorial line-clamp-2">
                         {item.description}
                       </p>
                     )}
                   </div>
 
-                  <div className="pt-2 border-t border-ink/20 flex items-center justify-between text-[11px] font-mono text-stone-600">
+                  <div className="pt-2 border-t border-ink/20 flex items-center justify-between text-[11px] font-mono text-ink/70">
                     <div className="flex items-center space-x-1.5">
                       <Calendar className="w-3.5 h-3.5 text-oxblood" />
                       <span>{item.date || 'Historical Record'}</span>

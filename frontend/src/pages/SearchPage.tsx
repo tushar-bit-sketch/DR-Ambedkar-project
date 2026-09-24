@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { archiveApi } from '../services/api';
 import { SearchResponse, SearchResultItem, SearchMode } from '../types';
+import { PageMasthead } from '../components/layout/PageMasthead';
 
 export const SearchPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -91,57 +92,40 @@ export const SearchPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-newsprint-100 text-ink pb-16">
-      {/* Header Banner */}
-      <div className="bg-[#FAF6EE] text-ink border-b-2 border-double border-ink py-8 px-4 sm:px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <div className="flex items-center gap-2 text-oxblood text-xs font-mono tracking-wider uppercase mb-1 font-bold">
-                <Database className="w-3.5 h-3.5 text-oxblood" />
-                <span>Multi-Channel Archival Search Desk • Dublin Core OAIS Registry</span>
-              </div>
-              <h1 className="text-2xl sm:text-4xl font-serif font-black text-ink uppercase tracking-tight">
-                Archival Semantic & Hybrid Retrieval
-              </h1>
-              <p className="text-ink-700 text-xs sm:text-sm mt-1 max-w-3xl font-editorial italic leading-relaxed">
-                Direct passage-level retrieval across manuscripts, constituent assembly debates, speeches, and books 
-                with unbroken folio provenance and dense multilingual representations.
-              </p>
+      {/* Standardized Archival Search Bureau Masthead */}
+      <PageMasthead
+        eyebrow="MULTI-CHANNEL ARCHIVAL SEARCH DESK • DUBLIN CORE OAIS REGISTRY"
+        headline="Archival Semantic & Hybrid Retrieval"
+        subheadline="Direct passage-level retrieval across manuscripts, constituent assembly debates, speeches, and books with unbroken folio provenance and dense multilingual representations."
+        accession={searchResponse ? `LOCATED PASSAGES: ${searchResponse.total}` : 'READY FOR RETRIEVAL'}
+        rightSlot={
+          <div className="flex flex-wrap items-center gap-2 bg-newsprint-200 border border-ink/30 p-2 font-mono text-xs">
+            <div className="flex items-center gap-1.5">
+              <span className="text-ink-600">Vector Engine:</span>
+              {isVectorProduction ? (
+                <span className="bg-verified-bg text-verified-text border border-verified-border px-1.5 py-0.2 font-bold text-[10px]">
+                  [PGVECTOR PROD]
+                </span>
+              ) : (
+                <span className="bg-[#FAF6EE] text-oxblood border border-oxblood px-1.5 py-0.2 font-bold text-[10px]">
+                  [SQLITE FALLBACK]
+                </span>
+              )}
             </div>
-
-            {/* Architecture Diagnostic Stamps */}
-            <div className="flex flex-wrap items-center gap-2 bg-newsprint-200 border border-ink/30 p-2 font-mono text-xs">
-              <div className="flex items-center gap-1.5">
-                <span className="text-ink-600">Vector Engine:</span>
-                {isVectorProduction ? (
-                  <span className="bg-[#FAF6EE] text-emerald-900 border border-emerald-800 px-1.5 py-0.2 font-bold text-[10px]">
-                    [PGVECTOR PROD]
-                  </span>
-                ) : (
-                  <span className="bg-[#FAF6EE] text-oxblood border border-oxblood px-1.5 py-0.2 font-bold text-[10px]">
-                    [SQLITE FALLBACK]
-                  </span>
-                )}
-              </div>
-              <span className="text-ink/30">|</span>
-              <div className="flex items-center gap-1.5">
-                <span className="text-ink-600">Embedding:</span>
-                <span className="text-ink-900 font-bold text-[11px]">
-                  BGE-M3 (1024-D)
-                </span>
-              </div>
-              <span className="text-ink/30">|</span>
-              <div className="flex items-center gap-1.5">
-                <span className="text-ink-600">Reranker:</span>
-                <span className="text-ink-900 font-bold text-[11px]">
-                  BGE-Reranker-v2
-                </span>
-              </div>
+            <span className="text-ink/30">|</span>
+            <div className="flex items-center gap-1.5">
+              <span className="text-ink-600">Embedding:</span>
+              <span className="text-ink-900 font-bold text-[11px]">BGE-M3 (1024-D)</span>
+            </div>
+            <span className="text-ink/30">|</span>
+            <div className="flex items-center gap-1.5">
+              <span className="text-ink-600">Reranker:</span>
+              <span className="text-ink-900 font-bold text-[11px]">BGE-Reranker-v2</span>
             </div>
           </div>
-
-          {/* Search Box Form */}
-          <form onSubmit={handleSearchSubmit} className="mt-6">
+        }
+        bottomSlot={
+          <form onSubmit={handleSearchSubmit} className="space-y-3">
             <div className="bg-[#FAF6EE] border-2 border-ink shadow-letterpress-sm p-2 flex flex-col md:flex-row gap-2">
               <div className="relative flex-1 flex items-center">
                 <Search className="w-5 h-5 text-ink-500 absolute left-3 pointer-events-none" />
@@ -203,27 +187,27 @@ export const SearchPage: React.FC = () => {
                 <span>[ Retrieve ]</span>
               </button>
             </div>
-          </form>
 
-          {/* Quick Presets */}
-          <div className="mt-3 flex flex-wrap items-center gap-2 text-xs font-mono">
-            <span className="text-ink-600 font-bold uppercase">Dispatch Queries:</span>
-            {presetQueries.map((pq, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => {
-                  setQuery(pq);
-                  executeSearch(pq, mode, documentType, language, year);
-                }}
-                className="bg-[#FAF6EE] hover:bg-newsprint-300 text-ink border border-ink/30 px-2 py-0.5 text-[10px] uppercase font-bold transition hover:border-ink"
-              >
-                #{pq}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
+            {/* Quick Presets */}
+            <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
+              <span className="text-ink-600 font-bold uppercase">Official Inquiries:</span>
+              {presetQueries.map((pq, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => {
+                    setQuery(pq);
+                    executeSearch(pq, mode, documentType, language, year);
+                  }}
+                  className="bg-[#FAF6EE] hover:bg-newsprint-300 text-ink border border-ink/30 px-2 py-0.5 text-[10px] uppercase font-bold transition hover:border-ink"
+                >
+                  #{pq}
+                </button>
+              ))}
+            </div>
+          </form>
+        }
+      />
 
       {/* Main Content: Sidebar + Search Results */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 mt-8">
@@ -372,12 +356,12 @@ export const SearchPage: React.FC = () => {
 
             {/* Loading Indicator */}
             {loading && (
-              <div className="bg-[#FAF6EE] border-2 border-ink p-12 text-center shadow-letterpress-sm font-mono">
-                <RefreshCw className="w-8 h-8 animate-spin text-oxblood mx-auto mb-3" />
+              <div className="bg-[#FAF6EE] border-2 border-ink p-12 text-center shadow-letterpress-sm font-mono space-y-3">
+                <div className="archival-loading-bar max-w-sm mx-auto mb-3" />
                 <h4 className="font-serif font-black text-lg text-ink uppercase">
                   Executing Archival Retrieval Pipeline...
                 </h4>
-                <p className="text-xs text-ink-600 mt-1">
+                <p className="text-xs text-ink-600 mt-1 font-editorial italic">
                   Querying lexical full-text index, dense vector embeddings, and reciprocal rank fusion.
                 </p>
               </div>

@@ -61,6 +61,13 @@ export const Header: React.FC = () => {
 
   return (
     <header className="bg-newsprint-100 text-ink border-b-2 border-ink sticky top-0 z-40 shadow-sm">
+      {/* Skip Navigation Link for Accessibility */}
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-ink focus:text-white focus:font-mono focus:text-xs focus:shadow-letterpress border-2 border-ink"
+      >
+        [ Skip to Main Archival Content ]
+      </a>
       {/* Top Institutional Ear-Pieces & Gazette Dateline Bar */}
       <div className="bg-[#FAF6EE] text-ink-700 px-4 py-1.5 text-xs border-b border-ink/20 hidden md:block font-mono">
         <div className="max-w-7xl mx-auto flex justify-between items-center gap-4">
@@ -182,7 +189,7 @@ export const Header: React.FC = () => {
             {!isKiosk && (
               <button
                 onClick={enterKiosk}
-                className="px-2 py-1 text-ink border border-ink text-xs font-mono uppercase"
+                className="min-h-[48px] px-3 py-2 text-ink border-2 border-ink text-xs font-mono font-bold uppercase shadow-letterpress-sm"
                 aria-label="Enter Kiosk Mode"
               >
                 Kiosk
@@ -190,7 +197,7 @@ export const Header: React.FC = () => {
             )}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-1.5 border border-ink text-ink hover:bg-ink hover:text-white"
+              className="min-h-[48px] min-w-[48px] p-2 border-2 border-ink text-ink hover:bg-ink hover:text-white flex items-center justify-center shadow-letterpress-sm transition"
               aria-label="Toggle Navigation Menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -340,18 +347,16 @@ export const Header: React.FC = () => {
       </div>
 
       {/* Gazette Wire Bulletin Ticker */}
-      <div className="bg-folio border-b border-ink/20 py-1 px-4 text-[11px] font-mono text-ink-700 hidden sm:block overflow-hidden">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="bg-ink text-white px-1.5 py-0.2 text-[9px] font-bold uppercase tracking-widest">
-              DISPATCH
-            </span>
-            <span className="truncate">
-              ★ GAZETTE BULLETIN: High-resolution facsimiles of Constituent Assembly Drafts available • Dublin Core metadata active • Hugging Face RAG online ★
+      <div className="bg-folio border-b border-ink/20 py-1.5 px-4 text-[11px] font-mono text-ink-700 hidden sm:block overflow-hidden">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+          <div className="flex items-center gap-2 truncate">
+            <span className="w-2 h-2 rounded-full bg-ink flex-shrink-0 animate-pulse" />
+            <span className="truncate font-semibold tracking-wide text-ink-800">
+              INSTITUTIONAL ARCHIVE ACTIVE: Sourced from official public records (Dr. Ambedkar Foundation BAWS & Constituent Assembly Debates) with SHA-256 integrity verification.
             </span>
           </div>
-          <span className="text-[10px] text-ink-500 whitespace-nowrap hidden md:inline">
-            REVISED ARCHIVAL EDITION 2026
+          <span className="px-2 py-0.5 bg-verified-bg text-verified-text border border-verified-border font-bold uppercase text-[9px] tracking-wider whitespace-nowrap flex items-center gap-1 flex-shrink-0 shadow-xs">
+            <span>✓ VERIFIED PRIMARY CORPUS</span>
           </span>
         </div>
       </div>

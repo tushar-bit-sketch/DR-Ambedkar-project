@@ -7,6 +7,7 @@ import {
 import { apiService } from '../services/api';
 import { TimelineEvent, GraphEntityItem } from '../types';
 import { DemoBanner } from '../components/archive/DemoBanner';
+import { PageMasthead } from '../components/layout/PageMasthead';
 
 export const TimelinePage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -95,64 +96,55 @@ export const TimelinePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4EFE6] text-ink">
+    <div className="min-h-screen bg-newsprint-100 text-ink">
       <DemoBanner isOffline={isOffline} />
 
-      {/* Broadsheet Gazette Masthead */}
-      <section className="bg-[#FAF6EE] border-b-2 border-double border-ink py-8 px-4 sm:px-6 lg:px-8 shadow-sm">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-          <div className="space-y-1.5">
-            <div className="flex items-center space-x-2 text-[11px] font-mono text-oxblood uppercase tracking-widest font-bold">
-              <Clock className="w-3.5 h-3.5 text-oxblood" />
-              <span>RECORD DIVISION • HISTORICAL CHRONOLOGY (1891–1956)</span>
-            </div>
-            <h1 className="font-serif text-3xl sm:text-4xl font-black tracking-tight text-ink">
-              Chronological Gazette of the Ambedkar Era
-            </h1>
-            <p className="text-stone-700 text-xs sm:text-sm max-w-2xl font-editorial italic">
-              Verified record of constitutional deliberations, socio-political movements, scholarly treatises, and historical milestones.
-            </p>
-          </div>
-
-          {/* View Mode Toggle */}
-          <div className="flex items-center gap-1 bg-[#EFE8DA] p-1 border-2 border-ink self-start md:self-auto shadow-letterpress-sm">
+      {/* Standardized Chronological Gazette Masthead */}
+      <PageMasthead
+        eyebrow="RECORD DIVISION • HISTORICAL CHRONOLOGY (1891–1956)"
+        headline="Chronological Gazette of the Ambedkar Era"
+        subheadline="Verified record of constitutional deliberations, socio-political movements, scholarly treatises, and historical milestones."
+        accession={`RECORDED MILESTONES: ${events.length}`}
+        badge="HISTORICAL CHRONOLOGY"
+        rightSlot={
+          <div className="flex items-center gap-1 bg-newsprint-200 p-1 border-2 border-ink shadow-letterpress-sm font-mono">
             <button
               onClick={() => setViewMode('timeline')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-bold uppercase transition ${
-                viewMode === 'timeline' ? 'bg-ink text-white shadow-sm' : 'text-ink hover:bg-stone-200'
+              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold uppercase transition ${
+                viewMode === 'timeline' ? 'bg-ink text-white shadow-sm' : 'text-ink hover:bg-newsprint-300'
               }`}
             >
               <Clock className="w-3.5 h-3.5" /> [ Timeline ]
             </button>
             <button
               onClick={() => setViewMode('accessible_table')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-bold uppercase transition ${
-                viewMode === 'accessible_table' ? 'bg-ink text-white shadow-sm' : 'text-ink hover:bg-stone-200'
+              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold uppercase transition ${
+                viewMode === 'accessible_table' ? 'bg-ink text-white shadow-sm' : 'text-ink hover:bg-newsprint-300'
               }`}
             >
               <List className="w-3.5 h-3.5" /> [ Ledger Table ]
             </button>
           </div>
-        </div>
-
-        {/* Categories Bar */}
-        <div className="max-w-7xl mx-auto flex flex-wrap gap-2 pt-6 border-t border-ink/20 mt-6">
-          <span className="text-[11px] font-mono uppercase font-bold text-stone-600 self-center mr-2">Dispatches:</span>
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setSelectedCategory(cat)}
-              className={`px-3 py-1 text-xs font-mono font-bold uppercase transition border ${
-                selectedCategory === cat
-                  ? 'bg-ink text-white border-ink shadow-letterpress-sm'
-                  : 'bg-[#FAF6EE] text-ink border-ink/40 hover:border-ink hover:bg-[#EFE8DA]'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-      </section>
+        }
+        bottomSlot={
+          <div className="flex flex-wrap gap-2 pt-2 border-t border-ink/20 font-mono">
+            <span className="text-[11px] uppercase font-bold text-ink-600 self-center mr-2">Dispatches:</span>
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-3 py-1 text-xs font-bold uppercase transition border ${
+                  selectedCategory === cat
+                    ? 'bg-ink text-white border-ink shadow-letterpress-sm'
+                    : 'bg-[#FAF6EE] text-ink border-ink/40 hover:border-ink hover:bg-newsprint-300'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        }
+      />
 
       {/* Entity Filter Banner */}
       {filteredEntityName && (
@@ -297,28 +289,29 @@ export const TimelinePage: React.FC = () => {
           /* Accessible Table Alternative View (WCAG 2.1 AA) */
           <div className="bg-[#FAF6EE] border-2 border-ink overflow-hidden shadow-letterpress">
             <table className="w-full text-left text-xs font-mono">
+              <caption className="sr-only">Chronological Gazette of the Ambedkar Era Milestone Ledger</caption>
               <thead className="bg-ink text-white uppercase text-[10px] tracking-wider border-b-2 border-ink">
                 <tr>
-                  <th className="p-3.5">Year / Precision</th>
-                  <th className="p-3.5">Milestone Gazette Headline</th>
-                  <th className="p-3.5">Classification</th>
-                  <th className="p-3.5">Locale</th>
-                  <th className="p-3.5">Provenance</th>
+                  <th scope="col" className="p-3.5">Year / Precision</th>
+                  <th scope="col" className="p-3.5">Milestone Gazette Headline</th>
+                  <th scope="col" className="p-3.5">Classification</th>
+                  <th scope="col" className="p-3.5">Locale</th>
+                  <th scope="col" className="p-3.5">Provenance</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-ink/20">
                 {filteredEvents.map(event => (
-                  <tr key={event.id} className="hover:bg-[#EFE8DA] transition">
+                  <tr key={event.id} className="hover:bg-newsprint-300 transition">
                     <td className="p-3.5 font-mono">
                       <span className="font-bold text-ink block text-sm">{formatEventDate(event)}</span>
-                      <span className="text-[10px] text-stone-500 uppercase">{event.date_precision || 'YEAR'}</span>
+                      <span className="text-[10px] text-ink-600 uppercase font-bold">{event.date_precision || 'YEAR'}</span>
                     </td>
                     <td className="p-3.5">
                       <p className="font-serif font-bold text-ink text-sm">{event.title}</p>
-                      <p className="text-stone-700 text-xs mt-0.5 font-editorial line-clamp-2">{event.description}</p>
+                      <p className="text-ink-700 text-xs mt-0.5 font-editorial line-clamp-2 italic">{event.description}</p>
                     </td>
-                    <td className="p-3.5 text-stone-700 font-mono text-[11px] uppercase">{event.category}</td>
-                    <td className="p-3.5 text-stone-700">{event.related_locations || '—'}</td>
+                    <td className="p-3.5 text-oxblood font-mono text-[11px] uppercase font-bold">{event.category}</td>
+                    <td className="p-3.5 text-ink-700">{event.related_locations || '—'}</td>
                     <td className="p-3.5">
                       <button
                         onClick={() => navigate('/knowledge-graph')}

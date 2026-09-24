@@ -109,6 +109,22 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
+        {/* Verified Primary Source Inventory Strip */}
+        <div className="bg-newsprint-200 border border-ink/30 p-3 mb-6 font-mono text-xs">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <span className="stamp-oxblood text-[8px] py-0 px-1 font-bold">SOURCE REPOSITORY ATTESTATION</span>
+              <span className="text-[11px] font-bold text-ink-900">Verified Legal Deposit & Public Records Inventories:</span>
+            </div>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[10px] text-ink-700">
+              <span className="hover:text-oxblood">• Dr. Ambedkar Foundation (BAWS Vols. 1–22)</span>
+              <span className="hover:text-oxblood">• Parliament of India (Constituent Assembly Debates)</span>
+              <span className="hover:text-oxblood">• National Digital Library of India (NDLI)</span>
+              <span className="hover:text-oxblood">• Dublin Core (ISO 15836)</span>
+            </div>
+          </div>
+        </div>
+
         {/* Bottom Colophon Bar */}
         <div className="flex flex-col md:flex-row justify-between items-center text-xs text-ink-600 gap-4 pt-2">
           <p className="text-[11px]">

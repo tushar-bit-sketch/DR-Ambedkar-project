@@ -12,6 +12,7 @@ import {
   ResearchAskResponse, CitationCard, 
   ResearchConversationSummary, ResearchMessageItem
 } from '../types';
+import { PageMasthead } from '../components/layout/PageMasthead';
 
 export const ResearchPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -286,28 +287,15 @@ export const ResearchPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-newsprint-100 text-ink flex flex-col font-mono">
-      {/* Header Banner */}
-      <header className="bg-[#FAF6EE] text-ink py-6 px-4 sm:px-6 lg:px-8 border-b-2 border-double border-ink shadow-sm flex-shrink-0">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="space-y-1 text-center md:text-left">
-            <div className="inline-flex items-center gap-2 text-oxblood text-xs font-bold uppercase tracking-wider">
-              <Bot className="w-3.5 h-3.5 text-oxblood" />
-              <span>SOURCE-GROUNDED RAG DISPATCH DESK</span>
-              <span className="text-ink/40">•</span>
-              <span className="text-emerald-800 flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5" /> CLOSED-WORLD REASONING
-              </span>
-            </div>
-            <h1 className="font-serif font-black text-2xl sm:text-3xl text-ink uppercase tracking-tight">
-              Dr. B. R. Ambedkar AI Research Bureau
-            </h1>
-            <p className="font-editorial italic text-xs sm:text-sm text-ink-700 max-w-2xl leading-relaxed">
-              Grounded strictly in verified archival manuscripts, Constituent Assembly proceedings, and primary source records.
-            </p>
-          </div>
-
-          {/* Mode Selector */}
-          <div className="flex items-center gap-1 bg-newsprint-200 p-1 border border-ink/40 text-xs">
+      {/* Standardized Research Bureau PageMasthead */}
+      <PageMasthead
+        eyebrow="SOURCE-GROUNDED RAG DISPATCH DESK • CLOSED-WORLD REASONING"
+        headline="Dr. B. R. Ambedkar AI Research Bureau"
+        subheadline="Grounded strictly in verified archival manuscripts, Constituent Assembly proceedings, and primary source records."
+        accession={currentConversationId ? `SESSION: ${currentConversationId.slice(0, 16)}` : 'ACTIVE RESEARCH REGISTRY'}
+        badge="ZERO HALLUCINATION PROTOCOL"
+        rightSlot={
+          <div className="flex items-center gap-1 bg-newsprint-200 p-1 border border-ink/40 text-xs font-mono">
             <span className="text-ink-600 px-2 font-bold uppercase text-[10px]">Retrieval:</span>
             {(['hybrid', 'keyword', 'semantic'] as const).map(m => (
               <button
@@ -323,14 +311,14 @@ export const ResearchPage: React.FC = () => {
               </button>
             ))}
           </div>
-        </div>
-      </header>
+        }
+      />
 
       {/* Main 3-Column Layout */}
       <div className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
         {/* LEFT COLUMN: Inquiry Threads & History (3 cols) */}
-        <aside className="lg:col-span-3 bg-[#FAF6EE] border-2 border-ink shadow-letterpress-sm p-4 space-y-4 flex flex-col h-[750px]">
+        <aside className="lg:col-span-3 bg-[#FAF6EE] border-2 border-ink shadow-letterpress-sm p-4 space-y-4 flex flex-col min-h-[560px] h-[calc(100vh-16rem)] max-h-[850px]">
           <div className="flex items-center justify-between pb-3 border-b-2 border-ink">
             <h2 className="font-serif font-black text-ink text-xs uppercase tracking-wider flex items-center gap-2">
               <MessageSquare className="w-3.5 h-3.5 text-oxblood" />
@@ -400,7 +388,7 @@ export const ResearchPage: React.FC = () => {
         </aside>
 
         {/* CENTER COLUMN: Interactive RAG Synthesis Chat (6 cols) */}
-        <main className="lg:col-span-6 bg-[#FAF6EE] border-2 border-ink shadow-letterpress flex flex-col h-[750px] overflow-hidden">
+        <main className="lg:col-span-6 bg-[#FAF6EE] border-2 border-ink shadow-letterpress flex flex-col min-h-[560px] h-[calc(100vh-16rem)] max-h-[850px] overflow-hidden">
           
           {/* Thread Header */}
           <div className="bg-newsprint-100 px-4 py-2.5 border-b border-ink/20 flex items-center justify-between">
@@ -656,7 +644,7 @@ export const ResearchPage: React.FC = () => {
         </main>
 
         {/* RIGHT COLUMN: Evidence & Provenance Inspector (3 cols) */}
-        <aside className="lg:col-span-3 bg-[#FAF6EE] border-2 border-ink shadow-letterpress-sm p-4 space-y-4 flex flex-col h-[750px] overflow-y-auto font-mono text-xs">
+        <aside className="lg:col-span-3 bg-[#FAF6EE] border-2 border-ink shadow-letterpress-sm p-4 space-y-4 flex flex-col min-h-[560px] h-[calc(100vh-16rem)] max-h-[850px] overflow-y-auto font-mono text-xs">
           <div className="pb-3 border-b-2 border-ink flex items-center justify-between">
             <h2 className="font-serif font-black text-ink text-xs uppercase tracking-wider flex items-center gap-2">
               <BookOpen className="w-3.5 h-3.5 text-oxblood" />
