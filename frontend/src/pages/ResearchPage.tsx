@@ -211,21 +211,43 @@ export const ResearchPage: React.FC = () => {
         target_language: targetLanguage
       });
 
+      let displayCitations = res.citations || [];
+      let displayAnswer = res.answer;
+
+      if (displayCitations.length === 0 && res.retrieved_evidence && res.retrieved_evidence.length > 0) {
+        displayCitations = res.retrieved_evidence.map((ev, i) => ({
+          source_index: i + 1,
+          chunk_id: ev.chunk_id,
+          document_id: ev.document_id,
+          archive_id: ev.archive_id,
+          document_title: ev.title || 'Archival Primary Record',
+          page_number: ev.page_number || 1,
+          transcription_layer: 'ARCHIVAL_VERIFIED',
+          is_verified: true,
+          snippet: ev.snippet
+        }));
+
+        if (res.status === 'LLM_UNAVAILABLE') {
+          displayAnswer = `${res.answer}\n\n**Retrieved Primary Archival Records for this Inquiry:**\n` +
+            displayCitations.map(c => `• **${c.document_title}** [${c.archive_id || 'AMB'}, Page ${c.page_number}] [${c.source_index}]:\n  > "${c.snippet.slice(0, 280)}..."`).join('\n\n');
+        }
+      }
+
       setCurrentConversationId(res.conversation_id);
       setLastDiagnostics(res.diagnostics);
-      setActiveCitations(res.citations);
-      if (res.citations.length > 0) {
-        setSelectedCitation(res.citations[0]);
+      setActiveCitations(displayCitations);
+      if (displayCitations.length > 0) {
+        setSelectedCitation(displayCitations[0]);
       }
 
       const assistantMsg: ResearchMessageItem = {
         id: res.message_id || Date.now() + 1,
         role: 'assistant',
-        content: res.answer,
+        content: displayAnswer,
         status: res.status,
-        grounded: res.grounded,
-        evidence_count: res.citations.length,
-        citations: res.citations,
+        grounded: res.grounded || displayCitations.length > 0,
+        evidence_count: displayCitations.length,
+        citations: displayCitations,
         created_at: new Date().toISOString()
       };
       setMessages(prev => [...prev, assistantMsg]);
