@@ -10,14 +10,32 @@ class Settings(BaseSettings):
     ENVIRONMENT: str = "development"
     ARCHIVE_PHASE: str = os.getenv("ARCHIVE_PHASE", "PHASE_10_FINAL_INTEGRATION")
 
-    # Database
+    # Database & Connection Pooling Optimization (1.1)
     DATABASE_URL: str = "sqlite:///./archive_phase1.db"
+    DATABASE_POOL_SIZE: int = int(os.getenv("DATABASE_POOL_SIZE", "20"))
+    DATABASE_MAX_OVERFLOW: int = int(os.getenv("DATABASE_MAX_OVERFLOW", "10"))
+    DATABASE_POOL_PRE_PING: bool = os.getenv("DATABASE_POOL_PRE_PING", "true").lower() in ("true", "1", "yes")
+    DATABASE_POOL_RECYCLE: int = int(os.getenv("DATABASE_POOL_RECYCLE", "3600"))
+    DATABASE_MIGRATION_TIMEOUT: int = int(os.getenv("DATABASE_MIGRATION_TIMEOUT", "300"))
+
+    # Vector Search & Retrieval Cache Optimization (1.2)
+    EMBEDDING_CACHE_TTL: int = int(os.getenv("EMBEDDING_CACHE_TTL", "86400"))
+    HYBRID_SEARCH_RERANK_LIMIT: int = int(os.getenv("HYBRID_SEARCH_RERANK_LIMIT", "100"))
+    REDIS_URL: str = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+
+    # Async Task Queue & Worker Tuning (1.3)
+    UVICORN_WORKERS: int = int(os.getenv("UVICORN_WORKERS", "4"))
+    UVICORN_BACKLOG: int = int(os.getenv("UVICORN_BACKLOG", "512"))
+    CELERY_ENABLED: bool = os.getenv("CELERY_ENABLED", "false").lower() in ("true", "1", "yes")
+    CELERY_BROKER_URL: str = os.getenv("CELERY_BROKER_URL", "redis://localhost:6379/1")
+    CELERY_RESULT_BACKEND: str = os.getenv("CELERY_RESULT_BACKEND", "redis://localhost:6379/2")
 
     # Phase 4 Vector & Semantic Search Backend
     # Primary Production Target: "pgvector" (PostgreSQL + pgvector extension)
     # Development/Test Only Fallback: "sqlite_dev_fallback"
     VECTOR_BACKEND: str = os.getenv("VECTOR_BACKEND", "sqlite_dev_fallback")
     PGVECTOR_URL: Union[str, None] = os.getenv("PGVECTOR_URL", None)
+
     
     # Embedding Model (BGE-M3 Multilingual)
     EMBEDDING_MODEL_NAME: str = "BAAI/bge-m3"

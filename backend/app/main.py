@@ -41,9 +41,14 @@ app = FastAPI(
 )
 
 from app.core.security_middleware import SecurityHeadersMiddleware
+from starlette.middleware.gzip import GZipMiddleware
+
+# API response compression (gzip level 9 for responses >= 500 bytes)
+app.add_middleware(GZipMiddleware, minimum_size=500, compresslevel=9)
 
 # Security headers, rate limiting, and request size middleware
 app.add_middleware(SecurityHeadersMiddleware)
+
 
 # CORS middleware configuration
 app.add_middleware(

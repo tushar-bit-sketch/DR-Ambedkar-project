@@ -95,6 +95,15 @@ export const KioskProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setFontSize('normal');
     setHighContrast(false);
 
+    // Atomic storage scrub for visitor privacy (Section 3.1)
+    try {
+      sessionStorage.clear();
+      const keysToClear = Object.keys(localStorage).filter(k => k !== 'ambedkar_archive_kiosk');
+      keysToClear.forEach(k => localStorage.removeItem(k));
+    } catch (e) {
+      console.warn('Kiosk storage scrub notice:', e);
+    }
+
     // Call registered component reset callbacks (ephemeral search/RAG/media state)
     resetCallbacksRef.current.forEach(cb => {
       try {
@@ -110,6 +119,7 @@ export const KioskProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       window.dispatchEvent(new PopStateEvent('popstate'));
     }
   }, []);
+
 
   const startWarningCountdown = useCallback(() => {
     setShowWarning(true);
