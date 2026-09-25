@@ -171,9 +171,6 @@ class ArchivalRetrievalEngine:
         """
         filters = filters or {}
         q_clean = query.strip()
-        if not q_clean:
-            return []
-
         doc_filters = self._build_base_filters(user, filters)
         is_staff = self._is_staff_user(user)
 
@@ -182,6 +179,25 @@ class ArchivalRetrievalEngine:
         if not is_staff:
             # Public users: only verified chunks from verified documents
             chunk_clauses.append(SearchChunk.is_verified == True)
+
+        if not q_clean:
+            # Browse/Filter mode: return matching verified archival holdings
+            rows = (
+                self.db.query(SearchChunk, Document)
+                .join(Document, SearchChunk.document_id == Document.id)
+                .filter(*doc_filters)
+                .filter(*chunk_clauses)
+                .order_by(Document.year.desc(), SearchChunk.id.asc())
+                .limit(limit)
+                .all()
+            )
+            candidates = []
+            for chunk, doc in rows:
+                c = self._assemble_candidate_provenance(chunk, doc, score=1.0, retrieval_type="CATALOG")
+                c["keyword_rank"] = len(candidates) + 1
+                c["keyword_score"] = 1.0
+                candidates.append(c)
+            return candidates
 
         # Keyword matching pattern with stop-word filtering
         STOP_WORDS = {"the", "a", "an", "and", "or", "but", "in", "on", "at", "to", "for", "of", "with", "by", "as", "is", "are", "was", "were", "it", "its", "that", "this", "these", "those"}
@@ -514,14 +530,26 @@ class ArchivalRetrievalEngine:
         }
 
         if not q_clean:
+            candidates = self.keyword_search(query="", filters=filters, user=user, limit=max(page * page_size * 2, 60))
+            for item in candidates:
+                snip_info = self.extract_evidence_snippet(item["chunk_text"], "")
+                item["highlighted_snippet"] = snip_info["snippet"]
+                item["matched_terms"] = []
+
+            total = len(candidates)
+            start_idx = (page - 1) * page_size
+            end_idx = start_idx + page_size
+            paged_items = candidates[start_idx:end_idx]
+            facets = self._compute_facets(candidates)
+
             return {
                 "query": "",
                 "mode": mode,
-                "total": 0,
+                "total": total,
                 "page": page,
                 "page_size": page_size,
-                "items": [],
-                "facets": {},
+                "items": paged_items,
+                "facets": facets,
                 "diagnostics": retrieval_diagnostics
             }
 

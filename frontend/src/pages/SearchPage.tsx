@@ -20,6 +20,8 @@ export const SearchPage: React.FC = () => {
   const [documentType, setDocumentType] = useState(searchParams.get('document_type') || '');
   const [language, setLanguage] = useState(searchParams.get('language') || '');
   const [year, setYear] = useState(searchParams.get('year') || '');
+  const initialPage = parseInt(searchParams.get('page') || '1', 10);
+  const [page, setPage] = useState<number>(initialPage > 0 ? initialPage : 1);
 
   const [loading, setLoading] = useState(false);
   const [searchResponse, setSearchResponse] = useState<SearchResponse | null>(null);
@@ -31,7 +33,8 @@ export const SearchPage: React.FC = () => {
     modeVal = mode,
     docTypeVal = documentType,
     langVal = language,
-    yearVal = year
+    yearVal = year,
+    pageVal = page
   ) => {
     setLoading(true);
     try {
@@ -41,10 +44,11 @@ export const SearchPage: React.FC = () => {
         document_type: docTypeVal || undefined,
         language: langVal || undefined,
         year: yearVal ? parseInt(yearVal) : undefined,
-        page: 1,
+        page: pageVal,
         page_size: 15
       });
       setSearchResponse(res);
+      setPage(res.page || pageVal);
     } catch (err) {
       console.warn("Search backend unreachable, serving from canonical archive corpus:", err);
       const queryLower = (qVal || '').toLowerCase().trim();
@@ -593,6 +597,54 @@ export const SearchPage: React.FC = () => {
                 </div>
               );
             })}
+
+            {/* Broadsheet Archival Pagination Bar */}
+            {searchResponse && searchResponse.total > 0 && (
+              <div className="bg-[#FAF6EE] border-2 border-ink p-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-letterpress-sm font-mono text-xs">
+                <div className="text-ink-700 text-[11px]">
+                  Showing passages <strong>{(page - 1) * (searchResponse.page_size || 15) + 1}</strong> – <strong>{Math.min(page * (searchResponse.page_size || 15), searchResponse.total)}</strong> of <strong>{searchResponse.total}</strong>
+                </div>
+
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    disabled={page <= 1}
+                    onClick={() => {
+                      const prevPage = Math.max(1, page - 1);
+                      setPage(prevPage);
+                      executeSearch(query, mode, documentType, language, year, prevPage);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className={`px-3 py-1 border border-ink text-xs font-bold uppercase transition ${
+                      page <= 1 ? 'opacity-40 cursor-not-allowed bg-newsprint-200' : 'bg-white hover:bg-oxblood hover:text-white shadow-letterpress-sm'
+                    }`}
+                  >
+                    [ PREV ]
+                  </button>
+
+                  <span className="px-3 py-1 bg-newsprint-200 border border-ink/40 font-bold text-oxblood">
+                    PAGE {page} / {Math.max(1, Math.ceil(searchResponse.total / (searchResponse.page_size || 15)))}
+                  </span>
+
+                  <button
+                    type="button"
+                    disabled={page >= Math.ceil(searchResponse.total / (searchResponse.page_size || 15))}
+                    onClick={() => {
+                      const maxP = Math.ceil(searchResponse.total / (searchResponse.page_size || 15));
+                      const nextPage = Math.min(maxP, page + 1);
+                      setPage(nextPage);
+                      executeSearch(query, mode, documentType, language, year, nextPage);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className={`px-3 py-1 border border-ink text-xs font-bold uppercase transition ${
+                      page >= Math.ceil(searchResponse.total / (searchResponse.page_size || 15)) ? 'opacity-40 cursor-not-allowed bg-newsprint-200' : 'bg-white hover:bg-oxblood hover:text-white shadow-letterpress-sm'
+                    }`}
+                  >
+                    [ NEXT ]
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
