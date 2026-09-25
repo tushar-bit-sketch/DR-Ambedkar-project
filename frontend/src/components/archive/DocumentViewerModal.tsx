@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { 
   X, ZoomIn, ZoomOut, RotateCw, Download, 
   Share2, Volume2, Languages, Bot, FileText, 
@@ -127,13 +128,26 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
             </div>
           </div>
 
-          <button
-            onClick={onClose}
-            className="px-3 py-1.5 border-2 border-ink text-ink bg-newsprint-100 hover:bg-oxblood hover:text-white transition font-mono text-xs font-bold uppercase tracking-wider shadow-letterpress-sm flex items-center gap-1.5"
-            aria-label="Close Document Viewer"
-          >
-            <span>[ × Close Reading Table ]</span>
-          </button>
+          <div className="flex items-center gap-2">
+            {document?.id && (
+              <Link
+                to={`/documents/${document.id}`}
+                className="px-3 py-1.5 border-2 border-ink text-white bg-ink hover:bg-oxblood transition font-mono text-xs font-bold uppercase tracking-wider shadow-letterpress-sm flex items-center gap-1.5"
+                title="Open canonical 3-pane archival research desk"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">[ Open Canonical Folio Desk ]</span>
+                <span className="sm:hidden">[ Folio Desk ]</span>
+              </Link>
+            )}
+            <button
+              onClick={onClose}
+              className="px-3 py-1.5 border-2 border-ink text-ink bg-newsprint-100 hover:bg-oxblood hover:text-white transition font-mono text-xs font-bold uppercase tracking-wider shadow-letterpress-sm flex items-center gap-1.5"
+              aria-label="Close Document Viewer"
+            >
+              <span>[ × Close ]</span>
+            </button>
+          </div>
         </div>
 
         {/* Phase 1 Notice Banner */}

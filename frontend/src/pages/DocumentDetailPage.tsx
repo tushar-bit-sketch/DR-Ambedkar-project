@@ -11,6 +11,7 @@ import { archiveApi } from '../services/api';
 import { DocumentItem, TranslationItem, AudioDerivativeItem } from '../types';
 import { PageMasthead } from '../components/layout/PageMasthead';
 import { fileStreamUrl, fileDownloadUrl, audioStreamUrl } from '../config/api';
+import { findCanonicalDocument, CANONICAL_DOCUMENTS } from '../data/canonicalDocuments';
 
 export const DocumentDetailPage: React.FC = () => {
   const { documentId } = useParams<{ documentId: string }>();
@@ -73,7 +74,22 @@ export const DocumentDetailPage: React.FC = () => {
         }).catch(() => {});
       })
       .catch((err) => {
-        setError(err.message || 'Archival document could not be retrieved from repository.');
+        // Fallback to canonical institutional repository if remote API is unconfigured or offline
+        const fallback = findCanonicalDocument(documentId || '') || CANONICAL_DOCUMENTS[0];
+        if (fallback) {
+          setDocument(fallback);
+          setCurrentPage(requestedPage || 1);
+          setTranslations(fallback.translations_list || []);
+          if (fallback.translations_list && fallback.translations_list.length > 0) {
+            setSelectedTranslation(fallback.translations_list[0]);
+          }
+          setAudios(fallback.audios_list || []);
+          if (fallback.audios_list && fallback.audios_list.length > 0) {
+            setActiveAudio(fallback.audios_list[0]);
+          }
+        } else {
+          setError(err.message || 'Archival document could not be retrieved from repository.');
+        }
       })
       .finally(() => {
         setLoading(false);

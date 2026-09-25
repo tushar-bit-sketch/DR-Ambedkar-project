@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { BookOpen, Search, Filter, RefreshCw, AlertTriangle, Layers } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { BookOpen, Search, Filter, RefreshCw, AlertTriangle, Layers, ExternalLink } from 'lucide-react';
 import { apiService } from '../services/api';
 import { DocumentItem } from '../types';
 import { DocumentCard } from '../components/archive/DocumentCard';
 import { DocumentViewerModal } from '../components/archive/DocumentViewerModal';
 import { DemoBanner } from '../components/archive/DemoBanner';
 import { PageMasthead } from '../components/layout/PageMasthead';
+import { CANONICAL_DOCUMENTS } from '../data/canonicalDocuments';
 
 export const DocumentsPage: React.FC = () => {
   const [docs, setDocs] = useState<DocumentItem[]>([]);
@@ -28,8 +30,10 @@ export const DocumentsPage: React.FC = () => {
         );
         setDocs(writings.length > 0 ? writings : res.items);
       })
-      .catch((err: any) => {
-        setError(err.message || 'Failed to connect to Archival Document Repository.');
+      .catch(() => {
+        // Fallback to canonical repository if backend is offline or unconfigured
+        setDocs(CANONICAL_DOCUMENTS);
+        setIsDemo(true);
       })
       .finally(() => setLoading(false));
   };
@@ -159,12 +163,19 @@ export const DocumentsPage: React.FC = () => {
                       <span>Language: {filteredDocs[0].language_name || 'English'}</span>
                     </div>
                   </div>
-                  <div className="shrink-0 self-start lg:self-center">
+                  <div className="shrink-0 self-start lg:self-center flex flex-col sm:flex-row gap-2">
+                    <Link
+                      to={`/documents/${filteredDocs[0].id}`}
+                      className="px-5 py-3 bg-ink hover:bg-oxblood text-white font-mono text-xs font-bold uppercase tracking-wider transition shadow-letterpress border border-ink flex items-center gap-1.5"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                      <span>[ Examine Master Folio ]</span>
+                    </Link>
                     <button
                       onClick={() => setSelectedDoc(filteredDocs[0])}
-                      className="px-5 py-3 bg-ink hover:bg-oxblood text-white font-mono text-xs font-bold uppercase tracking-wider transition shadow-letterpress border border-ink"
+                      className="px-4 py-3 bg-[#FAF6EE] hover:bg-newsprint-300 text-ink font-mono text-xs font-bold uppercase tracking-wider transition shadow-letterpress-sm border border-ink/40"
                     >
-                      [ Examine Master Record ]
+                      [ Quick Read ]
                     </button>
                   </div>
                 </div>
