@@ -270,6 +270,14 @@ def approve_ocr_page(
         full_text = "\n\n--- Page Break ---\n\n".join([p.cleaned_text or "" for p in job.pages])
         job.document.ocr_text = f"[Human-reviewed transcription • Curatorial approved]\n\n{full_text}"
 
+        # Trigger automatic search and vector re-indexing
+        try:
+            from app.services.search.indexer import ArchivalIndexerService
+            indexer = ArchivalIndexerService(db)
+            indexer.index_document(job.document_id)
+        except Exception as e:
+            pass
+
     db.commit()
     db.refresh(page)
 

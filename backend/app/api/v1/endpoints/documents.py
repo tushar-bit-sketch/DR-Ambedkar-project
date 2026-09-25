@@ -6,7 +6,7 @@ import datetime
 import os
 
 from app.db.session import get_db
-from app.db.models import Document, Collection, Author, Language, ArchivalFile, DocumentVersion, DocumentMetadata, AuditLog, User
+from app.db.models import Document, Collection, Author, Language, ArchivalFile, DocumentVersion, DocumentMetadata, AuditLog, User, SearchChunk
 from app.schemas.document import (
     DocumentOut, DocumentDetailOut, DocumentListResponse, 
     DocumentCreate, DocumentUpdate, DocumentVerificationRequest
@@ -453,8 +453,10 @@ def verify_document_workflow(
     doc.verification_status = new_ver_status
     if new_ver_status == "VERIFIED":
         doc.status = "PUBLISHED"
-    elif new_ver_status == "REJECTED":
+        db.query(SearchChunk).filter(SearchChunk.document_id == doc.id).update({"is_verified": True})
+    elif new_ver_status in ["REJECTED", "UNVERIFIED"]:
         doc.status = "DRAFT"
+        db.query(SearchChunk).filter(SearchChunk.document_id == doc.id).update({"is_verified": False})
 
     audit_action = "DOCUMENT_VERIFIED" if new_ver_status == "VERIFIED" else ("DOCUMENT_REJECTED" if new_ver_status == "REJECTED" else "DOCUMENT_UPDATED")
 
