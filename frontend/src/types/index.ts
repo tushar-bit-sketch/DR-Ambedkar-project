@@ -38,6 +38,19 @@ export type UserRole =
   | 'REVIEWER' 
   | 'VISITOR';
 
+export interface AdminUserItem {
+  id: number;
+  email: string;
+  full_name: string;
+  is_active: boolean;
+  role: {
+    id: number;
+    name: string;
+    description?: string;
+  };
+  created_at: string;
+}
+
 export interface Collection {
   id: number;
   title: string;

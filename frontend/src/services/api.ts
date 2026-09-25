@@ -10,7 +10,8 @@ import {
   TranslationItem, TranslationSideBySide, AudioDerivativeItem,
   SupportedLanguageItem, MultilingualDiagnostics,
   GraphEntityItem, GraphRelationshipItem, GraphNeighborsData,
-  GraphStatsData, GraphStatusData, EntityMergeItem, ProvenanceChainData
+  GraphStatsData, GraphStatusData, EntityMergeItem, ProvenanceChainData,
+  AdminUserItem
 } from '../types';
 import { API_BASE_URL, apiUrl, isBackendConfigured } from '../config/api';
 
@@ -401,6 +402,43 @@ export const apiService = {
 
   async getAuditLogs(): Promise<AuditLog[]> {
     return apiRequest<AuditLog[]>('/admin/audit-logs', undefined, 'admin');
+  },
+
+  async getAdminUsers(): Promise<AdminUserItem[]> {
+    return apiRequest<AdminUserItem[]>('/admin/users', undefined, 'admin');
+  },
+
+  async createAdminUser(data: { email: string; full_name: string; password: string; role_name: string }): Promise<AdminUserItem> {
+    return apiRequest<AdminUserItem>(
+      '/admin/users',
+      {
+        method: 'POST',
+        body: JSON.stringify(data)
+      },
+      'admin'
+    );
+  },
+
+  async updateAdminUserStatus(userId: number, isActive: boolean): Promise<AdminUserItem> {
+    return apiRequest<AdminUserItem>(
+      `/admin/users/${userId}/status`,
+      {
+        method: 'PUT',
+        body: JSON.stringify({ is_active: isActive })
+      },
+      'admin'
+    );
+  },
+
+  async updateAdminUserRole(userId: number, roleName: string): Promise<AdminUserItem> {
+    return apiRequest<AdminUserItem>(
+      `/admin/users/${userId}/role`,
+      {
+        method: 'PUT',
+        body: JSON.stringify({ role_name: roleName })
+      },
+      'admin'
+    );
   },
 
   async checkHealth(): Promise<{ status: string; phase: string; database: string }> {
