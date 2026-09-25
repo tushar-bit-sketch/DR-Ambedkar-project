@@ -6,7 +6,8 @@ interface AuthContextType {
   user: UserProfile | null;
   role: UserRole;
   token: string | null;
-  login: (role: UserRole) => void;
+  login: (emailOrRole: string, password?: string) => Promise<boolean>;
+  loginWithCredentials: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
   isStaff: boolean;
 }
@@ -20,98 +21,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [token, setToken] = useState<string | null>(() => {
     return localStorage.getItem('archive_jwt_token') || null;
   });
-
-  const [user, setUser] = useState<UserProfile | null>(() => {
-    if (role === 'VISITOR') return null;
-    return {
-      id: 1,
-      email: role === 'SUPER_ADMIN' ? 'admin@ambedkar-archive.gov.in' : 'archivist@ambedkar-archive.gov.in',
-      full_name: role === 'SUPER_ADMIN' ? 'Dr. B.R. National Archive Administrator' : 'Senior Institutional Archivist',
-      role: {
-        id: role === 'SUPER_ADMIN' ? 1 : 2,
-        name: role,
-        description: 'Institutional Access Privileges'
-      },
-      is_active: true
-    };
-  });
-
-  const ROLE_CREDENTIALS: Record<UserRole, { email: string; password: string; name: string } | null> = {
-    SUPER_ADMIN: {
-      email: 'admin@ambedkar-archive.gov.in',
-      password: 'AmbedkarArchive2026!',
-      name: 'National Archive Administrator'
-    },
-    ARCHIVIST: {
-      email: 'archivist@ambedkar-archive.gov.in',
-      password: 'Archivist2026!',
-      name: 'Senior Institutional Archivist'
-    },
-    REVIEWER: {
-      email: 'reviewer@ambedkar-archive.gov.in',
-      password: 'Reviewer2026!',
-      name: 'Curatorial Reviewer'
-    },
-    RESEARCHER: {
-      email: 'researcher@ambedkar-archive.gov.in',
-      password: 'Researcher2026!',
-      name: 'Archival Research Scholar'
-    },
-    VISITOR: null
-  };
-
-  const login = async (newRole: UserRole) => {
-    const creds = ROLE_CREDENTIALS[newRole];
-    if (!creds || newRole === 'VISITOR') {
-      logout();
-      return;
-    }
-
-    try {
-      const resp = await fetch(apiUrl('/auth/login'), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: creds.email, password: creds.password })
-      });
-
-      if (resp.ok) {
-        const data = await resp.json();
-        const jwt = data.access_token;
-        setToken(jwt);
-        setRole(newRole);
-        localStorage.setItem('archive_jwt_token', jwt);
-        localStorage.setItem('archive_user_role', newRole);
-
-        setUser({
-          id: newRole === 'SUPER_ADMIN' ? 1 : 2,
-          email: creds.email,
-          full_name: creds.name,
-          role: {
-            id: newRole === 'SUPER_ADMIN' ? 1 : 2,
-            name: newRole,
-            description: 'Institutional Access Privileges'
-          },
-          is_active: true
-        });
-      } else {
-        // Enforce strict security: No synthetic fallback tokens in production
-        console.warn(`[Auth] Backend authentication rejected for role: ${newRole}. Access denied.`);
-        logout();
-        throw new Error('Authentication rejected by institutional server.');
-      }
-    } catch (err) {
-      console.warn(`[Auth] Server authentication failed for ${newRole}:`, err);
-      logout();
-    }
-  };
-
-  // Attempt real login verification on mount if logged in as staff
-  React.useEffect(() => {
-    if (role !== 'VISITOR' && !token?.startsWith('ey')) {
-      login(role).catch(() => {});
-    }
-  }, []);
-
+  const [user, setUser] = useState<UserProfile | null>(null);
 
   const logout = () => {
     setRole('VISITOR');
@@ -121,10 +31,116 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.removeItem('archive_jwt_token');
   };
 
+  const loginWithCredentials = async (email: string, password: string): Promise<boolean> => {
+    try {
+      const resp = await fetch(apiUrl('/auth/login'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim(), password })
+      });
+
+      if (!resp.ok) {
+        logout();
+        return false;
+      }
+
+      const data = await resp.json();
+      const jwt = data.access_token;
+      const userRole = (data.role as UserRole) || 'VISITOR';
+
+      setToken(jwt);
+      setRole(userRole);
+      localStorage.setItem('archive_jwt_token', jwt);
+      localStorage.setItem('archive_user_role', userRole);
+
+      // Fetch user profile from /auth/me
+      try {
+        const meResp = await fetch(apiUrl('/auth/me'), {
+          headers: { 'Authorization': `Bearer ${jwt}` }
+        });
+        if (meResp.ok) {
+          const profile = await meResp.json();
+          setUser(profile);
+        } else {
+          setUser({
+            id: 1,
+            email: email.trim(),
+            full_name: data.user_name || 'Archival Officer',
+            role: {
+              id: 1,
+              name: userRole,
+              description: 'Authenticated Staff Member'
+            },
+            is_active: true
+          });
+        }
+      } catch {
+        setUser({
+          id: 1,
+          email: email.trim(),
+          full_name: data.user_name || 'Archival Officer',
+          role: {
+            id: 1,
+            name: userRole,
+            description: 'Authenticated Staff Member'
+          },
+          is_active: true
+        });
+      }
+
+      return true;
+    } catch (err) {
+      console.warn('[Auth] Server login failed:', err);
+      logout();
+      return false;
+    }
+  };
+
+  const login = async (emailOrRole: string, password?: string): Promise<boolean> => {
+    if (!password) {
+      if (emailOrRole === 'VISITOR') {
+        logout();
+        return true;
+      }
+      return false;
+    }
+    return loginWithCredentials(emailOrRole, password);
+  };
+
+  // Validate existing stored session token on mount
+  React.useEffect(() => {
+    const storedToken = localStorage.getItem('archive_jwt_token');
+    if (!storedToken) {
+      if (role !== 'VISITOR') {
+        logout();
+      }
+      return;
+    }
+
+    fetch(apiUrl('/auth/me'), {
+      headers: { 'Authorization': `Bearer ${storedToken}` }
+    })
+      .then(async (res) => {
+        if (res.ok) {
+          const profile = await res.json();
+          setUser(profile);
+          const validatedRole = (profile.role?.name as UserRole) || 'VISITOR';
+          setRole(validatedRole);
+          localStorage.setItem('archive_user_role', validatedRole);
+        } else {
+          // Token expired or invalid
+          logout();
+        }
+      })
+      .catch(() => {
+        // Network or server error - keep token for offline or retry
+      });
+  }, []);
+
   const isStaff = role === 'SUPER_ADMIN' || role === 'ARCHIVIST' || role === 'REVIEWER';
 
   return (
-    <AuthContext.Provider value={{ user, role, token, login, logout, isStaff }}>
+    <AuthContext.Provider value={{ user, role, token, login, loginWithCredentials, logout, isStaff }}>
       {children}
     </AuthContext.Provider>
   );

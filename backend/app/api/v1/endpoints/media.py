@@ -184,49 +184,6 @@ def search_transcripts(
     )
 
 
-@router.get("/kiosk/feed", response_model=List[MediaAssetListItem])
-def get_kiosk_feed(
-    media_type: Optional[str] = Query(None, description="VIDEO, AUDIO, PHOTOGRAPH, or ALL"),
-    db: Session = Depends(get_db)
-):
-    """
-    Returns public, exhibition-ready media assets for touch kiosks.
-    """
-    query = db.query(MediaAsset).filter(MediaAsset.access_level == "PUBLIC")
-    if media_type and media_type != "ALL":
-        query = query.filter(MediaAsset.media_type == media_type)
-    assets = query.order_by(MediaAsset.created_at.desc()).limit(50).all()
-    return [
-        MediaAssetListItem(
-            id=a.id,
-            archive_id=a.archive_id,
-            title=a.title,
-            subtitle=a.subtitle,
-            media_type=a.media_type,
-            format=a.format,
-            mime_type=a.mime_type,
-            duration=a.duration,
-            file_size=a.file_size,
-            checksum_sha256=a.checksum_sha256,
-            source_name=a.source_name,
-            creator=a.creator,
-            date=a.date,
-            date_precision=a.date_precision or "EXACT_DAY",
-            language=a.language or "English",
-            access_level=a.access_level,
-            download_policy=a.download_policy or "STREAM_ONLY",
-            verification_status=a.verification_status,
-            archival_status=a.archival_status or "MASTER_PRESERVED",
-            is_demo_data=bool(a.is_demo_data),
-            thumbnail_path=a.thumbnail_path,
-            poster_path=a.poster_path,
-            has_transcript=len(a.transcripts) > 0,
-            has_captions=len(a.captions) > 0,
-            created_at=a.created_at
-        )
-        for a in assets
-    ]
-
 
 # ---------------------------------------------------------------------------
 # Collections Endpoints
