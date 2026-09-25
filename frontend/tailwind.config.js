@@ -103,9 +103,25 @@ export default {
       },
       fontFamily: {
         serif: ['"Playfair Display"', 'Georgia', 'serif'],
+        sans: ['"Newsreader"', 'Georgia', 'serif'],
         editorial: ['"Newsreader"', 'Georgia', 'serif'],
-        sans: ['"Inter"', 'system-ui', '-apple-system', 'sans-serif'],
-        mono: ['"Courier Prime"', '"JetBrains Mono"', 'Courier', 'monospace'],
+        mono: ['"Courier Prime"', 'Courier', 'monospace'],
+      },
+      fontSize: {
+        xs: ['12px', { lineHeight: '1.4' }],
+        sm: ['14px', { lineHeight: '1.5' }],
+        base: ['16px', { lineHeight: '1.7' }],
+        lg: ['18px', { lineHeight: '1.6' }],
+        xl: ['20px', { lineHeight: '1.6' }],
+        '2xl': ['24px', { lineHeight: '1.35' }],
+        '3xl': ['32px', { lineHeight: '1.25' }],
+        '4xl': ['40px', { lineHeight: '1.2' }],
+        '5xl': ['52px', { lineHeight: '1.2' }],
+        '6xl': ['64px', { lineHeight: '1.1' }],
+      },
+      borderWidth: {
+        1: '1px',
+        2: '2px',
       },
       boxShadow: {
         'letterpress': '2px 2px 0px #1A1714',

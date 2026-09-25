@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
-  BookOpen, Clock, Bot, Landmark, Search, 
-  ArrowRight, ShieldCheck, Scale, FileText, 
-  Volume2, Globe2, Compass, Layers, CheckCircle, ExternalLink
+  BookOpen, Bot, Search, 
+  ArrowRight, Scale, 
+  Globe2, ShieldCheck, Film, Compass
 } from 'lucide-react';
 import { apiService } from '../services/api';
 import { Collection, DocumentItem, TimelineEvent } from '../types';
+import { HeroSection } from '../components/hero/HeroSection';
+import { InfographicSection } from '../components/archive/InfographicSection';
+import { LiveVideoSection } from '../components/archive/LiveVideoSection';
 import { DocumentCard } from '../components/archive/DocumentCard';
 import { DocumentViewerModal } from '../components/archive/DocumentViewerModal';
 import { DemoBanner } from '../components/archive/DemoBanner';
+
 
 export const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -79,248 +83,215 @@ export const HomePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-newsprint-100 text-ink">
-      <DemoBanner isDemoData={false} isOffline={isOffline} />
+    <div className="min-h-screen bg-[#C8A87A] parchment-archive-bg text-ink">
 
-      {/* Broadsheet Front Page Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      {/* 1. Master Historical Broadsheet: integrated masthead, hero, stats */}
+      <HeroSection stats={stats} />
+
+      {/* Main Archival Canvas Container */}
+      <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8 sm:space-y-10">
         
-        {/* Main Broadsheet Columns: Lead Story (8 cols) + Secondary Dispatches & Inquiry Slip (4 cols) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 pb-10 border-b-2 border-double border-ink">
-          
-          {/* Left/Center Main Column: Lead Story */}
-          <div className="lg:col-span-8 space-y-6 lg:border-r border-ink/20 lg:pr-8">
-            {/* Top Gazette Wire / Eyebrow */}
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-ink/20 pb-2 font-mono text-[11px]">
-              <span className="text-oxblood font-bold uppercase tracking-wider">
-                ★ HISTORIC CONSTITUTIONAL DISPATCH • CONSTITUENT ASSEMBLY OF INDIA
-              </span>
-              <span className="text-ink-600">
-                ACCESSION: AMB-CAD-1949-042 [VERIFIED]
-              </span>
-            </div>
+        {/* Offline notice (below broadsheet, doesn't disrupt the front-page composition) */}
+        {isOffline && (
+          <aside className="font-mono text-[10px] text-ink/70 bg-[#DDD0B4]/50 border border-ink/20 px-3 py-2 flex items-center gap-2">
+            <span className="text-[#79402C] font-bold">[ARCHIVE TELEPRINTER: BACKEND OFFLINE]</span>
+            Live FastAPI service is currently unreachable. Static repository cache remains accessible.
+          </aside>
+        )}
 
-            {/* Lead Headline */}
-            <div className="space-y-3">
-              <h2 className="font-serif font-black text-3xl sm:text-4xl lg:text-5xl text-ink leading-tight tracking-tight uppercase">
-                "On 26th January 1950, We Are Going to Enter into a Life of Contradictions"
-              </h2>
-              <p className="font-serif italic text-base sm:text-lg text-sepia leading-snug">
-                Dr. B. R. Ambedkar's landmark address to the Constituent Assembly warns that political democracy without socio-economic equality is a palace built upon shifting sand.
-              </p>
-            </div>
+        {/* 2. Live Historical Video Station & Phonographic Broadcast Monitor */}
+        <LiveVideoSection />
 
-            {/* Verbatim Excerpt in Letterpress Box */}
-            <div className="bg-[#FAF6EE] border-2 border-ink p-5 shadow-letterpress-sm space-y-3">
-              <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-widest text-oxblood border-b border-ink/10 pb-1">
-                <span>VERBATIM RECORD • CONSTITUENT ASSEMBLY DEBATES VOL. XI</span>
-                <span>25TH NOVEMBER 1949</span>
+
+        {/* 4. Interactive Archival Infographic Knowledge Matrix */}
+        <InfographicSection />
+
+        {/* 5. Main Broadsheet Lead Story & Inquiry Desk */}
+        <div className="deckled-paper-panel p-6 sm:p-8 space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            {/* Left/Center Main Column: Lead Story */}
+            <div className="lg:col-span-8 space-y-5 lg:border-r border-ink/20 lg:pr-8">
+              {/* Eyebrow */}
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-ink/20 pb-2 font-mono text-[11px]">
+                <span className="text-oxblood font-bold uppercase tracking-wider">
+                  ★ HISTORIC CONSTITUTIONAL DISPATCH • CONSTITUENT ASSEMBLY OF INDIA
+                </span>
+                <span className="text-ink-600 font-bold">
+                  ACCESSION: AMB-CAD-1949-042 [VERIFIED]
+                </span>
               </div>
-              <blockquote className="font-editorial text-sm sm:text-base text-ink-900 leading-relaxed broadsheet-drop-cap">
-                "On the 26th of January 1950, we are going to enter into a life of contradictions. In politics we will have equality and in social and economic life we will have inequality. In politics we will be recognising the principle of one man one vote and one vote one value. In our social and economic life, we shall, by reason of our social and economic structure, continue to deny the principle of one man one value."
-              </blockquote>
-              <div className="text-right font-mono text-xs text-ink-600 font-bold uppercase">
-                — DR. B. R. AMBEDKAR, Chairman, Drafting Committee
-              </div>
-            </div>
 
-            {/* Context & Actions */}
-            <div className="space-y-4">
-              <p className="font-editorial text-sm text-ink-700 leading-relaxed">
-                This repository holds the unabridged proceedings, official drafting committee minutes, digitized manuscript notes, and scholarly cross-references with authenticated cryptographic checksums.
-              </p>
-              
-              <div className="flex flex-wrap items-center gap-3 pt-1">
+              {/* Lead Headline */}
+              <div className="space-y-2">
+                <h2 className="font-serif font-black text-2xl sm:text-3xl lg:text-4xl text-ink leading-tight tracking-tight uppercase">
+                  "On 26th January 1950, We Are Going to Enter into a Life of Contradictions"
+                </h2>
+                <p className="font-serif italic text-base sm:text-lg text-sepia leading-snug">
+                  Dr. B. R. Ambedkar's landmark address to the Constituent Assembly warns that political democracy without socio-economic equality is a palace built upon shifting sand.
+                </p>
+              </div>
+
+              {/* Verbatim Excerpt */}
+              <div className="bg-[#FAF4E6] border border-ink/30 p-5 space-y-3 shadow-2xs">
+                <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-widest text-oxblood border-b border-ink/10 pb-1">
+                  <span>VERBATIM RECORD • CONSTITUENT ASSEMBLY DEBATES VOL. XI</span>
+                  <span>25TH NOVEMBER 1949</span>
+                </div>
+                <blockquote className="font-editorial text-sm sm:text-base text-ink-900 leading-relaxed broadsheet-drop-cap">
+                  "On the 26th of January 1950, we are going to enter into a life of contradictions. In politics we will have equality and in social and economic life we will have inequality. In politics we will be recognising the principle of one man one vote and one vote one value. In our social and economic life, we shall, by reason of our social and economic structure, continue to deny the principle of one man one value."
+                </blockquote>
+                <div className="text-right font-mono text-xs text-ink-600 font-bold uppercase">
+                  — DR. B. R. AMBEDKAR, Chairman, Drafting Committee
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex flex-wrap items-center gap-3 pt-2">
                 <Link
                   to="/debates"
-                  className="px-4 py-2 bg-ink hover:bg-oxblood text-white font-mono text-xs uppercase font-bold tracking-wider transition border border-ink shadow-letterpress-sm flex items-center gap-2"
+                  className="oxblood-nav-pill px-5 py-2.5 text-xs sm:text-sm font-serif font-bold flex items-center gap-2 hover:bg-[#8B2525] transition"
                 >
-                  <BookOpen className="w-3.5 h-3.5" />
-                  <span>[ Read Full Verbatim Record ]</span>
+                  <BookOpen className="w-4 h-4" />
+                  <span>Read Full Verbatim Record →</span>
                 </Link>
                 <Link
                   to="/research?query=Explain%20Dr.%20Ambedkar's%20life%20of%20contradictions%20warning%20in%20Constituent%20Assembly"
-                  className="px-4 py-2 bg-[#FAF6EE] hover:bg-newsprint-300 text-oxblood font-mono text-xs uppercase font-bold tracking-wider transition border border-oxblood shadow-letterpress-sm flex items-center gap-2"
+                  className="parchment-btn px-5 py-2.5 text-xs sm:text-sm font-serif font-bold flex items-center gap-2 border border-ink/30"
                 >
-                  <Bot className="w-3.5 h-3.5" />
-                  <span>[ Interrogate with AI Assistant ]</span>
+                  <Bot className="w-4 h-4 text-oxblood" />
+                  <span>Interrogate with AI Assistant →</span>
                 </Link>
               </div>
             </div>
-          </div>
 
-          {/* Right Column: Official Inquiry Slip & Classified Dispatches */}
-          <div className="lg:col-span-4 space-y-6">
-            
-            {/* Official Archival Inquiry Slip (Search Desk) */}
-            <div className="bg-[#FAF6EE] border-2 border-ink p-4 shadow-letterpress-sm space-y-3">
-              <div className="border-b-2 border-ink pb-1 flex items-center justify-between">
-                <h3 className="font-serif font-black text-sm uppercase tracking-wider text-ink flex items-center gap-1.5">
-                  <Search className="w-4 h-4 text-oxblood" />
-                  <span>Official Inquiry Slip</span>
-                </h3>
-                <span className="font-mono text-[9px] text-oxblood uppercase font-bold">
-                  LEDGER INQUIRY
-                </span>
-              </div>
-              <p className="text-[11px] font-editorial text-ink-600 leading-tight">
-                Search verified speeches, manuscripts, parliamentary debates, and legal opinions.
-              </p>
-              <form onSubmit={handleHeroSearch} className="space-y-2">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Enter keywords, volume, topic..."
-                  className="w-full px-3 py-2 bg-white border border-ink/40 text-ink font-mono text-xs focus:outline-none focus:border-ink"
-                />
-                <button
-                  type="submit"
-                  className="w-full py-2 bg-ink hover:bg-oxblood text-white font-mono text-xs uppercase font-bold tracking-widest transition flex items-center justify-center gap-1.5 shadow-letterpress-sm"
-                >
-                  <span>[ Execute Search Dispatch ]</span>
-                  <ArrowRight className="w-3 h-3" />
-                </button>
-              </form>
-              <div className="pt-1 flex flex-wrap gap-1 text-[10px] font-mono text-ink-600">
-                <span className="text-ink-400">Index Tags:</span>
-                {['CAD Debates', 'Castes in India', 'Problem of Rupee', 'Mahad 1927'].map(tag => (
+            {/* Right Column: Inquiry Slip & Secondary Dispatches */}
+            <div className="lg:col-span-4 space-y-5">
+              {/* Inquiry Slip */}
+              <div className="bg-[#FAF4E6] border border-ink/30 p-5 space-y-3">
+                <div className="border-b-2 border-ink pb-1 flex items-center justify-between">
+                  <h3 className="font-serif font-bold text-base uppercase tracking-wider text-ink flex items-center gap-1.5">
+                    <Search className="w-4 h-4 text-oxblood" />
+                    <span>Inquiry Slip</span>
+                  </h3>
+                  <span className="accession-tag text-[10px]">LEDGER</span>
+                </div>
+                <p className="text-xs font-editorial text-ink-700 leading-snug">
+                  Search verified speeches, manuscripts, parliamentary debates, and legal opinions.
+                </p>
+                <form onSubmit={handleHeroSearch} className="space-y-2">
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Enter keywords, volume, topic..."
+                    className="w-full px-3 py-2 bg-white border border-ink/30 text-ink font-serif text-xs focus:outline-none focus:border-ink"
+                  />
                   <button
-                    key={tag}
-                    type="button"
-                    onClick={() => {
-                      setSearchQuery(tag);
-                      navigate(`/explore?q=${encodeURIComponent(tag)}`);
-                    }}
-                    className="underline hover:text-oxblood"
+                    type="submit"
+                    className="w-full py-2 bg-[#2A241F] hover:bg-oxblood text-white font-serif text-xs font-bold tracking-wider transition flex items-center justify-center gap-1.5"
                   >
-                    #{tag}
+                    <span>Execute Search →</span>
                   </button>
-                ))}
+                </form>
+                <div className="pt-1 flex flex-wrap gap-1 text-[10px] font-mono text-ink-600">
+                  <span className="text-ink-400">Tags:</span>
+                  {['CAD Debates', 'Castes in India', 'Problem of Rupee', 'Mahad 1927'].map(tag => (
+                    <button
+                      key={tag}
+                      type="button"
+                      onClick={() => {
+                        setSearchQuery(tag);
+                        navigate(`/explore?q=${encodeURIComponent(tag)}`);
+                      }}
+                      className="underline hover:text-oxblood"
+                    >
+                      #{tag}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
 
-            {/* Secondary Historic Dispatch 1 */}
-            <div className="border-t-2 border-ink pt-3 space-y-1">
-              <div className="flex items-center justify-between font-mono text-[10px] text-oxblood">
-                <span className="font-bold">ACCESSION: AMB-SOC-1936-001</span>
-                <span>LAHORE DISPATCH</span>
+              {/* Lahore Dispatch */}
+              <div className="border-t border-ink/20 pt-3 space-y-1">
+                <div className="flex items-center justify-between font-mono text-[10px] text-oxblood font-bold">
+                  <span>ACCESSION: AMB-SOC-1936-001</span>
+                  <span>LAHORE DISPATCH</span>
+                </div>
+                <h4 className="font-serif font-bold text-base text-ink hover:text-oxblood transition leading-snug">
+                  <Link to="/documents">Annihilation of Caste: The Undelivered Address</Link>
+                </h4>
+                <p className="font-editorial text-xs text-ink-700 leading-relaxed">
+                  Groundbreaking treatise prepared for the Jat-Pat Todak Mandal conference of 1936.
+                </p>
+                <div className="pt-0.5 font-mono text-[10px] text-ink-500">
+                  [ 1936 • PHILOSOPHICAL ESSAY • 52 PAGES ]
+                </div>
               </div>
-              <h4 className="font-serif font-bold text-base text-ink hover:text-oxblood transition leading-snug">
-                <Link to="/documents">Annihilation of Caste: The Undelivered Address</Link>
-              </h4>
-              <p className="font-editorial text-xs text-ink-700 leading-relaxed">
-                The groundbreaking treatise dissecting hereditary social stratification, prepared for the Jat-Pat Todak Mandal conference of 1936.
-              </p>
-              <div className="pt-1 font-mono text-[10px] text-ink-500">
-                [ 1936 • PHILOSOPHICAL ESSAY • 52 PAGES ]
-              </div>
-            </div>
 
-            {/* Secondary Historic Dispatch 2 */}
-            <div className="border-t border-ink/20 pt-3 space-y-1">
-              <div className="flex items-center justify-between font-mono text-[10px] text-oxblood">
-                <span className="font-bold">ACCESSION: AMB-ECO-1923-004</span>
-                <span>LONDON DISPATCH</span>
-              </div>
-              <h4 className="font-serif font-bold text-base text-ink hover:text-oxblood transition leading-snug">
-                <Link to="/documents">The Problem of the Rupee: Its Origin & Solution</Link>
-              </h4>
-              <p className="font-editorial text-xs text-ink-700 leading-relaxed">
-                Seminal doctoral thesis submitted to the University of London analyzing currency stability and central banking mechanisms in British India.
-              </p>
-              <div className="pt-1 font-mono text-[10px] text-ink-500">
-                [ 1923 • MONETARY ECONOMICS • 320 PAGES ]
+              {/* London Dispatch */}
+              <div className="border-t border-ink/20 pt-3 space-y-1">
+                <div className="flex items-center justify-between font-mono text-[10px] text-oxblood font-bold">
+                  <span>ACCESSION: AMB-ECO-1923-004</span>
+                  <span>LONDON DISPATCH</span>
+                </div>
+                <h4 className="font-serif font-bold text-base text-ink hover:text-oxblood transition leading-snug">
+                  <Link to="/documents">The Problem of the Rupee: Origin & Solution</Link>
+                </h4>
+                <p className="font-editorial text-xs text-ink-700 leading-relaxed">
+                  Doctoral thesis submitted to University of London on central banking and currency.
+                </p>
+                <div className="pt-0.5 font-mono text-[10px] text-ink-500">
+                  [ 1923 • MONETARY ECONOMICS • 320 PAGES ]
+                </div>
               </div>
             </div>
 
           </div>
         </div>
 
-        {/* Archival Ledger Statistics Strip */}
-        <div className="my-8 py-4 border-y-2 border-double border-ink bg-[#FAF6EE] font-mono">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center divide-x-0 md:divide-x divide-ink/20">
-            <div className="p-2">
-              <div className="font-serif font-black text-2xl sm:text-3xl text-ink">
-                {stats.documents}
-              </div>
-              <div className="text-[10px] text-ink-700 uppercase font-bold tracking-widest mt-0.5">
-                CATALOGUED RECORDS
-              </div>
-              <div className="text-[9px] text-ink-500">BAWS & CAD Proceedings</div>
-            </div>
-            <div className="p-2">
-              <div className="font-serif font-black text-2xl sm:text-3xl text-ink">
-                {stats.collections}
-              </div>
-              <div className="text-[10px] text-ink-700 uppercase font-bold tracking-widest mt-0.5">
-                CURATED LEDGERS
-              </div>
-              <div className="text-[9px] text-ink-500">Writings, Speeches & Media</div>
-            </div>
-            <div className="p-2">
-              <div className="font-serif font-black text-2xl sm:text-3xl text-ink">
-                {stats.timeline}
-              </div>
-              <div className="text-[10px] text-ink-700 uppercase font-bold tracking-widest mt-0.5">
-                TIMELINE MILESTONES
-              </div>
-              <div className="text-[9px] text-ink-500">1891–1956 Chronology</div>
-            </div>
-            <div className="p-2">
-              <div className="font-serif font-black text-2xl sm:text-3xl text-oxblood">
-                {stats.entities}+
-              </div>
-              <div className="text-[10px] text-oxblood uppercase font-bold tracking-widest mt-0.5">
-                GRAPH ENTITIES
-              </div>
-              <div className="text-[9px] text-ink-500">Curated Historical Relations</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Classified Archival Holdings (Collections) */}
-        <section className="my-10">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 pb-2 border-b-2 border-ink">
+        {/* 6. Classified Archival Holdings (Featured Collections) */}
+        <section className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between pb-2 border-b-2 border-double border-ink">
             <div>
-              <span className="font-mono text-xs uppercase tracking-widest text-oxblood font-bold">
+              <p className="font-mono text-xs uppercase tracking-widest text-oxblood font-bold mb-0.5">
                 REGISTRY CATALOGUE
-              </span>
-              <h3 className="font-serif font-black text-2xl sm:text-3xl text-ink uppercase tracking-tight">
+              </p>
+              <h2 className="font-serif font-black text-2xl sm:text-3xl text-ink uppercase tracking-tight">
                 Classified Archival Holdings
-              </h3>
+              </h2>
             </div>
             <Link
               to="/explore"
-              className="font-mono text-xs uppercase font-bold text-ink hover:text-oxblood flex items-center gap-1 mt-2 sm:mt-0 transition underline"
+              className="text-oxblood font-serif font-bold text-sm hover:underline mt-1 sm:mt-0 flex items-center gap-1"
             >
-              <span>[ Open Full Ledger ]</span>
+              <span>Explore All Collections</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {collections.map((coll, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {collections.slice(0, 4).map((coll, index) => (
               <div 
                 key={coll.id}
                 onClick={() => navigate(`/explore?collection_id=${coll.id}`)}
-                className="bg-[#FAF6EE] border border-ink/40 hover:border-ink p-4 shadow-sm hover:shadow-letterpress transition-all cursor-pointer flex flex-col justify-between group"
+                className="deckled-paper-panel p-5 hover:border-ink transition-all cursor-pointer flex flex-col justify-between group"
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between font-mono text-[10px] text-oxblood border-b border-ink/10 pb-1">
                     <span className="font-bold">[HOLDING 0{index + 1}]</span>
                     <span>{coll.period || 'ARCHIVE'}</span>
                   </div>
-                  <h4 className="font-serif font-bold text-base text-ink group-hover:text-oxblood transition leading-snug">
+                  <h3 className="font-serif font-bold text-base text-ink group-hover:text-oxblood transition leading-snug">
                     {coll.title}
-                  </h4>
+                  </h3>
                   <p className="font-editorial text-xs text-ink-700 line-clamp-3 leading-relaxed">
                     {coll.description}
                   </p>
                 </div>
 
                 <div className="pt-3 border-t border-ink/10 flex items-center justify-between font-mono text-[11px] text-ink-600">
-                  <span>{coll.document_count ?? 0} Items Indexed</span>
+                  <span>{coll.document_count ?? 0} Items</span>
                   <span className="font-bold text-oxblood group-hover:translate-x-1 transition-transform">
                     Inspect →
                   </span>
@@ -330,28 +301,28 @@ export const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* Recent Accessions & Digitized Facsimiles */}
-        <section className="my-10 pt-8 border-t-2 border-ink">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 pb-2 border-b-2 border-ink">
+        {/* 7. Recent Archival Accessions */}
+        <section className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between pb-2 border-b-2 border-double border-ink">
             <div>
-              <span className="font-mono text-xs uppercase tracking-widest text-oxblood font-bold">
+              <p className="font-mono text-xs uppercase tracking-widest text-oxblood font-bold mb-0.5">
                 DOCUMENTARY EVIDENCE
-              </span>
-              <h3 className="font-serif font-black text-2xl sm:text-3xl text-ink uppercase tracking-tight">
+              </p>
+              <h2 className="font-serif font-black text-2xl sm:text-3xl text-ink uppercase tracking-tight">
                 Recent Archival Accessions
-              </h3>
+              </h2>
             </div>
             <Link
               to="/documents"
-              className="font-mono text-xs uppercase font-bold text-ink hover:text-oxblood flex items-center gap-1 mt-2 sm:mt-0 transition underline"
+              className="text-oxblood font-serif font-bold text-sm hover:underline mt-1 sm:mt-0 flex items-center gap-1"
             >
-              <span>[ Browse All Documents ]</span>
+              <span>Browse All Documents</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredDocs.map((doc) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-5">
+            {featuredDocs.slice(0, 4).map((doc) => (
               <DocumentCard
                 key={doc.id}
                 document={doc}
@@ -361,115 +332,63 @@ export const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* AI Research Assistant Broadsheet Teleprinter Section */}
-        <section className="my-12 p-6 sm:p-8 bg-[#FAF6EE] border-2 border-ink shadow-letterpress">
-          <div className="max-w-4xl mx-auto space-y-5">
-            <div className="text-center space-y-1 border-b-2 border-ink pb-3">
-              <span className="font-mono text-xs uppercase tracking-widest text-oxblood font-bold">
-                ★ LIVE RETRIEVAL-AUGMENTED INTELLIGENCE DESK ★
-              </span>
-              <h3 className="font-serif font-black text-2xl sm:text-3xl text-ink uppercase">
-                Scholarly AI Research Assistant
-              </h3>
-              <p className="font-editorial text-sm text-ink-700 max-w-xl mx-auto italic">
-                Directly interrogating thousands of pages of primary sources with verified citations and source grounding.
-              </p>
-            </div>
-
-            {/* Teleprinter Dispatch Preview */}
-            <div className="bg-newsprint-100 border border-ink/30 p-4 font-mono text-xs space-y-3">
-              <div className="flex items-center justify-between text-[11px] text-ink-600 border-b border-ink/20 pb-2">
-                <span className="flex items-center gap-1.5 font-bold text-oxblood">
-                  <Bot className="w-4 h-4 text-oxblood" />
-                  <span>INQUIRY TELEPRINTER • HUGGING FACE INFERENCE ENGINE</span>
-                </span>
-                <span className="stamp-oxblood text-[9px] py-0 px-1">
-                  SOURCE-GROUNDED RAG
-                </span>
-              </div>
-
-              <div className="bg-[#FAF6EE] p-3 border border-ink/20 font-editorial text-sm text-ink leading-relaxed">
-                <span className="font-mono text-xs text-ink-500 uppercase block mb-1">
-                  Sample Query: "What did Dr. Ambedkar state about the grammar of anarchy?"
-                </span>
-                "Dr. Ambedkar warned that with the introduction of constitutional methods for achieving social and economic objectives, bloody methods of revolution must be abandoned. He described civil disobedience, non-cooperation and satyagraha in an independent constitutional democracy as the <em>'Grammar of Anarchy'</em> [CAD Vol. XI, Nov 25, 1949]."
-              </div>
-
-              <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
-                <span className="text-[11px] text-ink-600">
-                  Verification: Constituent Assembly Debates • Citation ID: [CAD-1949-NOV25-P978]
-                </span>
-                <Link
-                  to="/research?query=What%20did%20Dr.%20Ambedkar%20mean%20by%20the%20Grammar%20of%20Anarchy%3F"
-                  className="px-4 py-1.5 bg-ink hover:bg-oxblood text-white font-mono text-xs uppercase font-bold tracking-wider transition border border-ink shadow-letterpress-sm flex items-center gap-1.5"
-                >
-                  <span>[ Open Research Workbench ]</span>
-                  <ArrowRight className="w-3 h-3" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Biographical Chronology Ledger */}
-        <section className="my-10 pt-8 border-t-2 border-ink">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 pb-2 border-b-2 border-ink">
-            <div>
-              <span className="font-mono text-xs uppercase tracking-widest text-oxblood font-bold">
-                HISTORICAL CHRONOLOGY
-              </span>
-              <h3 className="font-serif font-black text-2xl sm:text-3xl text-ink uppercase tracking-tight">
-                Timeline of Epochal Milestones
-              </h3>
-            </div>
-            <Link
-              to="/timeline"
-              className="font-mono text-xs uppercase font-bold text-ink hover:text-oxblood flex items-center gap-1 mt-2 sm:mt-0 transition underline"
-            >
-              <span>[ Open Full Timeline ]</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
+        {/* 8. AI Research Assistant Section */}
+        <section className="deckled-paper-panel p-6 sm:p-8 space-y-5">
+          <div className="space-y-1.5 border-b-2 border-double border-ink pb-3">
+            <span className="font-mono text-xs uppercase tracking-widest text-oxblood font-bold">
+              ★ RETRIEVAL-AUGMENTED INTELLIGENCE DESK ★
+            </span>
+            <h2 className="font-serif font-black text-2xl sm:text-3xl text-ink uppercase tracking-tight">
+              Scholarly AI Research Assistant
+            </h2>
+            <p className="font-editorial text-sm text-ink-700 italic">
+              Directly interrogating primary sources with verified paragraph citations and source grounding.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {timelineEvents.map((event) => (
-              <div 
-                key={event.id} 
-                className="bg-[#FAF6EE] p-4 border border-ink/40 shadow-sm hover:shadow-letterpress transition space-y-2 font-mono"
+          <div className="bg-[#FAF4E6] border border-ink/30 p-5 font-mono text-xs space-y-3">
+            <div className="flex items-center justify-between text-[11px] text-ink-600 border-b border-ink/20 pb-2">
+              <span className="flex items-center gap-1.5 font-bold text-oxblood">
+                <Bot className="w-4 h-4 text-oxblood" />
+                <span>INQUIRY TELEPRINTER • HUGGING FACE INFERENCE ENGINE</span>
+              </span>
+              <span className="accession-tag text-[10px]">
+                SOURCE-GROUNDED RAG
+              </span>
+            </div>
+
+            <div className="bg-[#FAF4E6] p-4 border border-ink/15 font-editorial text-sm text-ink leading-relaxed">
+              <span className="font-mono text-xs text-ink-500 uppercase block mb-1">
+                Sample Query: "What did Dr. Ambedkar state about the grammar of anarchy?"
+              </span>
+              "Dr. Ambedkar warned that with the introduction of constitutional methods for achieving social and economic objectives, bloody methods of revolution must be abandoned. He described civil disobedience, non-cooperation and satyagraha in an independent constitutional democracy as the <em>'Grammar of Anarchy'</em> [CAD Vol. XI, Nov 25, 1949]."
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+              <span className="text-[11px] text-ink-600">
+                Verification: Constituent Assembly Debates • Citation ID: [CAD-1949-NOV25-P978]
+              </span>
+              <Link
+                to="/research?query=What%20did%20Dr.%20Ambedkar%20mean%20by%20the%20Grammar%20of%20Anarchy%3F"
+                className="oxblood-nav-pill px-5 py-2 text-xs font-serif font-bold transition flex items-center gap-1.5 hover:bg-[#8B2525]"
               >
-                <div className="flex items-center justify-between border-b border-ink/10 pb-1">
-                  <span className="font-serif font-black text-2xl text-oxblood">
-                    {event.year}
-                  </span>
-                  <span className="text-[10px] text-ink-500 uppercase">MILESTONE</span>
-                </div>
-                <h4 className="font-serif font-bold text-base text-ink leading-snug">
-                  {event.title}
-                </h4>
-                <p className="font-editorial text-xs text-ink-700 line-clamp-3 leading-relaxed">
-                  {event.description}
-                </p>
-                {event.related_locations && (
-                  <div className="pt-2 text-[10px] text-ink-500 border-t border-ink/10">
-                    📍 {event.related_locations}
-                  </div>
-                )}
-              </div>
-            ))}
+                <span>Open Research Workbench →</span>
+              </Link>
+            </div>
           </div>
         </section>
 
-        {/* Institutional Charter Tri-Fold */}
-        <section className="my-12 border-2 border-ink bg-[#FAF6EE] p-6 shadow-letterpress-sm font-mono">
+        {/* 9. Institutional Charter Tri-Fold */}
+        <section className="deckled-paper-panel p-6 sm:p-8 font-mono">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 divide-y md:divide-y-0 md:divide-x divide-ink/20">
             <div className="space-y-2 pt-4 md:pt-0 pr-0 md:pr-4">
               <div className="flex items-center gap-2 text-oxblood font-bold text-xs uppercase">
                 <Globe2 className="w-4 h-4" />
                 <span>Multilingual Records</span>
               </div>
-              <h4 className="font-serif font-bold text-base text-ink">
+              <h3 className="font-serif font-bold text-base text-ink">
                 Universal Accessibility
-              </h4>
+              </h3>
               <p className="font-editorial text-xs text-ink-700 leading-relaxed">
                 Curated in Marathi (मराठी), Hindi (हिंदी), English, and classical texts for nationwide democratic access.
               </p>
@@ -480,9 +399,9 @@ export const HomePage: React.FC = () => {
                 <Scale className="w-4 h-4" />
                 <span>Cryptographic Provenance</span>
               </div>
-              <h4 className="font-serif font-bold text-base text-ink">
+              <h3 className="font-serif font-bold text-base text-ink">
                 Institutional Integrity
-              </h4>
+              </h3>
               <p className="font-editorial text-xs text-ink-700 leading-relaxed">
                 Immutable SHA-256 digital checksums and Dublin Core OAIS standards preserve absolute archival truth.
               </p>
@@ -493,9 +412,9 @@ export const HomePage: React.FC = () => {
                 <ShieldCheck className="w-4 h-4" />
                 <span>Museum & Kiosk Station</span>
               </div>
-              <h4 className="font-serif font-bold text-base text-ink">
+              <h3 className="font-serif font-bold text-base text-ink">
                 Public Kiosk Mode
-              </h4>
+              </h3>
               <p className="font-editorial text-xs text-ink-700 leading-relaxed">
                 Designed for memorial kiosks, university libraries, and exhibition touchscreens with 48px+ touch controls.
               </p>

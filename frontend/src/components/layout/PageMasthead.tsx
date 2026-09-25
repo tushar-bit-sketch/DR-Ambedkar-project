@@ -22,7 +22,7 @@ export const PageMasthead: React.FC<PageMastheadProps> = ({
   className = ''
 }) => {
   return (
-    <section className={`bg-[#FAF6EE] text-ink py-8 px-4 sm:px-6 lg:px-8 border-b-2 border-double border-ink shadow-sm ${className}`}>
+    <section className={`bg-[#FAF6EE] text-ink py-8 px-4 sm:px-6 lg:px-8 border-b-2 border-double border-ink ${className}`}>
       <div className="max-w-7xl mx-auto space-y-3">
         {/* Top Eyebrow & Accession Bar */}
         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-ink/15 pb-2 text-[11px] font-mono text-oxblood uppercase tracking-wider font-bold">

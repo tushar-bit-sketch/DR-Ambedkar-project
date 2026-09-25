@@ -10,18 +10,18 @@ interface DemoBannerProps {
 export const DemoBanner: React.FC<DemoBannerProps> = ({ customMessage, isDemoData, isOffline }) => {
   if (isOffline) {
     return (
-      <aside aria-label="Archive Backend Offline Notice" className="bg-amber-50 border-b-2 border-amber-600 text-ink px-4 py-2 text-xs font-mono">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
+      <aside aria-label="Archive Backend Offline Notice" className="bg-[#E2CFB4] border-b border-ink/40 text-ink px-4 py-1.5 text-xs font-mono">
+        <div className="max-w-[1540px] mx-auto flex items-center justify-between gap-3">
           <div className="flex items-center gap-2 min-w-0">
-            <WifiOff className="w-4 h-4 text-oxblood flex-shrink-0 animate-pulse" />
-            <span className="truncate sm:whitespace-normal text-[11px] text-ink-900">
-              <strong className="text-oxblood uppercase font-bold">[ARCHIVE BACKEND OFFLINE]</strong>{' '}
-              {customMessage || "The institutional archival service is currently unreachable. Live search, AI synthesis, and primary media streaming require an active HTTPS FastAPI service."}
+            <WifiOff className="w-3.5 h-3.5 text-[#79402C] flex-shrink-0 animate-pulse" />
+            <span className="truncate sm:whitespace-normal text-[10px] sm:text-[11px] text-ink">
+              <strong className="text-[#79402C] uppercase font-bold">[ARCHIVE TELEPRINTER: BACKEND OFFLINE]</strong>{' '}
+              {customMessage || "Live FastAPI search engine is currently offline. Primary repository cache and static broadsheet exhibits remain fully accessible."}
             </span>
           </div>
-          <div className="hidden sm:flex items-center gap-1.5 text-amber-900 bg-amber-100 border border-amber-400 px-2 py-0.5 text-[10px] uppercase tracking-wider font-mono whitespace-nowrap flex-shrink-0">
-            <ShieldAlert className="w-3.5 h-3.5 text-oxblood" />
-            <span>UNAVAILABLE</span>
+          <div className="hidden sm:flex items-center gap-1.5 text-ink bg-[#D4BE9B] border border-ink/40 px-2 py-0.5 text-[9px] uppercase tracking-wider font-mono whitespace-nowrap flex-shrink-0 font-bold">
+            <ShieldAlert className="w-3 h-3 text-[#79402C]" />
+            <span>STANDALONE MODE</span>
           </div>
         </div>
       </aside>
