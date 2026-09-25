@@ -429,8 +429,9 @@ export const SearchPage: React.FC = () => {
                     {/* Document Title Link */}
                     <div className="flex items-baseline justify-between gap-2">
                       <Link 
-                        to={`/documents/${item.document_id}`}
+                        to={`/documents/${item.document_id}?page=${item.page_number || 1}&highlight=${encodeURIComponent(query)}`}
                         className="font-serif font-bold text-lg text-ink hover:text-oxblood transition leading-snug"
+                        title="Open canonical archival folio"
                       >
                         {item.document_title || item.title}
                       </Link>
@@ -438,6 +439,7 @@ export const SearchPage: React.FC = () => {
                         {item.archive_id}
                       </span>
                     </div>
+
 
                     {/* Creator & Year Metadata */}
                     <div className="flex items-center gap-2 text-[11px] text-ink-600 font-mono">
@@ -497,7 +499,7 @@ export const SearchPage: React.FC = () => {
                         </button>
 
                         <Link
-                          to={`/documents/${item.document_id}`}
+                          to={`/documents/${item.document_id}?page=${item.page_number || 1}&highlight=${encodeURIComponent(query)}`}
                           className="px-2.5 py-0.5 bg-ink hover:bg-oxblood text-white font-mono font-bold text-[10px] uppercase transition shadow-letterpress-sm flex items-center gap-1"
                         >
                           <span>[ VIEW SLIP ]</span>

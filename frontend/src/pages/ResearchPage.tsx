@@ -717,11 +717,11 @@ export const ResearchPage: React.FC = () => {
               {/* Action: Open Document */}
               {selectedCitation.document_id && (
                 <Link
-                  to={`/documents/${selectedCitation.document_id}`}
+                  to={`/documents/${selectedCitation.document_id}?page=${selectedCitation.page_number || 1}${selectedCitation.snippet ? `&highlight=${encodeURIComponent(selectedCitation.snippet.slice(0, 80).trim())}` : ''}`}
                   className="w-full py-2 px-3 bg-ink hover:bg-oxblood text-white transition font-mono uppercase font-bold flex items-center justify-center gap-1.5 text-xs shadow-letterpress-sm border border-ink"
                 >
                   <ExternalLink className="w-3.5 h-3.5" />
-                  <span>[ View Archival Slip ]</span>
+                  <span>[ Examine Archival Record ]</span>
                 </Link>
               )}
             </div>

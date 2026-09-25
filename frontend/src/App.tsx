@@ -26,7 +26,10 @@ const ArchivalLoadingFallback: React.FC = () => (
 // Route-based code splitting for secondary public pages
 const ExplorePage = lazy(() => import('./pages/ExplorePage').then(m => ({ default: m.ExplorePage })));
 const DocumentsPage = lazy(() => import('./pages/DocumentsPage').then(m => ({ default: m.DocumentsPage })));
+const DocumentDetailPage = lazy(() => import('./pages/DocumentDetailPage').then(m => ({ default: m.DocumentDetailPage })));
+
 const ManuscriptsPage = lazy(() => import('./pages/ManuscriptsPage').then(m => ({ default: m.ManuscriptsPage })));
+
 const SpeechesPage = lazy(() => import('./pages/SpeechesPage').then(m => ({ default: m.SpeechesPage })));
 const DebatesPage = lazy(() => import('./pages/DebatesPage').then(m => ({ default: m.DebatesPage })));
 const MediaPage = lazy(() => import('./pages/MediaPage').then(m => ({ default: m.MediaPage })));
@@ -91,7 +94,9 @@ const AppContent: React.FC = () => {
             <Route path="/search" element={<SearchPage />} />
             <Route path="/explore" element={<ExplorePage />} />
             <Route path="/documents" element={<DocumentsPage />} />
+            <Route path="/documents/:documentId" element={<DocumentDetailPage />} />
             <Route path="/manuscripts" element={<ManuscriptsPage />} />
+
             <Route path="/speeches" element={<SpeechesPage />} />
             <Route path="/debates" element={<DebatesPage />} />
             <Route path="/media" element={<MediaPage />} />

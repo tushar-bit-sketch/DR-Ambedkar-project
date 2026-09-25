@@ -142,15 +142,18 @@ npm run dev
 
 ---
 
-## 5. Seeded Credentials & RBAC Accounts
+## 5. Role-Based Access Control (RBAC) Accounts
 
-| Role | Email | Password | Privileges |
-|---|---|---|---|
-| **SUPER_ADMIN** | `admin@ambedkar-archive.gov.in` | `AmbedkarArchive2026!` | All privileges: user management, hard deletion, restore, system statistics |
-| **ARCHIVIST** | `archivist@ambedkar-archive.gov.in` | `Archivist2026!` | Ingest documents, upload versions, verify checksums, soft delete |
-| **REVIEWER** | `reviewer@ambedkar-archive.gov.in` | `Reviewer2026!` | Curatorial peer review: approve (`VERIFIED`), reject (`REJECTED`), set `UNDER_REVIEW` |
-| **RESEARCHER** | `researcher@ambedkar-archive.gov.in` | `Researcher2026!` | Read access to restricted scholarly facsimiles and metadata |
-| **VISITOR** | *(Unauthenticated)* | *(None)* | Public catalog exploration: only active `VERIFIED` public items |
+> **SECURITY NOTE**: For production deployment, initial administrative passwords are provisioned via environment variables (`ADMIN_INITIAL_PASSWORD`, `ARCHIVIST_INITIAL_PASSWORD`, etc.) or secure secrets management. In local development environments, consult `.env.example`.
+
+| Role | Default Service Principal | Privileges |
+|---|---|---|
+| **SUPER_ADMIN** | `admin@ambedkar-archive.gov.in` | All privileges: user management, hard deletion, restore, system statistics |
+| **ARCHIVIST** | `archivist@ambedkar-archive.gov.in` | Ingest documents, upload versions, verify checksums, soft delete |
+| **REVIEWER** | `reviewer@ambedkar-archive.gov.in` | Curatorial peer review: approve (`VERIFIED`), reject (`REJECTED`), set `UNDER_REVIEW` |
+| **RESEARCHER** | `researcher@ambedkar-archive.gov.in` | Read access to restricted scholarly facsimiles and metadata |
+| **VISITOR** | *(Unauthenticated)* | Public catalog exploration: only active `VERIFIED` public items |
+
 
 ---
 

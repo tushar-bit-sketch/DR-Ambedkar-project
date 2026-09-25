@@ -61,14 +61,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const login = async (newRole: UserRole) => {
-    setRole(newRole);
-    localStorage.setItem('archive_user_role', newRole);
-
     const creds = ROLE_CREDENTIALS[newRole];
-    if (!creds) {
-      setToken(null);
-      setUser(null);
-      localStorage.removeItem('archive_jwt_token');
+    if (!creds || newRole === 'VISITOR') {
+      logout();
       return;
     }
 
@@ -78,41 +73,45 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: creds.email, password: creds.password })
       });
+
       if (resp.ok) {
         const data = await resp.json();
         const jwt = data.access_token;
         setToken(jwt);
+        setRole(newRole);
         localStorage.setItem('archive_jwt_token', jwt);
-      } else {
-        const fallbackToken = `phase2-token-${newRole.toLowerCase()}`;
-        setToken(fallbackToken);
-        localStorage.setItem('archive_jwt_token', fallbackToken);
-      }
-    } catch {
-      const fallbackToken = `phase2-token-${newRole.toLowerCase()}`;
-      setToken(fallbackToken);
-      localStorage.setItem('archive_jwt_token', fallbackToken);
-    }
+        localStorage.setItem('archive_user_role', newRole);
 
-    setUser({
-      id: newRole === 'SUPER_ADMIN' ? 1 : 2,
-      email: creds.email,
-      full_name: creds.name,
-      role: {
-        id: newRole === 'SUPER_ADMIN' ? 1 : 2,
-        name: newRole,
-        description: 'Institutional Access Privileges'
-      },
-      is_active: true
-    });
+        setUser({
+          id: newRole === 'SUPER_ADMIN' ? 1 : 2,
+          email: creds.email,
+          full_name: creds.name,
+          role: {
+            id: newRole === 'SUPER_ADMIN' ? 1 : 2,
+            name: newRole,
+            description: 'Institutional Access Privileges'
+          },
+          is_active: true
+        });
+      } else {
+        // Enforce strict security: No synthetic fallback tokens in production
+        console.warn(`[Auth] Backend authentication rejected for role: ${newRole}. Access denied.`);
+        logout();
+        throw new Error('Authentication rejected by institutional server.');
+      }
+    } catch (err) {
+      console.warn(`[Auth] Server authentication failed for ${newRole}:`, err);
+      logout();
+    }
   };
 
-  // Automatically attempt real login on mount if logged in as staff
+  // Attempt real login verification on mount if logged in as staff
   React.useEffect(() => {
     if (role !== 'VISITOR' && !token?.startsWith('ey')) {
-      login(role);
+      login(role).catch(() => {});
     }
   }, []);
+
 
   const logout = () => {
     setRole('VISITOR');
