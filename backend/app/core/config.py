@@ -107,12 +107,15 @@ class Settings(BaseSettings):
     TLS_CERT_PATH: Union[str, None] = os.getenv("TLS_CERT_PATH", None)
     TLS_KEY_PATH: Union[str, None] = os.getenv("TLS_KEY_PATH", None)
 
-    # CORS
+    # CORS — extended defaults cover local dev + Vercel deployments
+    # Override via BACKEND_CORS_ORIGINS env var in production
     BACKEND_CORS_ORIGINS: List[str] = [
         "http://localhost:5173",
         "http://localhost:3000",
         "http://127.0.0.1:5173",
         "http://127.0.0.1:3000",
+        "https://frontend-kappa-six-80.vercel.app",
+        "https://drambedkar-ai.vercel.app",
     ]
 
     @field_validator("BACKEND_CORS_ORIGINS", mode="before")
